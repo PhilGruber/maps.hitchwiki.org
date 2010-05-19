@@ -10,9 +10,8 @@ class rpc {
     function getMarkers($lat, $lng, $count) {
         $res = array();
         while ($count--) {
-            $res[$count] = array(rand(12000)/1000-60, rand(36000)/1000-180);
+            $res[$count] = array(rand(0,12000)/100-60, rand(0,36000)/100-180);
         }
-        return "lululul";
         return $res;
     }
 }
