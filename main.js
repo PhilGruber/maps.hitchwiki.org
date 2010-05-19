@@ -17,14 +17,24 @@ function init() {
         displayClass: 'olControlEditingToolbar',
         defaultControl: panelControls[0]
     });
-
     toolbar.addControls(panelControls);
     map.addControl(toolbar);
-    
-    map.setCenter(new OpenLayers.LonLat(49, 8.3));
     map.zoomTo(3);
+    map.setCenter(new OpenLayers.LonLat(49, 8.3));
 
-    var test = rpc.getMarkers(49, 8.3, 3);
-    alert(test);
+    var size = new OpenLayers.Size(16,16);
+    var offset = new OpenLayers.Pixel(0,0) //-(size.w/2), -size.h);
+    var icon = new OpenLayers.Icon('http://maps.hitchwiki.org/img/hitch.png', size, offset);
+    var markers = new OpenLayers.Layer.Markers("Points");
+    var res = rpc.getMarkers(49, 8.3, 3);
+    for (i in res) {
+        markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(res[i][0], res[i][1]), icon.clone()));
+    }
+    var tmp = new OpenLayers.LonLat(49,8.3);
+    alert(tmp.toShortString());
+    markers.addMarker(new OpenLayers.Marker(tmp,icon.clone()));
+    markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(49.1,8.3),icon.clone()));
+
+    map.addLayer(markers);
 }
 
