@@ -5,10 +5,11 @@ require_once "rpc.php";
 ?><html>
     <head>
         <?php $server->javascript("rpc"); ?>
+        <script src="http://openlayers.org/api/OpenLayers.js"></script>
+        <script src="main.js"></script>
+        <link rel='stylesheet' type='text/css' href='main.css' />
     </head>
-    <body onload='alert(rpc.say("Test"));'>
-        <h1>New super cool and fast hitchwiki maps!!!!!!1111</h1>
-        <br /><br /><br />
-        <small>...coming soon</small>
+    <body onload='init();'>
+        <div id='map'> </div>
     </body>
 </html>
