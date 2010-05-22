@@ -1,7 +1,7 @@
 Hitchwiki Maps
-===========
+==============
 
-http://devmaps.hitchwiki.org/
+[devmaps.hitchwiki.org](http://devmaps.hitchwiki.org/)
 
 ## Log
 
@@ -10,9 +10,9 @@ http://devmaps.hitchwiki.org/
 
 ## Used technologies
 
-* Open Layers (http://openlayers.org/)
-* PHPOLait (http://sourceforge.net/projects/phpolait/)
-* jQuery (http://jquery.com/)
+* [Open Layers](http://openlayers.org/)
+* [PHPOLait](http://sourceforge.net/projects/phpolait/)
+* [jQuery](http://jquery.com/)
 
 
 Contact: help@liftershalte.info
