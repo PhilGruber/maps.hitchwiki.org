@@ -7,6 +7,7 @@
  * 3) Buttons
  * 4) Icons
  * 5) Layout
+ * 6) Cards
  *
  */
 
@@ -79,6 +80,7 @@ input, textarea, button, .button {
 	padding-bottom: 2px;
 }
 
+textarea { width: 100%; }
 
 
 /*
@@ -86,31 +88,34 @@ input, textarea, button, .button {
  */ 
 .icon {
 	padding-left: 20px;
-	padding-bottom: 2px;
+	padding-top: 1px;
+	padding-bottom: 1px;
 	background-repeat: no-repeat;
 	background-position: left center;
 }
 
-.magnifier 			{ background-image: url(../gfx/icons/magnifier.png); }
-.add 				{ background-image: url(../gfx/icons/add.png); }
-.chart_bar 			{ background-image: url(../gfx/icons/chart_bar.png); }
-.folder_database 	{ background-image: url(../gfx/icons/folder_database.png); }
-.folder 			{ background-image: url(../gfx/icons/folder.png); }
-.help 				{ background-image: url(../gfx/icons/help.png); }
-.link 				{ background-image: url(../gfx/icons/link.png); }
-.lock_go 			{ background-image: url(../gfx/icons/lock_go.png); }
-.lock 				{ background-image: url(../gfx/icons/lock.png); }
-.map_add 			{ background-image: url(../gfx/icons/map_add.png); }
-.map_delete 		{ background-image: url(../gfx/icons/map_delete.png); }
-.map_edit 			{ background-image: url(../gfx/icons/map_edit.png); }
-.map_go 			{ background-image: url(../gfx/icons/map_go.png); }
-.map_magnify 		{ background-image: url(../gfx/icons/map_magnify.png); }
-.map 				{ background-image: url(../gfx/icons/map.png); }
-.table_add 			{ background-image: url(../gfx/icons/table_add.png); }
-.table	 			{ background-image: url(../gfx/icons/table.png); }
-.tag 				{ background-image: url(../gfx/icons/tag.png); }
-.world 				{ background-image: url(../gfx/icons/world.png); }
-.zoom 				{ background-image: url(../gfx/icons/zoom.png); }
+.icon.magnifier 		{ background-image: url(../gfx/icons/magnifier.png); }
+.icon.add 				{ background-image: url(../gfx/icons/add.png); }
+.icon.chart_bar 		{ background-image: url(../gfx/icons/chart_bar.png); }
+.icon.folder_database 	{ background-image: url(../gfx/icons/folder_database.png); }
+.icon.folder 			{ background-image: url(../gfx/icons/folder.png); }
+.icon.help 				{ background-image: url(../gfx/icons/help.png); }
+.icon.link 				{ background-image: url(../gfx/icons/link.png); }
+.icon.lock_go 			{ background-image: url(../gfx/icons/lock_go.png); }
+.icon.lock 				{ background-image: url(../gfx/icons/lock.png); }
+.icon.map_add 			{ background-image: url(../gfx/icons/map_add.png); }
+.icon.map_delete 		{ background-image: url(../gfx/icons/map_delete.png); }
+.icon.map_edit 			{ background-image: url(../gfx/icons/map_edit.png); }
+.icon.map_go 			{ background-image: url(../gfx/icons/map_go.png); }
+.icon.map_magnify 		{ background-image: url(../gfx/icons/map_magnify.png); }
+.icon.map 				{ background-image: url(../gfx/icons/map.png); }
+.icon.table_add 		{ background-image: url(../gfx/icons/table_add.png); }
+.icon.table	 			{ background-image: url(../gfx/icons/table.png); }
+.icon.tag 				{ background-image: url(../gfx/icons/tag.png); }
+.icon.world 			{ background-image: url(../gfx/icons/world.png); }
+.icon.zoom 				{ background-image: url(../gfx/icons/zoom.png); }
+.icon.cancel 			{ background-image: url(../gfx/icons/cancel.png); }
+.icon.accept 			{ background-image: url(../gfx/icons/accept.png); }
 
 
 
@@ -196,8 +201,8 @@ html, body {
 	border: 1px solid #c0b78b;
 	border-top: 0;
 	border-right: 0;
-	background-color: #fff;
-	color: #888;
+	background-color: #93b3cd;
+	color: #e5f0f9;
 	text-align: center;
 	margin-left: 170px;
 	min-height: 550px;
@@ -272,7 +277,7 @@ ul#Navigation {
 	ul#Navigation #search #submit {
 		border-left: 0;
 		margin: 0;
-		padding: 2px 0 3px 7px;
+		padding: 3px 0 3px 7px;
 		font-size: 13px;
 		line-height: 13px;
 		-webkit-border-top-left-radius: 0;
@@ -329,3 +334,48 @@ ul#Navigation {
 	}
 
 
+/*
+ * 6) Cards
+ */ 
+
+.card {
+	text-align: left;
+	width: 300px;
+	padding: 7px;
+	background-color: #faf9f3;
+	color: #111;
+	font-size: 12px;
+	line-height: 16px;
+	border: 1px solid #c0b78b;
+	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+}
+	.card h4 {
+		padding: 0;
+		margin: 0;
+		font-size: 14px;
+		line-height: 17px;
+	}
+	.card.bad {
+		box-shadow: 0 0 7px #ff0000;
+		-webkit-box-shadow: 0 0 7px #ff0000;
+		-moz-box-shadow: 0 0 7px #ff0000;
+	}
+	.card.good {
+		box-shadow: 0 0 7px #00b900;
+		-webkit-box-shadow: 0 0 7px #00b900;
+		-moz-box-shadow: 0 0 7px #00b900;
+	}
+	
+	.card.add_new_place {
+		
+	}
+	
+/* Temporary for the static-demo: */
+.card {
+	float: left;
+	margin: 20px;
+}

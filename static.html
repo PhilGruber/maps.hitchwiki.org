@@ -136,6 +136,54 @@
 	        <div id="map">
 	        	<br /><br />
 	        	Turn JavaScript on from your browser.
+	        	
+	        	<!-- popups -->
+	        	<div class="card add_new_place" id="add_new_place">
+	        	<form method="post" action="#" name="add_new_place">
+	        		<h4>Add new place to <a href="#">United Kingdom</a></h4>
+	        		<small>
+	        			<b>Lat:</b> 64.54323, <b>Lon:</b> 23.32453<br />
+	        			<b>Address:</b> Street 35, 33210 City
+	        		</small>
+					<br /><br />
+	        		<label for="description">Description</label><br />
+	        		<textarea id="description" rows="4" name="description">Lorem description ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</textarea>
+
+					<br /><br />
+					<label for="rating">Rating</label>
+					<br />
+					<label for="type">Type</label>
+					
+					<br /><br />
+					
+					<div class="align_right">
+						<button class="button" id="cancel" /><span class="icon cancel">Cancel</span></button>
+						<button class="button" type="submit" id="add"><span class="icon accept">Add place</span></button>
+					</div>
+				</form>
+	        	</div>
+	        	
+	        	<div class="card hh_place bad" id="hh_place_1">
+	        		<h4>Bad hitchhiking place in <a href="#">United Kingdom</a></h4>
+	        		<small>Address Street 35, 33210 City</small>
+					<br /><br />
+	        		Lorem description ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+
+					<br /><br />
+					Rating: bad (2/5)<br />
+					Published by: <a href="#">Joe Doe</a>
+	        	</div>
+	        	
+	        	
+	        	<div class="card hh_place good" id="hh_place_2">
+	        		<h4>Good hitchhiking place in <a href="#">United Kingdom</a></h4>
+	        		<small>Address Street 35, 33210 City</small>
+					<br /><br />
+					Rating: good (4/5)<br />
+	        	</div>
+	        	
+	        	
+	        	<!-- /popups -->
 	        </div>
 
 
