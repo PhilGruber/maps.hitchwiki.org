@@ -10,21 +10,22 @@ Hitchwiki Maps
 
 ## Used technologies
 
-* Server side:
-** [Open Layers](http://openlayers.org/)
-** [PHPOLait](http://sourceforge.net/projects/phpolait/)
-** [Snoopy](http://sourceforge.net/projects/snoopy/)
+### Server side:
+* [Open Layers](http://openlayers.org/)
+* [PHPOLait](http://sourceforge.net/projects/phpolait/)
+* [Snoopy](http://sourceforge.net/projects/snoopy/)
 
-* Client side:
-** [jQuery](http://jquery.com/) 
-** [jQuery Cookie Plugin](http://plugins.jquery.com/project/cookie)
-** [jQuery JSON](http://code.google.com/p/jquery-json/)
+### Client side:
+* [jQuery](http://jquery.com/) 
+* [jQuery Cookie Plugin](http://plugins.jquery.com/project/cookie)
+* [jQuery JSON](http://code.google.com/p/jquery-json/)
+* [Fam Fam Fam icons](http://www.famfamfam.com/lab/icons/)
 
-* Services:
-** [IPInfoDB API](http://ipinfodb.com/)
-** [Open Street Map](http://www.openstreetmap.org/)
-** [Google Maps](http://maps.google.com)
-** [Bing Maps](http://maps.bing.com)
+### Services:
+* [IPInfoDB API](http://ipinfodb.com/)
+* [Open Street Map](http://www.openstreetmap.org/)
+* [Google Maps](http://maps.google.com)
+* [Bing Maps](http://maps.bing.com)
 
 
 ## Contact
