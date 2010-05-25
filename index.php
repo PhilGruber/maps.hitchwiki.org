@@ -4,11 +4,6 @@
  * 2010
  *
  */
- 
-/* Settings
- */
-$root =		"/home/sg076/public_html/maps.hitchwiki.org";
-$url = 		"http://www.ihminen.org/maps.hitchwiki.org";
 
 require_once "lib/rpc.php";
 
@@ -158,7 +153,7 @@ require_once "lib/rpc.php";
 	        
 	        
 	        <!-- The Map -->
-	        <div id="map">
+	        <div id="map"><?php /*
 	        	<br /><br />
 	        	Turn JavaScript on from your browser.
 	        	
@@ -214,7 +209,7 @@ require_once "lib/rpc.php";
 	        	
 	        	<!-- /popups -->
 	        	
-	       </div>
+	       */ ?></div>
 
 
 			
