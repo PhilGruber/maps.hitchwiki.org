@@ -11,11 +11,11 @@ Hitchwiki Maps
 ## Used technologies
 
 ### Server side:
-* [Open Layers](http://openlayers.org/)
 * [PHPOLait](http://sourceforge.net/projects/phpolait/)
 * [Snoopy](http://sourceforge.net/projects/snoopy/)
 
 ### Client side:
+* [Open Layers](http://openlayers.org/)
 * [jQuery](http://jquery.com/) 
 * [jQuery Cookie Plugin](http://plugins.jquery.com/project/cookie)
 * [jQuery JSON](http://code.google.com/p/jquery-json/)
@@ -26,6 +26,14 @@ Hitchwiki Maps
 * [Open Street Map](http://www.openstreetmap.org/)
 * [Google Maps](http://maps.google.com)
 * [Bing Maps](http://maps.bing.com)
+
+#### (Reverse-) Geocoding, possible services:
+* [Geonames](http://www.geonames.org/export/geonames-search.html)
+* [Tiny Geocoder](http://tinygeocoder.com/)
+* [Nominatim](http://wiki.openstreetmap.org/wiki/Nominatim) - Open Street Map background
+* [Google](http://maps.google.com/maps/geo?q=62,24) - Bad license for us
+
+Read more: http://www.qaiku.com/go/5wdv/
 
 
 ## Contact
