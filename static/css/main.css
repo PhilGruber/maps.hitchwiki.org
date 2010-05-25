@@ -7,7 +7,8 @@
  * 3) Buttons
  * 4) Icons
  * 5) Layout
- * 6) Cards
+ * 6) Map
+ * 7) Cards
  *
  */
 
@@ -127,13 +128,15 @@ textarea { width: 100%; }
 html, body {
 	padding: 0;
 	margin: 0;
+	height: 100%;
 	background-color: #e7e2c9;
 }
 
 
 #Header {
 	margin: 0;
-	padding: 15px 10px 5px 10px; 
+	padding: 15px 10px 5px 10px;
+	height: 70px; 
 	overflow: hidden;
 	min-width: 990px;
 	background: #edca50 url(../gfx/bg.png) repeat-x left bottom;
@@ -192,21 +195,14 @@ html, body {
 
 #Content {
 	padding: 0;
+	margin: 0;
 	width: 100%;
 	min-width: 990px;
-	overflow: hidden;
-}
-
-#map {
-	border: 1px solid #c0b78b;
-	border-top: 0;
-	border-right: 0;
-	background-color: #93b3cd;
-	color: #e5f0f9;
-	text-align: center;
-	margin-left: 170px;
-	min-height: 550px;
-	min-width: 820px;
+	
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -30px; /* the bottom margin is the negative value of the footer's height */
 }
 
 #Sidebar {
@@ -301,11 +297,10 @@ ul#Navigation {
 	
 #Footer {
 	font-size: 11px;
-	line-height: 20px;
-	padding: 10px 10px 10px 160px;
-	display: block;
-	clear: both;
+	line-height: 15px;
+	padding: 10px;
 	overflow: hidden;
+	text-align: center;
 }
 	#Footer ul {
 		list-style: none;
@@ -315,11 +310,10 @@ ul#Navigation {
 	#Footer ul li:before {
 		content: "";
 	}
+
 	#Footer ul li {
-		padding: 0 0 0 20px;
-		float: left;
+		padding: 0 0 10px 0;
 	}
-	
 	#Footer,
 	#Footer a:link,
 	#Footer a:visited,
@@ -333,9 +327,26 @@ ul#Navigation {
 		color: #986d27;
 	}
 
+/*
+ * 6) Map
+ */ 
+ 
+
+#map {
+	border-left: 1px solid #c0b78b;
+	background-color: #93b3cd;
+	color: #e5f0f9;
+	text-align: center;
+	position: absolute;
+	top: 90px;
+	bottom: 0;
+	left: 170px;
+	right: 0;
+}
+
 
 /*
- * 6) Cards
+ * 7) Cards
  */ 
 
 .card {

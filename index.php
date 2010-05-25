@@ -5,6 +5,12 @@
  *
  */
 
+/* 
+ * Settings
+ */
+$key["google_maps"] = 		"";
+
+
 require_once "lib/rpc.php";
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -16,7 +22,14 @@ require_once "lib/rpc.php";
     
         <link rel="stylesheet" type="text/css" href="static/css/main.css?cache=<?= date("jnYHis"); ?>" media="all" />
         <?php $server->javascript("rpc"); ?>
-        <script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript"></script>
+        <!-- Map Services -->
+        <!--
+        <script src="http://maps.google.com/maps?file=api&v=2&key=<?php echo $key["google_maps"]; ?>"></script>
+        <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt=en-us" type="text/javascript"></script>
+        <script src="http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=euzuro-openlayers" type="text/javascript"></script>
+        -->
+        <script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript" type="text/javascript"></script>
+    
         <script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
 		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
@@ -32,19 +45,16 @@ require_once "lib/rpc.php";
 			var cookieoptions = { path: '/', expires: 10 };
 			
         </script>
-        <!--
-		<link rel="image_src" href="badge.jpg" />
-		<link rel="shortcut icon" href="favicon.png" type="image/png" />
-		<link rel="bookmark icon" href="favicon.png" type="image/png" />
-		
-		<link rel="shortcut icon" href="http://mik.gemilo.fi/social/favicon.ico" type="image/x-icon" />
-		<link rel="bookmark icon" href="http://mik.gemilo.fi/social/favicon.ico" type="image/x-icon" />
-		-->		
+		<link rel="shortcut icon" href="/favicon.png" type="image/png" />
+		<link rel="bookmark icon" href="/favicon.png" type="image/png" />
+		<link rel="image_src" href="/badge.png" />
 		
 		<meta name="description" content="Find good places for hitchhiking and add your own." />
     </head>
-    <body onload="init();">
-
+    <body>
+		
+		<div id="Content">
+	
 		<div id="Header">
 			<div id="Logo">
 				<h1>Hitchwiki</h1>
@@ -84,8 +94,6 @@ require_once "lib/rpc.php";
 		
 		<!-- /Header -->
 		</div>
-		
-		<div id="Content">
 	
 			<div id="Sidebar">
 			
@@ -135,18 +143,45 @@ require_once "lib/rpc.php";
 					
 					<!-- 3rd block -->
 					<li>
-						<ul title="Select language">
+						<ul>
+							<!--
 							<li><h3>Language</h3></li>
 				    		<li><a href="#">Auf Deutsch</a></li>
 				    		<li><a href="#">En Español</a></li>
 				    		<li><a href="#">Suomeksi</a></li>
 				    		<li><a href="#">по-pусский</a></li>
-				    		<li><a href="#"><small>Help us with translating!</small></a></li>
+				    		-->
+				    		<li>
+				    		<label for="language"><h3>Choose language</h3></label>
+				    		<form method="get" action="./">
+				    			<select name="language" id="language">
+				    				<option name="en" selected="selected">In English</option>
+				    				<option name="de">Auf Deutsch</option>
+				    				<option name="es">En Español</option>
+				    				<option name="fi">Suomeksi</option>
+				    				<option name="ru">по-pусский</option>
+				    			</select>
+				    		</form>
+				    		<small><a href="#">Help us with translating!</a></small>
+				    		</li>
 						</ul>
 					</li>
 				
 				</ul>
 				
+			
+			<div id="Footer">
+			    <ul>
+			    	<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" title="Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"><img alt="Creative Commons License" src="static/gfx/cc-by-sa.png"/></a></li>
+		    	
+			    	<li><a href="mailto:info@hitchwiki.org" title="Contact us!">info@hitchwiki.org</a></li>
+			    	
+			    	<li><a href="http://github.com/MrTweek/maps.hitchwiki.org">Developers</a></li>
+			    </ul>
+			    	
+			<!-- /Footer -->
+			</div>
+			
 			
 			<!-- /Sidebar -->
 			</div>
@@ -210,25 +245,13 @@ require_once "lib/rpc.php";
 	        	<!-- /popups -->
 	        	
 	       */ ?></div>
+	       <!-- /map -->
 
-
-			
-			<div id="Footer">
-			    <ul>
-			    	<li><a href="mailto:info@hitchwiki.org">info@hitchwiki.org</a></li>
-			    	
-			    	<li><a href="http://github.com/MrTweek/maps.hitchwiki.org">Developers</a></li>
-			    	
-			    </ul>  
-			    <ul class="align_right">
-			    	<li>Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a></li>
-			    	<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" src="static/gfx/cc-by-sa.png"/></a></li>
-			    	
-			<!-- /Footer -->
-			</div>
 
 		<!-- /Content -->
 		</div>
+			
+
 
     </body>
 </html>

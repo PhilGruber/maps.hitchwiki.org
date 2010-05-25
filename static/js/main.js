@@ -19,12 +19,15 @@ $(document).ready(function() {
 	init_map();
 
 	// Search form
-	$("#search_form").submit(function() {
-  		search($("#search_form #q").value());
-  		return false;
-	});
+	$("#search_form").submit(function(){ 
+  		//search($("#search_form #q").value());
+        return false; 
+    });
+    
+    
 
 });
+
 
 
 /*
@@ -32,27 +35,67 @@ $(document).ready(function() {
  */
 function init_map() {
 	
-    var map = new OpenLayers.Map('map');
-    
-    map.addLayer(new OpenLayers.Layer.OSM());
-    map.addLayer(new OpenLayers.Layer.VirtualEarth());
-    map.addLayer(new OpenLayers.Layer.Yahoo());
-    // map.addLayer(new OpenLayers.Layer.Google("Google"));
-
-    var panelControls = [
-        new OpenLayers.Control.Navigation(),
-        new OpenLayers.Control.LayerSwitcher()
-    ];
-
-    var toolbar = new OpenLayers.Control.Panel({
-        displayClass: 'olControlEditingToolbar',
-        defaultControl: panelControls[0]
-    });
-    toolbar.addControls(panelControls);
-    map.addControl(toolbar);
+	// Create map with controls	
+	var map = new OpenLayers.Map('map', {
+	    controls: [
+	        new OpenLayers.Control.Navigation(),
+	        new OpenLayers.Control.PanZoomBar(),
+	        new OpenLayers.Control.LayerSwitcher({'ascending':false}),
+	        new OpenLayers.Control.Permalink(),
+	        new OpenLayers.Control.ScaleLine(),
+	        new OpenLayers.Control.Permalink('permalink'),
+	        new OpenLayers.Control.MousePosition(),
+	        new OpenLayers.Control.OverviewMap(),
+	        new OpenLayers.Control.KeyboardDefaults()
+	        
+	        
+	    ],
+	    numZoomLevels: 6
+	    
+	});
+	
+        
+        
+	// Map layers	
+	var layer_osm = 		new OpenLayers.Layer.OSM("Open Street Map");
+	/*
+	var layer_ve_road = 	new OpenLayers.Layer.VirtualEarth("Virtual Earth Streets", {type: VEMapStyle.Road});
+	var layer_ve_air =		new OpenLayers.Layer.VirtualEarth("Virtual Earth Aerial", {type: VEMapStyle.Aerial});
+	var layer_yahoo = 		new OpenLayers.Layer.Yahoo("Yahoo Maps");
+	var layer_google = 		new OpenLayers.Layer.Google("Google Maps");
+	var layer_google_sat = 	new OpenLayers.Layer.Google("Google Maps Satellite", {type: G_SATELLITE_MAP});
+	
+	layer_ve_road.setVisibility(false);
+	layer_ve_air.setVisibility(false);
+	layer_yahoo.setVisibility(false);
+	layer_google.setVisibility(false);
+	layer_google_sat.setVisibility(false);
+	
+	map.addLayers([
+					layer_osm, 
+					layer_ve_road, 
+					layer_ve_air, 
+					layer_yahoo, 
+					layer_google, 
+					layer_google_sat
+				  ]);
+	*/
+	map.addLayers([layer_osm]);
+	
+	
+	// add and expand the overview map control
+	var overview = new OpenLayers.Control.OverviewMap();
+	map.addControl(overview);
+	overview.maximizeControl();
+	
+	// Set map
     map.zoomTo(3);
     map.setCenter(new OpenLayers.LonLat(49, 8.3));
+    
+    
+	//if (!map.getCenter()) map.zoomToMaxExtent();
 
+    /*
     var size = new OpenLayers.Size(16,16);
     var offset = new OpenLayers.Pixel(0,0) //-(size.w/2), -size.h);
     var icon = new OpenLayers.Icon('http://maps.hitchwiki.org/img/hitch.png', size, offset);
@@ -63,11 +106,15 @@ function init_map() {
     }
     var tmp = new OpenLayers.LonLat(49,8.3);
     alert(tmp.toShortString());
+    
     markers.addMarker(new OpenLayers.Marker(tmp,icon.clone()));
     markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(49.1,8.3),icon.clone()));
 
     map.addLayer(markers);
+    
+    */
 }
+
 
 
 
@@ -164,16 +211,24 @@ fetchlocation = function() {
 
 
 
-/* Search
+/* 
+ * Search
  */
 function search(q) {
 	alert("Search: "+q);
-}
 
-
-/* Geocoder
- * http://www.geonames.org/
- */
-function geocode(lat,lon) {
-	return false;
+	// Geocode
+	$.ajax({
+		url: "lib/geocoder.php?q=" + q,
+		async: false,
+		success: function(geocode){
+			alert("Lat, Lon: "+geocode);
+			/*
+			map.zoomTo(10);
+    		map.setCenter(new OpenLayers.LonLat(geocode));
+    		*/
+      	}
+	});
+	
+    return false;
 }
