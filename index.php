@@ -30,6 +30,7 @@ require_once "lib/rpc.php";
         -->
         <script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript" type="text/javascript"></script>
     
+    	<!-- Scripts -->
         <script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
 		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
@@ -45,11 +46,19 @@ require_once "lib/rpc.php";
 			var cookieoptions = { path: '/', expires: 10 };
 			
         </script>
-		<link rel="shortcut icon" href="/favicon.png" type="image/png" />
-		<link rel="bookmark icon" href="/favicon.png" type="image/png" />
-		<link rel="image_src" href="/badge.png" />
+		<link rel="shortcut icon" href="favicon.png" type="image/png" />
+		<link rel="bookmark icon" href="favicon.png" type="image/png" />
+		<link rel="image_src" href="badge.png" />
 		
 		<meta name="description" content="Find good places for hitchhiking and add your own." />
+		
+		<!--[if lt IE 7]>
+		<style type="text/css"> 
+    	    .png,
+    	    .icon
+    	     { behavior: url(static/js/iepngfix.htc); }
+		</style>
+		<![endif]-->
     </head>
     <body>
 		
