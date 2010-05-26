@@ -1,0 +1,134 @@
+# Translation of the Hitchwiki Maps by the WordPress team.
+# Copyright (C) 2010 the Hitchwiki team
+# This file is distributed under the same license as the Hitchwiki Maps
+# Hitchwiki Maps <help@liftershalte.info>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Hitchwiki Maps 2.0\n"
+"Report-Msgid-Bugs-To: help@liftershalte.info\n"
+"POT-Creation-Date: 2010-05-27 04:21+0000\n"
+"PO-Revision-Date: 2010-05-27 01:42+0200\n"
+"Last-Translator: Hitchwiki Maps <help@liftershalte.info>\n"
+"Language-Team: Hitchwiki Maps <help@liftershalte.info>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: index.php
+msgid "Maps"
+msgstr ""
+
+#: index.php
+msgid "Wiki"
+msgstr ""
+
+#: index.php
+msgid "Blogs"
+msgstr ""
+
+#: index.php
+msgid "Planet"
+msgstr ""
+
+#: index.php
+msgid "Username"
+msgstr ""
+
+#: index.php
+msgid "Password"
+msgstr ""
+
+#: index.php
+msgid "Remember me"
+msgstr ""
+
+#: index.php
+msgid "Login"
+msgstr ""
+
+#: index.php
+msgid "Why to register?"
+msgstr ""
+
+#: index.php
+msgid "Register!"
+msgstr ""
+
+#: index.php
+msgid "Lost password?"
+msgstr ""
+
+#: index.php
+msgid "Find places"
+msgstr ""
+
+#: index.php
+msgid "Nearby places from"
+msgstr ""
+
+#: index.php
+msgid "Choose language"
+msgstr ""
+
+#: index.php
+msgid "Tools"
+msgstr ""
+
+#: index.php
+msgid "Add place"
+msgstr ""
+
+#: index.php
+msgid "Link here"
+msgstr ""
+
+#: index.php
+msgid "New collection"
+msgstr ""
+
+#: index.php
+msgid "All points"
+msgstr ""
+
+#: index.php
+msgid "My points"
+msgstr ""
+
+#: index.php
+msgid "Download KML"
+msgstr ""
+
+#: index.php
+msgid "Help"
+msgstr ""
+
+#: index.php
+msgid "Statistics"
+msgstr ""
+
+#: index.php
+msgid "Help us with translating!"
+msgstr ""
+
+#: index.php
+msgid "Find good places for hitchhiking and add your favorites"
+msgstr ""
+
+#: index.php
+msgid "Contact us!"
+msgstr ""
+
+#: index.php
+msgid "Developers"
+msgstr ""
+
+#: index.php
+msgid "Turn JavaScript on from your browser."
+msgstr ""
+
+#: index.php
+msgid "Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"
+msgstr ""
+
