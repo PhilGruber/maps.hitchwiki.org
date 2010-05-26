@@ -18,8 +18,6 @@
  * 1) Misc
  */
 a img { border: 0; }
-.clear { clear: both; }
-.hidden { display: none; }
 .align_right { float: right; }
 .align_left { float: left; }
 
@@ -390,3 +388,8 @@ ul#Navigation {
 	float: left;
 	margin: 20px;
 }
+
+
+
+.clear { clear: both; }
+.hidden { display: none; }

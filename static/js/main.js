@@ -14,16 +14,32 @@ $(document).ready(function() {
 
 	// getUserLocation:
 	fetchlocation();
-	
-	// Map
+
+	// Remove JS-required alert	
+	$("#map").text('');
+
+	// Load Map
 	init_map();
+
+	// Navigation
+	$(".pagelink").each(function(index) {
+		$(this).click(function(){
+			page( $(this).attr("id") );
+		});
+	});
 
 	// Search form
 	$("#search_form").submit(function(){ 
   		//search($("#search_form #q").value());
         return false; 
     });
-    
+	
+	// Language selection
+	$("#language_selection #submit").hide();
+	$("#language_selection select").change(function() {
+		alert($(this).attr("value"));
+		$(this).parent("form").submit();
+	});
     
 
 });
@@ -231,4 +247,14 @@ function search(q) {
 	});
 	
     return false;
+}
+
+
+/* 
+ * Open page
+ */
+function page(name) {
+
+
+	alert("Opening page "+name+"...");
 }

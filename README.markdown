@@ -1,7 +1,9 @@
 Hitchwiki Maps
 ==============
+_Find good places for hitchhiking and add your favorites_
 
-[devmaps.hitchwiki.org](http://devmaps.hitchwiki.org/)
+Dev: [devmaps.hitchwiki.org](http://devmaps.hitchwiki.org/)
+Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 
 ## Log
 
@@ -13,6 +15,8 @@ Hitchwiki Maps
 ### Server side:
 * [PHPOLait](http://sourceforge.net/projects/phpolait/)
 * [Snoopy](http://sourceforge.net/projects/snoopy/)
+* [cURL](http://curl.haxx.se/)
+* [Gettext](http://www.gnu.org/software/gettext/)
 
 ### Client side:
 * [Open Layers](http://openlayers.org/)
