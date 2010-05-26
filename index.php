@@ -50,10 +50,14 @@ require_once "config.php";
 		<link rel="apple-touch-icon" href="badge-57x57.png" />
 
 		<meta name="description" content="<?php echo _("Find good places for hitchhiking and add your own."); ?>" />
-		<meta property="og:site_name" content="Hitchwiki Maps" />
+		
+		<!-- The Open Graph Protocol - http://opengraphprotocol.org/ -->
+		<meta property="og:site_name" content="<?php echo _("Find good places for hitchhiking and add your own."); ?>" />
+		<meta property="og:description" content="Hitchwiki Maps" />
 		<meta property="og:image" content="badge.png" />
-		<meta property="og:url" content="http://maps.hitchwiki.org"/>
-		<meta property="og:type" content="cause" />
+		<meta property="og:url" content="<?php echo "http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']); ?>"/>
+		<meta property="og:type" content="website" />
+		<meta property="og:email" content="<?php echo $settings["email"]; ?>" />
 
 		<!--[if lt IE 7]>
 		<style type="text/css"> 
@@ -83,9 +87,9 @@ require_once "config.php";
 
 			<div id="Login">
 					<ul class="align_right login_menu">
-						<li><a href="#"><?php echo _("Why to register?"); ?></a></li>
-						<li><a href="#"><?php echo _("Register!"); ?></a></li>
-						<li><a href="#"><?php echo _("Lost password?"); ?></a></li>
+						<li><a href="#" id="why_to_register" class="pagelink"><?php echo _("Why to register?"); ?></a></li>
+						<li><a href="#" id="register" class="pagelink"><?php echo _("Register!"); ?></a></li>
+						<li><a href="#" id="lost_password" class="pagelink"><?php echo _("Lost password?"); ?></a></li>
 					</ul>
 				<form action="#" method="post" name="login">
 					<table cellpadding="0" cellspacing="0" border="0" class="align_left">
@@ -97,7 +101,7 @@ require_once "config.php";
 						<tr valign="middle">
 							<td><label for="password"><?php echo _("Password"); ?></label></td>
 							<td><input type="password" value="" name="password" id="password" /></td>
-							<td><button type="submit" class="button"><span class="icon lock"><?php echo _("Login"); ?></span></button></td>
+							<td><button type="submit" id="submit" class="button"><span class="icon lock"><?php echo _("Login"); ?></span></button></td>
 						</tr>
 					</table>
 				</form>
@@ -127,7 +131,7 @@ require_once "config.php";
 								
 							</li>
 							
-							<li title="Show nearby places" id="nearby" class="hidden">
+							<li id="nearby" class="hidden">
 								<span class="icon map_magnify"><?php echo _("Nearby places from"); ?>:</span><br />
 								<ul>
 									<li class="city hidden"><a href="#"></a></li>
@@ -156,13 +160,6 @@ require_once "config.php";
 					<!-- 3rd block -->
 					<li>
 						<ul>
-							<!--
-							<li><h3><?php echo _("Language"); ?></h3></li>
-				    		<li><a href="#">Auf Deutsch</a></li>
-				    		<li><a href="#">En Español</a></li>
-				    		<li><a href="#">Suomeksi</a></li>
-				    		<li><a href="#">по-pусский</a></li>
-				    		-->
 				    		<li>
 				    		<label for="language"><h3><?php echo _("Choose language"); ?></h3></label>
 				    		<form method="get" action="./" name="language_selection" id="language_selection">
@@ -192,7 +189,7 @@ require_once "config.php";
 			    <ul>
 			    	<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" title="<?php echo _("Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"); ?>"><img alt="Creative Commons License" src="static/gfx/cc-by-sa.png"/></a></li>
 		    	
-			    	<li><a href="mailto:info@hitchwiki.org" title="<?php echo _("Contact us!"); ?>">info@hitchwiki.org</a></li>
+			    	<li><a href="mailto:<?php echo $settings["email"]; ?>" title="<?php echo _("Contact us!"); ?>"><?php echo $settings["email"]; ?></a></li>
 			    	
 			    	<li><a href="http://github.com/MrTweek/maps.hitchwiki.org"><?php echo _("Developers"); ?></a></li>
 			    </ul>
@@ -208,7 +205,7 @@ require_once "config.php";
 	        <!-- The Map -->
 	        <div id="map">
 	        	<br /><br />
-	        	Turn JavaScript on from your browser.
+	        	<?php echo _("Turn JavaScript on from your browser."); ?>
 	        <?php /*
 	        	
 	        	<!-- popups -->

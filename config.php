@@ -11,6 +11,7 @@
  */
 $settings["google_maps_api_key"] = 		"";
 $settings["yahoo_maps_appid"] = 		"";
+$settings["email"] = 					"help@liftershalte.info";
 $settings["default_language"] = 		"en_UK";
 $settings["valid_languages"] = 			array(
 											"en_UK" => "In English", 
