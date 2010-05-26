@@ -40,9 +40,28 @@ require_once "config.php";
         	 */
         	var ip = "<?php print $_SERVER['REMOTE_ADDR']; ?>";
 			var geolocation = "lib/ipinfodb/ip_proxy.php";
-			var cookiename = 'geo_location';
+			var cookiename = 'hitchwiki_maps_geolocation';
 			var cookieoptions = { path: '/', expires: 24 };
 
+			<?php
+			
+        	/*
+        	 * Open JS-pages requested by GET page
+        	 */
+        	 
+        	// Allowed page names
+			$pages = array("help","statistics", "translate");
+			
+			// Open page
+			if(isset($_GET["page"]) && in_array($_GET["page"], $pages)) {
+			?>
+			$(document).ready(function() {
+				page("<?php echo htmlspecialchars($_GET["page"]); ?>");
+			});
+			<?php
+			}
+			
+			?>
         </script>
 		<link rel="shortcut icon" href="favicon.png" type="image/png" />
 		<link rel="bookmark icon" href="favicon.png" type="image/png" />
@@ -177,7 +196,7 @@ require_once "config.php";
 				    			</select>
 				    			<input type="submit" id="submit" class="button" value="&raquo;" />
 				    		</form>
-				    		<small><a href="#" id="translate" class="pagelink"><?php echo _("Help us with translating!"); ?></a></small>
+				    		<small><a href="./?page=translate" id="translate" class="pagelink"><?php echo _("Help us with translating!"); ?></a></small>
 				    		</li>
 						</ul>
 					</li>
