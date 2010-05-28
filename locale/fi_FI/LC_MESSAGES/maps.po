@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: Hitchwiki Maps 2.0\n"
 "Report-Msgid-Bugs-To: help@liftershalte.info\n"
 "POT-Creation-Date: 2010-05-27 04:21+0000\n"
-"PO-Revision-Date: 2010-05-27 01:50+0200\n"
+"PO-Revision-Date: 2010-05-28 04:15+0200\n"
 "Last-Translator: Mikael Korpela <mikael@ihminen.org>\n"
-"Language-Team: Hitchwiki Maps <help@liftershalte.info> <Hitchwiki Maps <help@liftershalte.info>>\n"
+"Language-Team: Mikael Korpela <mikael@ihminen.org>, Hitchwiki Maps <help@liftershalte.info>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,119 +18,185 @@ msgstr ""
 "X-Poedit-Language: Finnish\n"
 "X-Poedit-Country: FINLAND\n"
 
-#: index.php:0
+#: index.php
 msgid "Maps"
 msgstr "Kartat"
 
-#: index.php:0
+#: index.php
 msgid "Wiki"
 msgstr "Wiki"
 
-#: index.php:0
+#: index.php
 msgid "Blogs"
 msgstr "Blogit"
 
-#: index.php:0
+#: index.php
 msgid "Planet"
 msgstr "Planeetta"
 
-#: index.php:0
+#: index.php
 msgid "Username"
 msgstr "Tunnus"
 
-#: index.php:0
+#: index.php
 msgid "Password"
 msgstr "Salasana"
 
-#: index.php:0
+#: index.php
 msgid "Remember me"
 msgstr "Muista minut"
 
-#: index.php:0
+#: index.php
 msgid "Login"
 msgstr "Kirjaudu"
 
-#: index.php:0
+#: index.php
 msgid "Why to register?"
 msgstr "Miksi rekisteröityä?"
 
-#: index.php:0
+#: index.php
 msgid "Register!"
 msgstr "Rekisteröidy!"
 
-#: index.php:0
+#: index.php
 msgid "Lost password?"
 msgstr "Salasana hukassa?"
 
-#: index.php:0
+#: index.php
 msgid "Find places"
 msgstr "Löydä paikkoja"
 
-#: index.php:0
+#: index.php
 msgid "Nearby places from"
 msgstr "Paikat lähistöltä"
 
-#: index.php:0
+#: index.php
 msgid "Choose language"
 msgstr "Valitse kieli"
 
-#: index.php:0
+#: index.php
 msgid "Tools"
 msgstr "Työkalut"
 
-#: index.php:0
+#: index.php
 msgid "Add place"
 msgstr "Lisää paikka"
 
-#: index.php:0
+#: index.php
 msgid "Link here"
 msgstr "Linkkaa"
 
-#: index.php:0
+#: index.php
 msgid "New collection"
 msgstr "Uusi kokoelma"
 
-#: index.php:0
+#: index.php
 msgid "All points"
 msgstr "Kaikki pisteet"
 
-#: index.php:0
+#: index.php
 msgid "My points"
 msgstr "Omat pisteeni"
 
-#: index.php:0
+#: index.php
 msgid "Download KML"
 msgstr "Lataa KML"
 
-#: index.php:0
+#: index.php
 msgid "Help"
 msgstr "Apua"
 
-#: index.php:0
+#: index.php
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: index.php:0
+#: index.php
 msgid "Help us with translating!"
 msgstr "Auta kääntämisessä!"
 
-#: index.php:0
+#: index.php
 msgid "Find good places for hitchhiking and add your favorites"
 msgstr "Löydä liftauspaikkoja ja lisää omat suosikkisi"
 
-#: index.php:0
+#: index.php
 msgid "Contact us!"
 msgstr "Ota yhteyttä!"
 
-#: index.php:0
+#: index.php
 msgid "Developers"
 msgstr "Kehittäjät"
 
-#: index.php:0
+#: index.php
 msgid "Turn JavaScript on from your browser."
 msgstr "JavaScriptin tulee olla päällä selaimesta."
 
-#: index.php:0
+#: index.php
 msgid "Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"
 msgstr "Lisensoitu Creative Commons Attribution-ShareAlike 3.0 Unported -lisenssillä"
+
+#: views.php
+msgid "Error 404 - page not found"
+msgstr "Virhe 404 - sivua ei löydy"
+
+#: views.php
+msgid "Fatal error!"
+msgstr "Virhe!"
+
+#: statistics.php
+msgid "There are currently %s places marked."
+msgstr "%s paikkaa merkittynä tällä hetkellä."
+
+#: statistics.php
+msgid "Top countries"
+msgstr "Top maat"
+
+#: statistics.php
+msgid "Top users"
+msgstr "Top käyttäjät"
+
+#: statistics.php
+msgid "Country"
+msgstr "Maa"
+
+#: statistics.php
+msgid "User"
+msgstr "Käyttäjä"
+
+#: statistics.php
+msgid "Places"
+msgstr "Paikat"
+
+#: statistics.php
+msgid "Hitchability"
+msgstr "Liftattavuus"
+
+msgid "Germany"
+msgstr "Saksa"
+
+msgid "France"
+msgstr "Ranska"
+
+msgid "Netherlands"
+msgstr "Alankomaat"
+
+msgid "United Kingdom"
+msgstr "Iso-Britannia"
+
+msgid "Poland"
+msgstr "Puola"
+
+msgid "Belgium"
+msgstr "Belgia"
+
+msgid "Latvia"
+msgstr "Latvia"
+
+msgid "Canada"
+msgstr "Kanada"
+
+msgid "Lithuania"
+msgstr "Liettua"
+
+msgid "United states"
+msgstr "Yhdysvallat"
 

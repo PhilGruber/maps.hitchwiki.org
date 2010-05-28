@@ -5,7 +5,16 @@
  *
  */
 
+/*
+ * Initialize Maps
+ */
 require_once "config.php";
+
+/*
+ * Load RPC
+ */
+require_once "lib/rpc.php";
+
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php echo substr($settings["language"], 0, 2); /* ISO_639-1 ('en_UK' => 'en') */ ?>">
@@ -38,10 +47,11 @@ require_once "config.php";
         	/*
         	 * Use to get Users current location
         	 */
-        	var ip = "<?php print $_SERVER['REMOTE_ADDR']; ?>";
+        	var ip = "<?php echo $_SERVER['REMOTE_ADDR']; ?>";
 			var geolocation = "lib/ipinfodb/ip_proxy.php";
 			var cookiename = 'hitchwiki_maps_geolocation';
 			var cookieoptions = { path: '/', expires: 24 };
+			var locale = "<?php echo $settings["language"]; ?>";
 
 			<?php
 			
@@ -88,6 +98,16 @@ require_once "config.php";
     </head>
     <body class="<?php echo $settings["language"]; ?>">
 		
+		<!-- AJAX Content Area for pages and cards-->
+		<div id="pages"><?php
+		/*
+		 * AJAX Page Content Area
+		 * You can load page contents with page() in static/js/main.js
+		 * Contents are loaded from ./pages/ and pushed into this area
+		 */
+		?></div>
+		<div id="cards"></div>
+		
 		<div id="Content">
 	
 		<div id="Header">
@@ -106,9 +126,9 @@ require_once "config.php";
 
 			<div id="Login">
 					<ul class="align_right login_menu">
-						<li><a href="#" id="why_to_register" class="pagelink"><?php echo _("Why to register?"); ?></a></li>
-						<li><a href="#" id="register" class="pagelink"><?php echo _("Register!"); ?></a></li>
-						<li><a href="#" id="lost_password" class="pagelink"><?php echo _("Lost password?"); ?></a></li>
+						<li><a href="./?page=why_to_register" id="why_to_register" class="pagelink"><?php echo _("Why to register?"); ?></a></li>
+						<li><a href="./?page=register" id="register" class="pagelink"><?php echo _("Register!"); ?></a></li>
+						<li><a href="./?page=lost_password" id="lost_password" class="pagelink"><?php echo _("Lost password?"); ?></a></li>
 					</ul>
 				<form action="#" method="post" name="login">
 					<table cellpadding="0" cellspacing="0" border="0" class="align_left">
@@ -165,12 +185,12 @@ require_once "config.php";
 					<li>
 						<ul id="tools">	
 							<li><h3>Tools</h3></li>
-							<li><a href="#" id="add_place" class="icon add pagelink"><?php echo _("Add place"); ?></a></li>
-							<li><a href="#" id="link_here" class="icon link pagelink"><?php echo _("Link here"); ?></a></li>
+							<li><a href="#" id="add_place" class="icon add cardlink"><?php echo _("Add place"); ?></a></li>
+							<li><a href="#" id="link_here" class="icon link cardlink"><?php echo _("Link here"); ?></a></li>
 							<li><a href="#" id="new_collection" class="icon table_add pagelink"><?php echo _("New collection"); ?></a></li>
 							<li><a href="#" id="all_points" class="icon table pagelink"><?php echo _("All points"); ?></a></li>
 							<li><a href="#" id="my_points" class="icon table pagelink"><?php echo _("My points"); ?></a></li>
-							<li><a href="#" id="download_kml" class="icon tag pagelink"><?php echo _("Download KML"); ?></a></li>
+							<li><a href="#" id="download_kml" class="icon tag cardlink"><?php echo _("Download KML"); ?></a></li>
 							<li><a href="./?page=help" id="help" class="icon help pagelink"><?php echo _("Help"); ?></a></li>
 							<li><a href="./?page=statistics" id="statistics" class="icon chart_bar pagelink"><?php echo _("Statistics"); ?></a></li>
 						</ul>

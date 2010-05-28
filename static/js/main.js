@@ -23,8 +23,15 @@ $(document).ready(function() {
 
 	// Navigation
 	$(".pagelink").each(function(index) {
-		$(this).click(function(){
-			page( $(this).attr("id") );
+		$(this).click(function(e){
+			e.preventDefault();
+			open_page( $(this).attr("id") );
+		});
+	});
+	$(".cardlink").each(function(index) {
+		$(this).click(function(e){
+			e.preventDefault();
+			open_card( $(this).attr("id") );
 		});
 	});
 
@@ -41,6 +48,24 @@ $(document).ready(function() {
 		$(this).parent("form").submit();
 	});
     
+    // Initialize page content area
+	$("#pages").html('<div class="page"><a href="#" class="close">x</a><div class="content"> </div></div>');
+	$("#pages .page .close").click(function(e){
+		e.preventDefault();
+		close_page();
+	});
+	$("#pages .page .content").hide();
+	$("#pages .page").hide();
+
+    
+    // Initialize card content area
+	$("#cards").html('<div class="card"><a href="#" class="close">x</a><div class="content"> </div></div>');
+	$("#cards .card .close").click(function(e){
+		e.preventDefault();
+		close_card();
+	});
+	$("#cards .card .content").hide();
+	$("#cards .card").hide();
 
 });
 
@@ -253,8 +278,75 @@ function search(q) {
 /* 
  * Open page
  */
-function page(name) {
+function open_page(name) {
+
+	// Close cards if open
+	if($("#cards .card").is(':visible')) { close_card(); }
+	
+	$.ajax({
+		url: "lib/views.php?type=page&lang="+locale+"&page=" + name,
+		async: false,
+		success: function(content){
+			// If pages not opened yet
+			if($("#pages .page").is(':hidden')) {
+				$("#pages .page .content").html(content).show();
+				$("#pages .page").slideDown('fast');
+			} else {
+				$("#pages .page .content").html(content);
+			}
+      	}
+	});
+}
 
 
-	alert("Opening page "+name+"...");
+/* 
+ * Close page
+ */
+function close_page() {
+	if($("#pages .page").is(':visible')) {
+			$("#pages .page .content").hide('fast').text('');
+			$("#pages .page").slideUp('fast');
+	}
+}
+
+
+/* 
+ * Open card
+ */
+function open_card(name) { //, x_coord, y_coord, width
+	
+	/*
+	if(x_coord = undefined) { var x_coord = '300'; } 
+	if(y_coord = undefined) { var y_coord = '300'; }
+	if(width = undefined) { var width = '200'; }
+	*/
+
+	// Close pages if open
+	if($("#pages .page").is(':visible')) { close_page(); }
+	
+	$.ajax({
+		url: "lib/views.php?type=card&lang="+locale+"&page=" + name,
+		async: false,
+		success: function(content){
+			// If pages not opened yet
+			if($("#cards .card").is(':hidden')) {
+				$("#cards .card .content").html(content).show();
+				$("#cards .card").slideDown('fast');
+			} else {
+				$("#cards .card .content").html(content);
+			}
+			//$("#cards").attr('css','top:'+x_coord+'px; left:'+y_coord+'+px; width:'+width+'px;')
+      	}
+	});
+}
+
+
+/* 
+ * Close card
+ */
+function close_card() {
+	if($("#cards .card").is(':visible')) {
+			$("#cards .card .content").hide('fast').text('');
+			$("#cards .card").slideUp('fast');
+	}
 }
