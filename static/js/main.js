@@ -40,6 +40,41 @@ $(document).ready(function() {
   		//search($("#search_form #q").value());
         return false; 
     });
+
+	$(function() {
+		$("#search_form #q").autocomplete({
+			source: function(request, response) {
+				$.ajax({
+					url: "http://ws.geonames.org/searchJSON",
+					dataType: "jsonp",
+					data: {
+						featureClass: "P",
+						style: "full",
+						maxRows: 10,
+						name_startsWith: request.term
+					},
+					success: function(data) {
+						response($.map(data.geonames, function(item) {
+							return {
+								label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
+								value: item.name + ", " + item.countryName
+							}
+						}))
+					}
+				})
+			},
+			minLength: 2,
+			select: function(event, ui) {
+				search(ui.item.label);
+			},
+			open: function() {
+				$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+			},
+			close: function() {
+				$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+			}
+		});
+	});
 	
 	// Language selection
 	$("#language_selection #submit").hide();
@@ -75,6 +110,9 @@ $(document).ready(function() {
  * Initialize map
  */
 function init_map() {
+	
+	// Custom images from our own server
+	OpenLayers.ImgPath = "static/gfx/openlayers/";
 	
 	// Create map with controls	
 	var map = new OpenLayers.Map('map', {
@@ -256,6 +294,11 @@ fetchlocation = function() {
  * Search
  */
 function search(q) {
+	
+	// Close open stuff
+	close_card();
+	close_page();
+
 	alert("Search: "+q);
 
 	// Geocode
@@ -336,6 +379,7 @@ function open_card(name) { //, x_coord, y_coord, width
 				$("#cards .card .content").html(content);
 			}
 			//$("#cards").attr('css','top:'+x_coord+'px; left:'+y_coord+'+px; width:'+width+'px;')
+			$("#cards .card").draggable();
       	}
 	});
 }

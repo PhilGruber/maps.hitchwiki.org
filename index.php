@@ -24,6 +24,7 @@ require_once "lib/rpc.php";
     <title>Hitchwiki - <?php echo _("Maps"); ?></title>
     
         <link rel="stylesheet" type="text/css" href="static/css/main.css?cache=<?= date("jnYHis"); ?>" media="all" />
+        <link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.1.custom.css" media="all" />
 
         <!-- RPC -->
         <?php $server->javascript("rpc"); ?>
@@ -39,6 +40,7 @@ require_once "lib/rpc.php";
     
     	<!-- Scripts -->
         <script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="static/js/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
 		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
         <script src="static/js/main.js?cache=<?= date("jnYHis"); ?>" type="text/javascript"></script>
@@ -160,12 +162,14 @@ require_once "lib/rpc.php";
 							<li><h3><?php echo _("Find places"); ?></h3></li>
 							<li id="search">
 								<form method="get" action="#" id="search_form" name="search">
+									<div class="ui-widget">
 									<table cellpadding="0" cellspacing="0" border="0">
 										<tr valign="middle">
 											<td><input type="text" value="" id="q" name="q" /></td>
 											<td><button type="submit" id="submit" class="button"><span class="icon magnifier">&nbsp;</span><span class="hidden"><?php echo _("Search"); ?></span></button></td>
 										</tr>
 									</table>
+									</div>
 								</form>
 								
 							</li>
