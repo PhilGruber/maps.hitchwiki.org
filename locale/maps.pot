@@ -132,3 +132,85 @@ msgstr ""
 msgid "Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"
 msgstr ""
 
+#: views.php
+msgid "Error 404 - page not found"
+msgstr ""
+
+#: views.php
+msgid "Fatal error!"
+msgstr ""
+
+#: statistics.php
+msgid "There are currently %s places marked."
+msgstr ""
+
+#: statistics.php
+msgid "Top countries"
+msgstr ""
+
+#: statistics.php
+msgid "Top users"
+msgstr ""
+
+#: statistics.php
+msgid "Country"
+msgstr ""
+
+#: statistics.php
+msgid "User"
+msgstr ""
+
+#: statistics.php
+msgid "Places"
+msgstr ""
+
+#: statistics.php
+msgid "Hitchability"
+msgstr ""
+
+
+
+
+
+
+
+
+
+msgid "Germany"
+msgstr ""
+
+
+msgid "France"
+msgstr ""
+
+
+msgid "Netherlands"
+msgstr ""
+
+
+msgid "United Kingdom"
+msgstr ""
+
+
+msgid "Poland"
+msgstr ""
+
+
+msgid "Belgium"
+msgstr ""
+
+
+msgid "Latvia"
+msgstr ""
+
+
+msgid "Canada"
+msgstr ""
+
+
+msgid "Lithuania"
+msgstr ""
+
+
+msgid "United states"
+msgstr ""
