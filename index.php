@@ -15,7 +15,6 @@ require_once "config.php";
  */
 require_once "lib/rpc.php";
 
-
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php echo substr($settings["language"], 0, 2); /* ISO_639-1 ('en_UK' => 'en') */ ?>">
     <head profile="http://gmpg.org/xfn/11">
@@ -101,13 +100,7 @@ require_once "lib/rpc.php";
     <body class="<?php echo $settings["language"]; ?>">
 		
 		<!-- AJAX Content Area for pages and cards-->
-		<div id="pages"><?php
-		/*
-		 * AJAX Page Content Area
-		 * You can load page contents with page() in static/js/main.js
-		 * Contents are loaded from ./pages/ and pushed into this area
-		 */
-		?></div>
+		<div id="pages"></div>
 		<div id="cards"></div>
 		
 		<div id="Content">
@@ -234,7 +227,7 @@ require_once "lib/rpc.php";
 		    	
 			    	<li><a href="mailto:<?php echo $settings["email"]; ?>" title="<?php echo _("Contact us!"); ?>"><?php echo $settings["email"]; ?></a></li>
 			    	
-			    	<li><a href="http://github.com/MrTweek/maps.hitchwiki.org"><?php echo _("Developers"); ?></a></li>
+			    	<li><a href="http://github.com/MrTweek/maps.hitchwiki.org/"><?php echo _("Developers"); ?></a></li>
 			    </ul>
 			    	
 			<!-- /Footer -->
@@ -310,7 +303,5 @@ require_once "lib/rpc.php";
 		<!-- /Content -->
 		</div>
 			
-
-
     </body>
 </html>

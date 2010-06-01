@@ -12,14 +12,20 @@
  */
 $(document).ready(function() {
 
+	// Initialize stuff when page has finished loading
+	// --------------------------------------------------
+
 	// getUserLocation:
 	fetchlocation();
+
 
 	// Remove JS-required alert	
 	$("#map").text('');
 
+
 	// Load Map
 	init_map();
+
 
 	// Navigation
 	$(".pagelink").each(function(index) {
@@ -35,12 +41,15 @@ $(document).ready(function() {
 		});
 	});
 
+
 	// Search form
 	$("#search_form").submit(function(){ 
   		//search($("#search_form #q").value());
         return false; 
     });
 
+
+	// Autosuggest in search
 	$(function() {
 		$("#search_form #q").autocomplete({
 			source: function(request, response) {
@@ -76,12 +85,14 @@ $(document).ready(function() {
 		});
 	});
 	
+	
 	// Language selection
 	$("#language_selection #submit").hide();
 	$("#language_selection select").change(function() {
 		alert($(this).attr("value"));
 		$(this).parent("form").submit();
 	});
+    
     
     // Initialize page content area
 	$("#pages").html('<div class="page"><a href="#" class="close">x</a><div class="content"> </div></div>');

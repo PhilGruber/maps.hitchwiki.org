@@ -63,7 +63,6 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 Download from: http://jqueryui.com/download
 
 
-
 ## Contact
 help@liftershalte.info
 IRC: #hitchhiking @ freenode.net
