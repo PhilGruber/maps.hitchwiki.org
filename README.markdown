@@ -44,20 +44,20 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 ## jQuery UI
 1.8.1 (stable, for jQuery 1.4+) custom includes:
 
-*UI Core*
+#### UI Core
 * Core
 * Widget
 * Mouse
 * Position
 
-*Interactions*
+#### Interactions
 * Draggable
 
-*Widgets*
+#### Widgets
 * Autocomplete
 * Tabs
 
-**Theme**
+#### Theme
 * UI lightness
 
 Download from: http://jqueryui.com/download
