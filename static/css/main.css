@@ -63,7 +63,7 @@ label {
  
 .button,
 button {
- 	background: #eae3c1;
+ 	background-color: #eae3c1;
  	color: #684a02;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f4f1de), to(#d8cb95));
 	background: -moz-linear-gradient(top,  #f4f1de,  #d8cb95);
@@ -80,8 +80,9 @@ input, textarea, button, .button {
 }
 
 textarea { width: 100%; }
-
-
+input, textarea {
+ 	background-color: #fff;
+}
 /*
  * 4) Icons
  */ 
@@ -143,15 +144,28 @@ html, body {
 	#Header #Logo {
 		float: left;
 		overflow: hidden;
+		padding: 12px 0 0 47px;
+		background: transparent url(../gfx/hitchwiki.png) no-repeat;
+	}
+	#Header h1 span {
+		position: absolute;
+		top: -1000px;
+	}
+	#Header h1 a {
+		display: block;
+		width: 105px;
+		height: 25px;
 	}
 	#Header h1 {
 		float: left;
 		padding: 0 10px 0 0;
 		margin: 0 10px 0 0;
 		border-right: 1px solid #c9ab22;
+		/*
 		font-size: 25px;
 		line-height: 25px;
 		color: #764300;
+		*/
 	}
 	#Header h2 {
 		float: left;
@@ -178,18 +192,61 @@ html, body {
 
 	#Header #Login {
 		float: right;
-		width: 500px;
 	}
-	#Header #Login td {
-		padding: 0 10px 4px 0;
-	}
-	#Header .login_menu {
-		padding: 3px 10px 3px 20px;
-		margin: 0 0 0 20px;
-		border-left: 1px solid #c9ab22;
-		list-style: none;
-		font-size: 11px;
-	}
+		#Header #Login #loginSidemenu {
+			padding: 3px 10px 3px 20px;
+			margin: 0 0 0 20px;
+			border-left: 1px solid #c9ab22;
+			list-style: none;
+			font-size: 11px;
+		}
+		#Header #Login #loginOpener {
+			padding: 5px 10px 10px 30px;
+			background-position: 8px 6px;
+			font-size: 13px;
+			font-weight: bold;
+			
+			position: absolute;
+			z-index: 99999;
+			top: 20px;
+			right: 141px;
+			border: 1px solid transparent;
+			border-bottom: 0;
+		}
+		#Header #Login #loginOpener.open {
+			background-color: #e4b330;
+			border: 1px solid #ca940f;
+			color: #000;
+			border-bottom: 0;
+		}
+		#Header #Login #loginPanel {
+			position: absolute;
+			background: #f2d871 url(../gfx/login_bg.gif) repeat-x;
+			border: 1px solid #ca940f;
+			padding: 10px;
+			width: 200px;
+			top: 53px;
+			right: 141px;
+			z-index: 99998;
+			font-size: 12px;
+			line-height: 15px;
+		}
+		#Header #Login #username,
+		#Header #Login #password {
+			width: 100%;
+		}
+		#Header #Login #rememberMeRow {
+			font-size: 11px;
+			line-height: 11px;
+			display: block;
+			padding-bottom: 10px;
+		}
+		#Header #Login #lostPasswordRow {
+			display: block;
+			border-top: 1px solid #ca940f;
+			padding-top: 5px;
+			clear: both;
+		}
 
 #Content {
 	padding: 0;
@@ -342,6 +399,14 @@ ul#Navigation {
 	right: 0;
 }
 
+.olControlOverviewMapElement {
+	background-color: #faf9f3
+	border: 1px solid #c0b78b;
+	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
 
 /*
  * 7) Cards and Pages

@@ -15,6 +15,17 @@ require_once "config.php";
  */
 require_once "lib/rpc.php";
 
+
+/*
+ * Map settings
+ */
+// Zoom, lat, lon, layers
+$zoom = (isset($_GET["zoom"]) && ctype_digit($_GET["zoom"])) ? $_GET["zoom"] : '3';
+$lat = (isset($_GET["lat"]) && is_numeric($_GET["lat"])) ? $_GET["lat"] : '49';
+$lon = (isset($_GET["lon"]) && is_numeric($_GET["lon"])) ? $_GET["lon"] : '8.3';
+#$layers = (isset($_GET["layers"]) && !empty($_GET["layers"])) ? strip_tags($_GET["layers"]) : 'B';
+$layers = 'B';
+
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php echo substr($settings["language"], 0, 2); /* ISO_639-1 ('en_UK' => 'en') */ ?>">
     <head profile="http://gmpg.org/xfn/11">
@@ -44,7 +55,7 @@ require_once "lib/rpc.php";
 		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
         <script src="static/js/main.js?cache=<?= date("jnYHis"); ?>" type="text/javascript"></script>
         <script type="text/javascript">
-
+		//<![CDATA[
         	/*
         	 * Use to get Users current location
         	 */
@@ -53,6 +64,14 @@ require_once "lib/rpc.php";
 			var cookiename = 'hitchwiki_maps_geolocation';
 			var cookieoptions = { path: '/', expires: 24 };
 			var locale = "<?php echo $settings["language"]; ?>";
+
+			/*
+			 * Default map settings
+			 */
+			var lat = <?php echo $lat; ?>;
+			var lon = <?php echo $lon; ?>;
+			var layers = '<?php echo $layers; ?>';
+			var zoom = <?php echo $zoom; ?>;
 
 			<?php
 			
@@ -73,6 +92,7 @@ require_once "lib/rpc.php";
 			}
 			
 			?>
+		//]]>
         </script>
 		<link rel="shortcut icon" href="favicon.png" type="image/png" />
 		<link rel="bookmark icon" href="favicon.png" type="image/png" />
@@ -107,7 +127,7 @@ require_once "lib/rpc.php";
 	
 		<div id="Header">
 			<div id="Logo">
-				<h1>Hitchwiki</h1>
+				<h1><a href="http://www.hitchwiki.org/"><span>Hitchwiki</span></a></h1>
 				<h2><?php echo _("Maps"); ?></h2>
 				
 				<div class="Navigation">
@@ -120,25 +140,29 @@ require_once "lib/rpc.php";
 			</div>
 
 			<div id="Login">
-					<ul class="align_right login_menu">
+			
+					<ul class="align_right" id="loginSidemenu">
 						<li><a href="./?page=why_to_register" id="why_to_register" class="pagelink"><?php echo _("Why to register?"); ?></a></li>
 						<li><a href="./?page=register" id="register" class="pagelink"><?php echo _("Register!"); ?></a></li>
-						<li><a href="./?page=lost_password" id="lost_password" class="pagelink"><?php echo _("Lost password?"); ?></a></li>
+<!--						<li></li>-->
 					</ul>
-				<form action="#" method="post" name="login">
-					<table cellpadding="0" cellspacing="0" border="0" class="align_left">
-						<tr valign="middle">
-							<td><label for="username"><?php echo _("Username"); ?></label></td>
-							<td><input type="text" value="" name="username" id="username" /></td>
-							<td><input type="checkbox" value="1" name="remember_me" id="remember_me" /> <label for="remember_me"><?php echo _("Remember me"); ?></label></td>
-						</tr>
-						<tr valign="middle">
-							<td><label for="password"><?php echo _("Password"); ?></label></td>
-							<td><input type="password" value="" name="password" id="password" /></td>
-							<td><button type="submit" id="submit" class="button"><span class="icon lock"><?php echo _("Login"); ?></span></button></td>
-						</tr>
-					</table>
-				</form>
+
+					<a href="#" id="loginOpener" class="icon lock align_right"><?php echo _("Login"); ?></a>
+
+					<div id="loginPanel">
+						<form action="#" method="post" name="login">
+							<label for="username"><?php echo _("Username"); ?></label><br />
+							<input type="text" value="" name="username" id="username" /><br />
+							<br />
+							<label for="password"><?php echo _("Password"); ?></label><br />
+							<input type="password" value="" name="password" id="password" /><br />
+							<br />
+							<button type="submit" id="submit" class="button align_right"><span class="icon lock"><?php echo _("Login"); ?></span></button>
+							<div id="rememberMeRow" class="align_left"><input type="checkbox" value="1" name="remember_me" id="remember_me" /> <label for="remember_me"><?php echo _("Remember me"); ?></label></div>
+							<br />
+							<small id="lostPasswordRow"><a href="./?page=lost_password" id="lost_password" class="pagelink"><?php echo _("Lost password?"); ?></a></small>
+						</form>
+					</div>
 			<!-- /Login -->
 			</div>
 		

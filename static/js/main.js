@@ -48,7 +48,6 @@ $(document).ready(function() {
         return false; 
     });
 
-
 	// Autosuggest in search
 	$(function() {
 		$("#search_form #q").autocomplete({
@@ -89,10 +88,25 @@ $(document).ready(function() {
 	// Language selection
 	$("#language_selection #submit").hide();
 	$("#language_selection select").change(function() {
-		alert($(this).attr("value"));
-		$(this).parent("form").submit();
+		$("#language_selection #submit").click();
+		//$(this).parent("form").submit(); //<- Ain't working for some reason?
 	});
     
+    
+    // Login panel
+    $("#loginPanel").hide();
+    $("#loginOpener").click(function(e){
+    	e.preventDefault();
+    	if($(this).hasClass("open")) {
+	    	$(this).removeClass("open");
+    		$("#loginPanel").slideUp("fast");
+    		$(this).blur();
+    	} else {
+	    	$(this).addClass("open");
+    		$("#loginPanel").slideDown("fast");
+    		$("input#username").focus();
+    	}
+    });
     
     // Initialize page content area
 	$("#pages").html('<div class="page"><a href="#" class="close">x</a><div class="content"> </div></div>');
@@ -120,13 +134,14 @@ $(document).ready(function() {
 /*
  * Initialize map
  */
+var map = null;
 function init_map() {
 	
 	// Custom images from our own server
 	OpenLayers.ImgPath = "static/gfx/openlayers/";
 	
 	// Create map with controls	
-	var map = new OpenLayers.Map('map', {
+	map = new OpenLayers.Map('map', {
 	    controls: [
 	        new OpenLayers.Control.Navigation(),
 	        new OpenLayers.Control.PanZoomBar(),
@@ -179,8 +194,8 @@ function init_map() {
 	overview.maximizeControl();
 	
 	// Set map
-    map.zoomTo(3);
-    map.setCenter(new OpenLayers.LonLat(49, 8.3));
+    map.setCenter(new OpenLayers.LonLat(lat, lon));
+    map.zoomTo(zoom);
     
     
 	//if (!map.getCenter()) map.zoomToMaxExtent();
@@ -268,6 +283,7 @@ displaylocation = function(location) {
   	
   	// Show tool if content is filled
     if(show_nearby == true) { $('#nearby').show('fast'); }
+    else { $('#nearby').hide(); }
     
   }
 }
@@ -313,16 +329,10 @@ function search(q) {
 	alert("Search: "+q);
 
 	// Geocode
-	$.ajax({
-		url: "lib/geocoder.php?q=" + q,
-		async: false,
-		success: function(geocode){
-			alert("Lat, Lon: "+geocode);
-			/*
-			map.zoomTo(10);
-    		map.setCenter(new OpenLayers.LonLat(geocode));
-    		*/
-      	}
+	$.getJSON('lib/geocoder.php?q=' + q, function(data) {
+		
+			alert("Lat: "+data.lat.toString()+", Lon: "+data.lon);
+			map.moveTo(new OpenLayers.LonLat(data.lon.toString(), data.lat.toString()), 8);
 	});
 	
     return false;
