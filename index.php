@@ -144,13 +144,13 @@ $layers = 'B';
 					<ul class="align_right" id="loginSidemenu">
 						<li><a href="./?page=why_to_register" id="why_to_register" class="pagelink"><?php echo _("Why to register?"); ?></a></li>
 						<li><a href="./?page=register" id="register" class="pagelink"><?php echo _("Register!"); ?></a></li>
-<!--						<li></li>-->
 					</ul>
 
-					<a href="#" id="loginOpener" class="icon lock align_right"><?php echo _("Login"); ?></a>
+					<a href="./?page=login" id="loginOpener" class="icon lock align_right"><?php echo _("Login"); ?></a>
 
 					<div id="loginPanel">
-						<form action="#" method="post" name="login">
+						<div class="loading"></div>
+						<form action="#" method="post" name="login" id="login_form">
 							<label for="username"><?php echo _("Username"); ?></label><br />
 							<input type="text" value="" name="username" id="username" /><br />
 							<br />

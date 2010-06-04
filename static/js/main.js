@@ -107,6 +107,17 @@ $(document).ready(function() {
     		$("input#username").focus();
     	}
     });
+	$("#login_form").submit(function(){ 
+  		$(this).hide();
+  		$("#loginPanel .loading").show();
+  		$.post("lib/login.php", { username: $("#Login #username"), password: $("#Login #password") },
+   		function(data){
+   			$("#loginPanel .loading").hide();
+   			$("#login_form").show();
+     		alert("Login: " + data);
+   		});
+        return false; 
+    });
     
     // Initialize page content area
 	$("#pages").html('<div class="page"><a href="#" class="close">x</a><div class="content"> </div></div>');

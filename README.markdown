@@ -36,10 +36,10 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 
 #### (Reverse-) Geocoding, possible services:
 * [Geonames](http://www.geonames.org/export/geonames-search.html)
-* [Tiny Geocoder](http://tinygeocoder.com/) - currently in use
-* [Nominatim](http://wiki.openstreetmap.org/wiki/Nominatim) - Open Street Map background
+* [Tiny Geocoder](http://tinygeocoder.com/)
+* [Nominatim](http://wiki.openstreetmap.org/wiki/Nominatim) - Open Street Map background - currently in use§§§§	§		
 * [Google](http://maps.google.com/maps/geo?q=62,24) - [terms of service](http://code.google.com/apis/maps/documentation/geocoding/index.html): _the geocoding service may only be used in conjunction with displaying results on a Google map; geocoding results without displaying them on a map is prohibited_
-
+* [GeoPlugin](http://www.geoplugin.com/)
 
 ## jQuery UI
 1.8.1 (stable, for jQuery 1.4+) custom includes:
@@ -60,11 +60,11 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 #### Theme
 * UI lightness
 
-Download from: http://jqueryui.com/download
+Download from: [http://jqueryui.com/download](http://jqueryui.com/download)
 
 
 ## Contact
-help@liftershalte.info
-IRC: #hitchhiking @ freenode.net
+* help@liftershalte.info
+* IRC: #hitchhiking @ freenode.net
 
 [Project @ GitHub](http://github.com/MrTweek/maps.hitchwiki.org/)

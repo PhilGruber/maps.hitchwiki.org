@@ -22,7 +22,6 @@ a img { border: 0; }
 .align_left { float: left; }
 
 
-
 /* 
  * 2) Typography
  */
@@ -212,6 +211,13 @@ html, body {
 			right: 141px;
 			border: 1px solid transparent;
 			border-bottom: 0;
+			
+			-webkit-border-top-left-radius: 5px;
+			-webkit-border-top-right-radius: 5px;
+			-moz-border-radius-topleft: 5px;
+			-moz-border-radius-topright: 5px;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
 		}
 		#Header #Login #loginOpener.open {
 			background-color: #e4b330;
@@ -230,6 +236,13 @@ html, body {
 			z-index: 99998;
 			font-size: 12px;
 			line-height: 15px;
+			
+			-webkit-border-radius: 5px;
+			-webkit-border-top-right-radius: 0;
+			-moz-border-radius: 5px;
+			-moz-border-radius-topright: 0;
+			border-radius: 5px;
+			border-top-right-radius: 0;
 		}
 		#Header #Login #username,
 		#Header #Login #password {
@@ -246,6 +259,11 @@ html, body {
 			border-top: 1px solid #ca940f;
 			padding-top: 5px;
 			clear: both;
+		}
+		#Header #Login .loading {
+			display: none;
+			padding: 30px 0;
+			background: url(../gfx/loading.gif) center center no-repeat;
 		}
 
 #Content {
