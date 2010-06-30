@@ -168,6 +168,10 @@ msgstr ""
 msgid "Hitchability"
 msgstr ""
 
+#: add_place.php
+msgid "Add new place to"
+msgstr ""
+
 
 
 

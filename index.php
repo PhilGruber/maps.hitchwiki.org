@@ -33,8 +33,7 @@ $layers = 'B';
     
     <title>Hitchwiki - <?php echo _("Maps"); ?></title>
     
-        <link rel="stylesheet" type="text/css" href="static/css/main.css?cache=<?= date("jnYHis"); ?>" media="all" />
-        <link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.1.custom.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.2.custom.css" media="all" />
 
         <!-- RPC -->
         <?php $server->javascript("rpc"); ?>
@@ -49,11 +48,6 @@ $layers = 'B';
         <script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript" type="text/javascript"></script>
     
     	<!-- Scripts -->
-        <script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-		<script src="static/js/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>
-		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
-		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
-        <script src="static/js/main.js?cache=<?= date("jnYHis"); ?>" type="text/javascript"></script>
         <script type="text/javascript">
 		//<![CDATA[
         	/*
@@ -73,6 +67,18 @@ $layers = 'B';
 			var layers = '<?php echo $layers; ?>';
 			var zoom = <?php echo $zoom; ?>;
 
+		//]]>
+        </script>
+        <script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="static/js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
+		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
+		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
+        <script src="static/js/main.js?cache=<?= date("jnYHis"); ?>" type="text/javascript"></script>
+        
+        <link rel="stylesheet" type="text/css" href="static/css/main.css?cache=<?= date("jnYHis"); ?>" media="all" />
+        
+        <script type="text/javascript">
+		//<![CDATA[
 			<?php
 			
         	/*
@@ -115,6 +121,8 @@ $layers = 'B';
     	    .icon
     	     { behavior: url(static/js/iepngfix.htc); }
 		</style>
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="bookmark icon" href="favicon.ico" type="image/x-icon" />
 		<![endif]-->
     </head>
     <body class="<?php echo $settings["language"]; ?>">
@@ -129,13 +137,13 @@ $layers = 'B';
 			<div id="Logo">
 				<h1><a href="http://www.hitchwiki.org/"><span>Hitchwiki</span></a></h1>
 				<h2><?php echo _("Maps"); ?></h2>
-				
+
 				<div class="Navigation">
 					<a href="http://hitchwiki.org/en/Main_Page"><?php echo _("Wiki"); ?></a> | <a href="http://blogs.hitchwiki.org/"><?php echo _("Blogs"); ?></a> | <a href="http://hitchwiki.org/planet/"><?php echo _("Planet"); ?></a>
 				</div>
-				
+
 				<h3><?php echo _("Find good places for hitchhiking and add your favorites"); ?></h3>
-				
+
 			<!-- /Logo -->
 			</div>
 
@@ -201,7 +209,7 @@ $layers = 'B';
 							</li>
 						</ul>
 					</li>
-					
+
 					<!-- 2nd block -->
 					<li>
 						<ul id="tools">	
@@ -243,8 +251,8 @@ $layers = 'B';
 					</li>
 				
 				</ul>
-				
-			
+
+
 			<div id="Footer">
 			    <ul>
 			    	<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" title="<?php echo _("Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"); ?>"><img alt="Creative Commons License" src="static/gfx/cc-by-sa.png"/></a></li>
@@ -266,61 +274,7 @@ $layers = 'B';
 	        <div id="map">
 	        	<br /><br />
 	        	<?php echo _("Turn JavaScript on from your browser."); ?>
-	        <?php /*
-	        	
-	        	<!-- popups -->
-	        	<div class="card add_new_place" id="add_new_place">
-	        	<form method="post" action="#" name="add_new_place">
-	        		<h4>Add new place to <a href="#">United Kingdom</a></h4>
-	        		<small>
-	        			<b>Lat:</b> 64.54323, <b>Lon:</b> 23.32453<br />
-	        			<b>Address:</b> Street 35, 33210 City
-	        		</small>
-					<br /><br />
-	        		<label for="description">Description</label><br />
-	        		<textarea id="description" rows="4" name="description">Lorem description ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</textarea>
-
-					<br /><br />
-					<label for="rating">Rating</label>
-					<br />
-					<label for="type">Type</label>
-					
-					<br /><br />
-					
-					<div class="align_right">
-						<button class="button" id="cancel" /><span class="icon cancel">Cancel</span></button>
-						<button class="button" type="submit" id="add"><span class="icon accept">Add place</span></button>
-					</div>
-				</form>
-	        	</div>
-	        	
-	        	<div class="card hh_place bad" id="hh_place_1">
-	        		<h4>Bad hitchhiking place in <a href="#">United Kingdom</a></h4>
-	        		<small>Address Street 35, 33210 City</small>
-					<br /><br />
-	        		Lorem description ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
-
-					<br /><br />
-					Rating: bad (2/5)<br />
-					Elevation: 200m<br />
-					Published by: <a href="#">Joe Doe</a><br />
-					<a href="#">Link to this</a>
-	        	</div>
-	        	
-	        	
-	        	<div class="card hh_place good" id="hh_place_2">
-	        		<h4>Good hitchhiking place in <a href="#">United Kingdom</a></h4>
-	        		<small>Address Street 35, 33210 City</small>
-					<br /><br />
-					Rating: good (4/5)<br />
-					Elevation: 50m<br />
-					<a href="#">Link to this</a>
-	        	</div>
-	        	
-	        	
-	        	<!-- /popups -->
-	        	
-	       */ ?></div>
+			</div>
 	       <!-- /map -->
 
 

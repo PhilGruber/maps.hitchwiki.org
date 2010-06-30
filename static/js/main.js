@@ -37,7 +37,7 @@ $(document).ready(function() {
 	$(".cardlink").each(function(index) {
 		$(this).click(function(e){
 			e.preventDefault();
-			open_card( $(this).attr("id") );
+			open_card( $(this).attr("id"), $(this).text() );
 		});
 	});
 
@@ -118,9 +118,9 @@ $(document).ready(function() {
    		});
         return false; 
     });
-    
+  
     // Initialize page content area
-	$("#pages").html('<div class="page"><a href="#" class="close">x</a><div class="content"> </div></div>');
+	$("#pages").html('<div class="page"><a href="#" class="close ui-button ui-corner-all ui-state-default ui-icon ui-icon-closethick">Close</a><div class="content"> </div></div>');
 	$("#pages .page .close").click(function(e){
 		e.preventDefault();
 		close_page();
@@ -128,16 +128,15 @@ $(document).ready(function() {
 	$("#pages .page .content").hide();
 	$("#pages .page").hide();
 
-    
-    // Initialize card content area
-	$("#cards").html('<div class="card"><a href="#" class="close">x</a><div class="content"> </div></div>');
-	$("#cards .card .close").click(function(e){
-		e.preventDefault();
-		close_card();
-	});
-	$("#cards .card .content").hide();
-	$("#cards .card").hide();
 
+	// Navigation functions
+	$("#add_place").click(function(){
+		init_add_place();
+	});
+	
+	
+	
+	
 });
 
 
@@ -145,14 +144,24 @@ $(document).ready(function() {
 /*
  * Initialize map
  */
-var map = null;
+ 
+        
+        
+var map, vectors, controls;
+var handle_click = false;
+
+            
 function init_map() {
-	
+
 	// Custom images from our own server
 	OpenLayers.ImgPath = "static/gfx/openlayers/";
 	
 	// Create map with controls	
 	map = new OpenLayers.Map('map', {
+		/*
+		projection: new OpenLayers.Projection("EPSG:900913"),
+		displayProjection: new OpenLayers.Projection("EPSG:4326"),
+		*/
 	    controls: [
 	        new OpenLayers.Control.Navigation(),
 	        new OpenLayers.Control.PanZoomBar(),
@@ -170,10 +179,12 @@ function init_map() {
 	    
 	});
 	
-        
+
+	        
         
 	// Map layers	
 	var layer_osm = 		new OpenLayers.Layer.OSM("Open Street Map");
+	
 	/*
 	var layer_ve_road = 	new OpenLayers.Layer.VirtualEarth("Virtual Earth Streets", {type: VEMapStyle.Road});
 	var layer_ve_air =		new OpenLayers.Layer.VirtualEarth("Virtual Earth Aerial", {type: VEMapStyle.Aerial});
@@ -196,6 +207,7 @@ function init_map() {
 					layer_google_sat
 				  ]);
 	*/
+	
 	map.addLayers([layer_osm]);
 	
 	
@@ -207,11 +219,9 @@ function init_map() {
 	// Set map
     map.setCenter(new OpenLayers.LonLat(lat, lon));
     map.zoomTo(zoom);
-    
-    
+  
 	//if (!map.getCenter()) map.zoomToMaxExtent();
-
-    /*
+/*
     var size = new OpenLayers.Size(16,16);
     var offset = new OpenLayers.Pixel(0,0) //-(size.w/2), -size.h);
     var icon = new OpenLayers.Icon('http://maps.hitchwiki.org/img/hitch.png', size, offset);
@@ -221,19 +231,15 @@ function init_map() {
         markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(res[i][0], res[i][1]), icon.clone()));
     }
     var tmp = new OpenLayers.LonLat(49,8.3);
-    alert(tmp.toShortString());
     
     markers.addMarker(new OpenLayers.Marker(tmp,icon.clone()));
     markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(49.1,8.3),icon.clone()));
 
     map.addLayer(markers);
-    
-    */
+*/
+
+	
 }
-
-
-
-
 /* Get User Location by current IP
  * http://there4development.com/2010/03/geolocation-services-with-jquery-and-ipinfodb/
  * Requires:
@@ -326,6 +332,125 @@ fetchlocation = function() {
 }
 
 
+/*
+ * Initialize add new place
+ */
+function init_add_place() {
+	
+	// Start listening single clicks
+	handle_click = true;
+	
+	// Add target to the center of the map
+	
+	// Create base layer for new place
+	var target_style = new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults(
+        {
+        	fillColor: "#f57900", 
+        	fillOpacity: 1, 
+        	stroke: false
+        }, OpenLayers.Feature.Vector.style["default"]));
+        
+    var target = new OpenLayers.Layer.Vector("target", {styleMap: target_style});
+
+	// Create a dot for new place
+	var new_place = new OpenLayers.Feature.Vector(
+			new OpenLayers.Geometry.Point(map.getCenter().lon, map.getCenter().lat),
+			{some:'data'} /*,
+			{externalGraphic: 'static/gfx/map_icons/target.png', graphicHeight: 23, graphicWidth: 23}
+			*/
+			);
+	target.addFeatures(new_place);
+
+	map.addLayer(target);
+
+	// Add dot dragging
+	var drag = new OpenLayers.Control.DragFeature(target, {
+		onComplete: function(feature) { 
+			var lon = feature.geometry.x; 
+            var lat = feature.geometry.y;
+			
+			new_place.move(new OpenLayers.LonLat(lon, lat));
+	    	update_add_place(lon, lat);
+		}
+	});
+	map.addControl(drag);
+	drag.activate();
+
+
+	// Click Handler
+	OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+	       defaultHandlerOptions: {
+	           'single': true,
+	           'double': false,
+	           'pixelTolerance': 0,
+	           'stopSingle': false,
+	           'stopDouble': false
+	       },
+	
+	       initialize: function(options) {
+	           this.handlerOptions = OpenLayers.Util.extend(
+	               {}, this.defaultHandlerOptions
+	           );
+	           OpenLayers.Control.prototype.initialize.apply(
+	               this, arguments
+	           ); 
+	           this.handler = new OpenLayers.Handler.Click(
+	               this, {
+	                   'click': this.trigger
+	               }, this.handlerOptions
+	           );
+	       }, 
+	
+	       trigger: function(e) {
+	       		if(handle_click != false) {
+		           var lonlat = map.getLonLatFromViewPortPx(e.xy);
+	    	       new_place.move(lonlat);
+	    	       update_add_place(lonlat.lon, lonlat.lat);
+				}
+	       }
+	 });
+
+	// Add click-handler to the map
+	var click = new OpenLayers.Control.Click();
+	map.addControl(click);
+	click.activate();
+	
+	// Perform when dialog is opened
+	$("#card_add_place").bind( "dialogopen", function(event, ui) {
+			// Add coordinates and address to the card
+			update_add_place(map.getCenter().lon, map.getCenter().lat);
+	});
+	
+	// Perform when dialog is closed
+	$("#card_add_place").bind( "dialogclose", function(event, ui) {
+
+		// Disable single click-listener from map
+		click.deactivate();
+		map.removeControl(click);
+		
+		// Remove layer
+		target.destroy();
+	});
+}
+
+function update_add_place(lon, lat) {
+
+
+	// Update latitude / longitude
+	$("#card_add_place #lat").text(lat);
+	$("#card_add_place #lon").text(lon);
+
+	// Reverse Geocode latlon -> address
+	// TODO: Change service from google to something else (we just don't have other reverce geocoders implemented yet...)
+	/*
+	$.getJSON('lib/geocoder.php?service=google&q=' + lat + ',' + lon, function(data) {				
+			//alert(data);
+			$("#address_row #address").text(data.address);
+			if($("#address_row").is(":hidden")) { $("#address_row").show("fast"); }
+	});
+	*/
+}
+
 
 
 /* 
@@ -334,7 +459,7 @@ fetchlocation = function() {
 function search(q) {
 	
 	// Close open stuff
-	close_card();
+	close_cards();
 	close_page();
 
 	alert("Search: "+q);
@@ -343,7 +468,7 @@ function search(q) {
 	$.getJSON('lib/geocoder.php?q=' + q, function(data) {
 		
 			alert("Lat: "+data.lat.toString()+", Lon: "+data.lon);
-			map.moveTo(new OpenLayers.LonLat(data.lon.toString(), data.lat.toString()), 8);
+			map.moveTo(new OpenLayers.LonLat(data.lon, data.lat), 8);
 	});
 	
     return false;
@@ -356,7 +481,7 @@ function search(q) {
 function open_page(name) {
 
 	// Close cards if open
-	if($("#cards .card").is(':visible')) { close_card(); }
+	if($("#cards .card").is(':visible')) { close_cards(); }
 	
 	$.ajax({
 		url: "lib/views.php?type=page&lang="+locale+"&page=" + name,
@@ -388,7 +513,7 @@ function close_page() {
 /* 
  * Open card
  */
-function open_card(name) { //, x_coord, y_coord, width
+function open_card(name, title) { //, x_coord, y_coord, width
 	
 	/*
 	if(x_coord = undefined) { var x_coord = '300'; } 
@@ -398,31 +523,61 @@ function open_card(name) { //, x_coord, y_coord, width
 
 	// Close pages if open
 	if($("#pages .page").is(':visible')) { close_page(); }
+
+	// Allow only one card per type
+	if($("#card_"+name).size()) {
+		$("#card_"+name).dialog("close");
+	}
 	
+	//$(".card").dialog("destroy");
+
 	$.ajax({
-		url: "lib/views.php?type=card&lang="+locale+"&page=" + name,
-		async: false,
-		success: function(content){
-			// If pages not opened yet
-			if($("#cards .card").is(':hidden')) {
-				$("#cards .card .content").html(content).show();
-				$("#cards .card").slideDown('fast');
-			} else {
-				$("#cards .card .content").html(content);
-			}
-			//$("#cards").attr('css','top:'+x_coord+'px; left:'+y_coord+'+px; width:'+width+'px;')
-			$("#cards .card").draggable();
+	    url: "lib/views.php?type=card&lang="+locale+"&page=" + name,
+	    async: false,
+	    success: function(content){
+	    	
+	    	$("#cards").html('<div class="card" id="card_'+name+'" title="'+title+'">'+content+'</div>');
+	    	$("#cards .card").dialog({
+						position: [280,100],
+						height: 400,
+						width: 390,
+	    				maxHeight: 600,
+	    				maxWidth: 650,
+	    				show: 'slide',
+	    				/*
+	    				buttons: {
+							Cancel: function() {
+								$(this).dialog('close');
+							}
+						}
+						*/
+	    			});
+	    	
+	    	// If pages not opened yet
+	    	/*
+	    	if($("#cards .card").is(':hidden')) {
+	    		$("#cards .card .content").html(content).show();
+	    		$("#cards .card").slideDown('fast');
+	    	} else {
+	    		$("#cards .card .content").html(content);
+	    	}
+	    	//$("#cards").attr('css','top:'+x_coord+'px; left:'+y_coord+'+px; width:'+width+'px;')
+	    	$("#cards .card").draggable({ cursor: 'move', handle: '.dragArea', containment: 'parent' });
+	    	$("#cards .card").resizable({
+				containment: 'parent'
+			});
+			*/
       	}
 	});
+	
 }
 
 
 /* 
- * Close card
+ * Close all cards
+ * TODO: Not quite working yet... :-)
+ * Maybe some foreach loop inside #cards ?
  */
-function close_card() {
-	if($("#cards .card").is(':visible')) {
-			$("#cards .card .content").hide('fast').text('');
-			$("#cards .card").slideUp('fast');
-	}
+function close_cards() {
+	$(".card").dialog("close");
 }
