@@ -82,11 +82,11 @@ $layers = 'B';
 			<?php
 			
         	/*
-        	 * Open JS-pages requested by GET page
+        	 * Open JS-pages requested by GET 'page'
         	 */
         	 
         	// Allowed page names
-			$pages = array("help","statistics", "translate");
+			$pages = array("help", "statistics", "translate");
 			
 			// Open page
 			if(isset($_GET["page"]) && in_array($_GET["page"], $pages)) {
@@ -145,6 +145,22 @@ $layers = 'B';
 				<h3><?php echo _("Find good places for hitchhiking and add your favorites"); ?></h3>
 
 			<!-- /Logo -->
+			</div>
+			
+
+			<div id="map_selector">
+				<button id="selected_map"><?php echo _("Map"); ?>: Open Street Map</button>
+
+				<div id="maplist" class="ui-corner-bottom ui-corner-tr">
+				<ul>
+				    <li><input type="radio" id="map_osm" name="maplist" class="ui-corner-top" checked="checked" /><label for="map_osm">Open Street map</label></li>
+				    <li><input type="radio" id="map_goostr" name="maplist" /><label for="map_goostr">Google Maps - Street</label></li>
+				    <li><input type="radio" id="map_goosat" name="maplist" /><label for="map_goosat">Google Maps - Satellite</label></li>
+				    <li><input type="radio" id="map_goosatl" name="maplist" /><label for="map_goosatl">Google Maps - Satellite with labels</label></li>
+				    <li><input type="radio" id="map_yahoo" name="maplist" class="ui-corner-top" /><label for="map_yahoo">Yahoo Maps</label></li>
+				    <li><input type="radio" id="map_bing" name="maplist" class="ui-corner-bottom" /><label for="map_bing">Bing Maps</label></li>
+				</ul>
+				</div>
 			</div>
 
 			<div id="Login">

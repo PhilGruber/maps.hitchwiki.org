@@ -32,4 +32,18 @@ $settings["valid_languages"] = 			array(
  */
 require_once "lib/language.php";
 
+/*
+ * MySQL settings
+ * Comes with:
+ 
+	$mysql_conf = array(
+		"user"		=> 		'', 
+		"password"	=> 		'',
+		"host"		=> 		'',
+		"database"	=> 		''
+	);
+
+ */
+require_once "hitchwiki_maps_mysql_settings.php";
+
 ?>

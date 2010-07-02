@@ -135,7 +135,50 @@ $(document).ready(function() {
 	});
 	
 	
+	// Map selector
+	$("#map_selector").show();
+	$(function() {
+		$("#selected_map")
+			.button({
+        	    icons: {
+        	        primary: 'ui-icon-image',
+        	        secondary: 'ui-icon-triangle-1-s'
+        	    },
+        	    text: true
+        	})
+				.click( function() {
+					$("#maplist").slideToggle('fast');
+				});
+	});
 	
+	
+	$("#maplist li input").button()
+		.click( function() {
+			var mapname = $(this).next("label").text();
+			$("#selected_map .ui-button-text").text( 'Map: '+mapname );
+		    $("#maplist").slideToggle('fast');
+		    // todo: Change layer from the map
+		});
+	/*
+	// custom icons:
+	$("#maplist #map_osm").button({
+			text: true,
+			icons: {primary: 'icon-osm'}
+	});
+	$("#maplist #map_goostr", "#maplist #map_goosat", "#maplist #map_goosatl").button({
+			text: true,
+			icons: {primary: 'icon-google'}
+	});
+	$("#maplist #map_yahoo").button({
+			text: true,
+			icons: {primary: 'icon-yahoo'}
+	});
+	$("#maplist #map_bing").button({
+			text: true,
+			icons: {primary: 'icon-bing'}
+	});
+	*/
+	$("#maplist").hide();
 	
 });
 
@@ -433,22 +476,18 @@ function init_add_place() {
 	});
 }
 
-function update_add_place(lon, lat) {
+function update_add_place(q_lon, q_lat) {
 
-
-	// Update latitude / longitude
-	$("#card_add_place #lat").text(lat);
-	$("#card_add_place #lon").text(lon);
+	// Convert coordinates to the "Google projection"
+	var g_lonLat = new OpenLayers.LonLat(q_lon, q_lat).transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
 
 	// Reverse Geocode latlon -> address
 	// TODO: Change service from google to something else (we just don't have other reverce geocoders implemented yet...)
-	/*
-	$.getJSON('lib/geocoder.php?service=google&q=' + lat + ',' + lon, function(data) {				
-			//alert(data);
+	$.getJSON('lib/geocoder.php?service=google&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {				
 			$("#address_row #address").text(data.address);
-			if($("#address_row").is(":hidden")) { $("#address_row").show("fast"); }
+			if($("#address_row").is(":hidden")) { $("#address_row").show(); }
 	});
-	*/
+	
 }
 
 
@@ -467,8 +506,14 @@ function search(q) {
 	// Geocode
 	$.getJSON('lib/geocoder.php?q=' + q, function(data) {
 		
+			// TODO: Get bounds, not only center
+			
 			alert("Lat: "+data.lat.toString()+", Lon: "+data.lon);
-			map.moveTo(new OpenLayers.LonLat(data.lon, data.lat), 8);
+			
+			// Transform coordinates from "Google Projection" to openlayers
+			var o_lonLat = new OpenLayers.LonLat(data.lon, data.lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+			
+			map.moveTo(new OpenLayers.LonLat(o_lonLat.lon, o_lonLat.lat), 11);
 	});
 	
     return false;

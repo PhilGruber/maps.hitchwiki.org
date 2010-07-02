@@ -58,6 +58,7 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 * Autocomplete
 * Button
 * Dialog
+* Tabs
 
 #### Theme
 * UI lightness
