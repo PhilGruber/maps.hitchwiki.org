@@ -66,6 +66,11 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 Download from: [http://jqueryui.com/download](http://jqueryui.com/download)
 
 
+
+## Ideas
+
+* Using a Google Street view API (check lisence)
+
 ## Contact
 * help@liftershalte.info
 * IRC: #hitchhiking @ freenode.net
