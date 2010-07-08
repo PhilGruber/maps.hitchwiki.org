@@ -114,11 +114,12 @@ function list_countries($type="array", $order="markers", $limit=false, $count=tr
 
 /* 
  * List available cities with markers
- * Type: option | tr | li (default)
- * Order: markers (default) | name (TODO!)
- * Limit: int | false (default)
+ * type: option | tr | li (default)
+ * order: markers (default) | name (TODO!)
+ * limit: int | false (default)
+ * count: true (default) | false 
  */
-function list_cities($type="li", $order="markers", $limit=false) {
+function list_cities($type="li", $order="markers", $limit=false, $count=true) {
 	start_sql();
 	
 	$codes = countrycodes();
@@ -144,13 +145,19 @@ function list_cities($type="li", $order="markers", $limit=false) {
 	
 	
 		if($type=="option") {
-			echo '<option value="'.$r[1].'" class="'.strtolower($r[0]).'">'.$r[1].', '.$countryname.' ('.$r[2].')</option>';
+			echo '<option value="'.$r[1].'" class="'.strtolower($r[0]).'">'.$r[1].', '.$countryname;
+			if($count==true) echo ' ('.$r[2].')';
+			echo '</option>';
 		}
 		elseif($type=="li") {
-			echo '<li><img class="flag" alt="'.strtolower($r[0]).'" src="static/gfx/flags/png/'.strtolower($r[0]).'.png" /> '.$r[1].', '.$countryname.' <small class="grey">('.$r[2].')</small></li>';
+			echo '<li><img class="flag" alt="'.strtolower($r[0]).'" src="static/gfx/flags/png/'.strtolower($r[0]).'.png" /> '.$r[1].', '.$countryname;
+			if($count==true) echo ' <small class="grey">('.$r[2].')</small>';
+			echo '</li>';
 		}
 		elseif($type=="tr") {
-			echo '<tr><td>'.$r[1].'</td><td><img class="flag" alt="'.strtolower($r[0]).'" src="static/gfx/flags/png/'.strtolower($r[0]).'.png" /> '.$countryname.'</td><td>'.$r[2].'</td></tr>';
+			echo '<tr><td>'.$r[1].'</td><td><img class="flag" alt="'.strtolower($r[0]).'" src="static/gfx/flags/png/'.strtolower($r[0]).'.png" /> '.$countryname.'</td>';
+			if($count==true) echo '<td>'.$r[2].'</td>';
+			echo '</tr>';
 		}
 		else {
 			print_r($r);
@@ -169,7 +176,7 @@ function list_cities($type="li", $order="markers", $limit=false) {
 function total_places() {
 
 	start_sql();
-	$result = mysql_query("SELECT COUNT(id) FROM t_points;");
+	$result = mysql_query("SELECT COUNT(id) FROM t_points WHERE fk_type=2;");
 	if (!$result) {
 	   die("query failed: " . mysql_error());
 	}
