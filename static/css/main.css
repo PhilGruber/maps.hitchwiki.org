@@ -55,6 +55,39 @@ label {
 }
 
 
+ul.clean {
+	padding: 10px 0;
+	margin: 0;
+	list-style: none;
+}
+
+ul.clean li {
+	padding: 5px 0;
+	margin: 0;
+	border-bottom: 1px solid #ccc;
+}
+
+table.infotable {
+	border: 1px solid #cdb46f;
+	border-bottom: 0;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+	table.infotable th,
+	table.infotable td {
+		border-bottom: 1px solid #cdb46f;
+		padding: 5px;
+	}
+	table.infotable th {
+		background-color: #eddeb6;
+		text-align: left;
+	}
+
+.grey {
+	color: #555;	
+}
+
 
 /*
  * 3) Buttons
@@ -110,6 +143,8 @@ input, textarea {
 			width: 100%;
 			text-align: left;
 		}
+
+
 /*
  * 4) Icons
  */ 
@@ -363,11 +398,14 @@ ul#Navigation {
 	}
 	
 	ul#Navigation #search #q {
+		display: block;
+		float: left;
 		width: 100px;
 		line-height: 13px;
 		font-size: 13px;
 		margin: 0;
-		padding-top: 2px;
+		height: 14px;
+		padding: 2px 4px;
 		border-right: 0;
 		-webkit-border-top-right-radius: 0;
 		-webkit-border-bottom-right-radius: 0;
@@ -377,9 +415,12 @@ ul#Navigation {
 		border-bottom-right-radius: 0;
 	}
 	ul#Navigation #search #submit {
+		display: block;
+		float: left;
 		border-left: 0;
 		margin: 0;
-		padding: 3px 0 3px 7px;
+		height: 20px;
+		padding: 2px 0 2px 7px;
 		font-size: 13px;
 		line-height: 13px;
 		-webkit-border-top-left-radius: 0;
@@ -433,10 +474,10 @@ ul#Navigation {
 		color: #986d27;
 	}
 
+
 /*
  * 6) Map
  */ 
- 
 
 #map {
 	border-left: 1px solid #c0b78b;
@@ -474,6 +515,7 @@ ul#Navigation {
 	font-size: smaller;
 } 
 */
+
 
 /*
  * 7) Cards and Pages

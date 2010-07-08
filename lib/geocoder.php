@@ -6,7 +6,10 @@
  * Example:
  * geocoder.php?q=Finland or geocoder.php?q=Tampere,+Finland&service=nominatim
  */
- 
+
+require_once("../config.php");
+
+
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 #header("Content-type: application/json");
@@ -45,22 +48,6 @@ else {
 	exit;
 }
 
-/* 
- * cURL
- * Requires http://curl.haxx.se/
- */
-function readURL($url) {
-	global $_GET;
-
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_HEADER, 0);
-	$data = curl_exec($ch);
-	curl_close($ch);
-	
-	return $data;
-}
 
 
 /* 
@@ -148,14 +135,14 @@ function google($q) {
 	$raw = json_decode($return);
 	
 	$latlon = explode(",",$raw->name);
-	
-	$data = '{';
-	$data .= 	'"lat":"'.$latlon[0].'","lon": "'.$latlon[1].'",';
-	$data .= 	'"address":"'.$raw->Placemark[0]->address.'",';
-	$data .= 	'"country_name":"'.$raw->Placemark[0]->AddressDetails->Country->CountryName.'",';
-	$data .= 	'"country_code":"'.$raw->Placemark[0]->AddressDetails->Country->CountryNameCode.'"';
-	$data .= '}';
 
+$data = '{
+  "lat": "'.$latlon[0].'",
+  "lon": "'.$latlon[1].'",
+  "address": "'.$raw->Placemark[0]->address.'",
+  "country_name": "'.$raw->Placemark[0]->AddressDetails->Country->CountryName.'",
+  "country_code": "'.$raw->Placemark[0]->AddressDetails->Country->CountryNameCode.'"
+}';
 	return $data;
 }
 

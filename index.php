@@ -10,10 +10,6 @@
  */
 require_once "config.php";
 
-/*
- * Load RPC
- */
-require_once "lib/rpc.php";
 
 
 /*
@@ -86,13 +82,13 @@ $layers = 'B';
         	 */
         	 
         	// Allowed page names
-			$pages = array("help", "statistics", "translate");
+			$pages = array("help", "statistics", "complete_statistics", "translate");
 			
 			// Open page
 			if(isset($_GET["page"]) && in_array($_GET["page"], $pages)) {
 			?>
 			$(document).ready(function() {
-				page("<?php echo htmlspecialchars($_GET["page"]); ?>");
+				open_page("<?php echo htmlspecialchars($_GET["page"]); ?>");
 			});
 			<?php
 			}
@@ -154,9 +150,9 @@ $layers = 'B';
 				<div id="maplist" class="ui-corner-bottom ui-corner-tr">
 				<ul>
 				    <li><input type="radio" id="map_osm" name="maplist" class="ui-corner-top" checked="checked" /><label for="map_osm">Open Street map</label></li>
-				    <li><input type="radio" id="map_goostr" name="maplist" /><label for="map_goostr">Google Maps - Street</label></li>
-				    <li><input type="radio" id="map_goosat" name="maplist" /><label for="map_goosat">Google Maps - Satellite</label></li>
-				    <li><input type="radio" id="map_goosatl" name="maplist" /><label for="map_goosatl">Google Maps - Satellite with labels</label></li>
+				    <li><input type="radio" id="map_goostr" name="maplist" /><label for="map_goostr">Google Maps - <?php echo _("Street"); ?></label></li>
+				    <li><input type="radio" id="map_goosat" name="maplist" /><label for="map_goosat">Google Maps - <?php echo _("Satellite"); ?></label></li>
+				    <li><input type="radio" id="map_goosatl" name="maplist" /><label for="map_goosatl">Google Maps - <?php echo _("Satellite with labels"); ?></label></li>
 				    <li><input type="radio" id="map_yahoo" name="maplist" class="ui-corner-top" /><label for="map_yahoo">Yahoo Maps</label></li>
 				    <li><input type="radio" id="map_bing" name="maplist" class="ui-corner-bottom" /><label for="map_bing">Bing Maps</label></li>
 				</ul>
@@ -204,12 +200,17 @@ $layers = 'B';
 							<li id="search">
 								<form method="get" action="#" id="search_form" name="search">
 									<div class="ui-widget">
+									<input type="text" value="" id="q" name="q" />
+									<button type="submit" id="submit" class="button"> <span class="icon magnifier">&nbsp;</span><span class="hidden"><?php echo _("Search"); ?></span></button>
+									<?php /*
 									<table cellpadding="0" cellspacing="0" border="0">
 										<tr valign="middle">
 											<td><input type="text" value="" id="q" name="q" /></td>
 											<td><button type="submit" id="submit" class="button"><span class="icon magnifier">&nbsp;</span><span class="hidden"><?php echo _("Search"); ?></span></button></td>
 										</tr>
 									</table>
+									*/?>
+									<div class="clear"></div>
 									</div>
 								</form>
 								
@@ -228,14 +229,13 @@ $layers = 'B';
 
 					<!-- 2nd block -->
 					<li>
-						<ul id="tools">	
-							<li><h3>Tools</h3></li>
-							<li><a href="#" id="add_place" class="icon add cardlink"><?php echo _("Add place"); ?></a></li>
+						<ul id="tools">
 							<li><a href="#" id="link_here" class="icon link cardlink"><?php echo _("Link here"); ?></a></li>
+							<li><a href="#" id="add_place" class="icon add cardlink"><?php echo _("Add place"); ?></a></li>
 							<li><a href="#" id="new_collection" class="icon table_add pagelink"><?php echo _("New collection"); ?></a></li>
-							<li><a href="#" id="all_points" class="icon table pagelink"><?php echo _("All points"); ?></a></li>
+							<li><a href="#" id="countries" class="icon world pagelink"><?php echo _("Countries"); ?></a></li>
 							<li><a href="#" id="my_points" class="icon table pagelink"><?php echo _("My points"); ?></a></li>
-							<li><a href="#" id="download_kml" class="icon tag cardlink"><?php echo _("Download KML"); ?></a></li>
+							<li><a href="#" id="download" class="icon tag cardlink"><?php echo _("Download KML"); ?></a></li>
 							<li><a href="./?page=help" id="help" class="icon help pagelink"><?php echo _("Help"); ?></a></li>
 							<li><a href="./?page=statistics" id="statistics" class="icon chart_bar pagelink"><?php echo _("Statistics"); ?></a></li>
 						</ul>

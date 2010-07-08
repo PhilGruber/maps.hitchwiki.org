@@ -23,15 +23,6 @@ $settings["valid_languages"] = 			array(
 											"ru_RU" => "По-Pусский"
 										);
 
-
-/**** DO NOT EDIT FROM HERE ****/
-
-/*
- * Select language
- * Sets $settings["language"]
- */
-require_once "lib/language.php";
-
 /*
  * MySQL settings
  */
@@ -41,5 +32,27 @@ $mysql_conf = array(
     "host"		=> 		'',
     "database"	=> 		''
 );
+
+
+/**** DO NOT EDIT FROM HERE ****/
+
+
+/*
+ * Select language
+ * Sets $settings["language"]
+ */
+require_once "lib/language.php";
+
+
+/*
+ * Load common functions
+ */
+require_once "lib/functions.php";
+
+
+/*
+ * Load RPC
+ */
+require_once "lib/rpc.php";
 
 ?>
