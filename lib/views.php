@@ -10,6 +10,12 @@
 require_once "../config.php";
 
 
+/*
+ * Returns an info-array about logged in user (or false if not logged in) 
+ */
+$user = current_user();
+
+
 if($_GET["type"] == "card") $type = "cards";
 elseif($_GET["type"] == "page") $type = "pages";
 else  die(_("Fatal error!"));
@@ -30,7 +36,7 @@ if( isset($_GET["page"]) && !empty($_GET["page"]) && !ereg('[^0-9A-Za-z_-]', $_G
 else:
 
 	echo '<h2>'._('Error 404 - page not found').'</h2>';
-	echo '<p>:-(</p>';
+	echo '<br /><br />:-(';
 	
 	// For debugging:
 	if($settings["debug"]==true) echo '<p>Page: '.htmlspecialchars($_GET["page"]).' | Type: '.$type.' | Lang: '.$settings["language"].'</p>';

@@ -17,6 +17,7 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 * [Snoopy](http://sourceforge.net/projects/snoopy/)
 * [cURL](http://curl.haxx.se/)
 * [Gettext](http://www.gnu.org/software/gettext/)
+* [Markdown](http://michelf.com/projects/php-markdown/)
 
 ### Client side:
 * [Open Layers](http://openlayers.org/)
@@ -58,6 +59,7 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 * Autocomplete
 * Button
 * Dialog
+* Slider
 * Tabs
 
 #### Theme
@@ -66,10 +68,11 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 Download from: [http://jqueryui.com/download](http://jqueryui.com/download)
 
 
-
 ## Ideas
-
 * Using a Google Street view API (check lisence)
+* Using [Panoramio](http://www.panoramio.com/) images
+* Using photos added to Hitchwiki
+
 
 ## Contact
 * help@liftershalte.info

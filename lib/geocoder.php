@@ -21,7 +21,11 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 if(isset($_GET["q"]) && !empty($_GET["q"])) {
 
 	// Get query
-	$q = urlencode(strip_tags($_GET["q"]));
+	$q = strip_tags($_GET["q"]);
+
+	/*if(is_unicode($q)) $q = urlencode($q);
+	else*/ $q = urlencode(utf8_encode($q));
+	
 
 	// Let's roll...
 	switch (strtolower($_GET["service"])) {

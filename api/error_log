@@ -1,0 +1,218 @@
+[23-Jul-2010 03:38:27] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:38:28] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:38:31] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:42:32] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:43:51] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:43:51] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:43:53] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:44:45] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:44:45] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:44:48] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:45:21] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:45:21] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:45:35] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:46:27] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:48:44] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:48:50] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 33
+[23-Jul-2010 03:50:36] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 34
+[23-Jul-2010 04:00:29] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 34
+[23-Jul-2010 04:01:16] PHP Fatal error:  Can't use function return value in write context in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 34
+[23-Jul-2010 04:23:17] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:19] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:23] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:28] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:29] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:30] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:33] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:34] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:36] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:41] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:23:43] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:24:42] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:24:43] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:24:46] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:24:47] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:25:45] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:25:48] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:25:50] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:25:51] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:25:52] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:25:54] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:25:58] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:25:58] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:01] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:03] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:04] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:05] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:09] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:10] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:11] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:13] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:16] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:18] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:20] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:22] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:27] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:28] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:30] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:31] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:32] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:33] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:35] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:26:36] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:27:10] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:27:12] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:27:13] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:27:15] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:14] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:15] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:17] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:18] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:20] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:21] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:22] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:23] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:24] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:25] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:26] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:29:30] PHP Fatal error:  Class 'maps_api' not found in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 13
+[23-Jul-2010 04:30:20] PHP Warning:  require_once(api.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/sg076/public_html/maps.hitchwiki.org/config.php on line 62
+[23-Jul-2010 04:30:20] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'api.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/sg076/public_html/maps.hitchwiki.org/config.php on line 62
+[23-Jul-2010 04:30:21] PHP Warning:  require_once(api.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/sg076/public_html/maps.hitchwiki.org/config.php on line 62
+[23-Jul-2010 04:30:21] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'api.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/sg076/public_html/maps.hitchwiki.org/config.php on line 62
+[25-Jul-2010 23:33:45] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:33:49] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:33:49] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:08] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:09] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:10] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:10] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:11] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:19] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:20] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:21] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:22] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:22] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:23] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:31] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:32] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:33] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:34] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:34:36] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:35:40] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 120
+[25-Jul-2010 23:35:49] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:35:50] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:35:51] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:35:52] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:35:54] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:35:55] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:35:56] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:00] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:00] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:02] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:02] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:03] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:03] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:04] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:06] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:07] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:07] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:08] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:11] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:36:11] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 90
+[25-Jul-2010 23:43:33] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:43:36] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:43:40] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:43:44] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:44:16] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:44:21] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:44:25] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:44:27] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:44:30] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:44:32] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:44:34] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:45:45] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:46:05] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:47:42] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 91
+[25-Jul-2010 23:48:57] PHP Fatal error:  Call to undefined method maps_api::getMarkersByBound() in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 38
+[25-Jul-2010 23:49:19] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:41] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:45] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:47] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:48] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:48] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:50] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:53] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:57] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:58] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:49:59] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:50:01] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:50:04] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:50:07] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 84
+[25-Jul-2010 23:51:01] PHP Warning:  mysql_fetch_row(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 57
+[26-Jul-2010 01:24:08] PHP Parse error:  syntax error, unexpected '<' in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 42
+[28-Jul-2010 02:41:54] PHP Warning:  Invalid argument supplied for foreach() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 334
+[28-Jul-2010 15:31:29] PHP Parse error:  syntax error, unexpected '*' in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 60
+[28-Jul-2010 15:31:30] PHP Parse error:  syntax error, unexpected '*' in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 60
+[28-Jul-2010 22:50:22] PHP Fatal error:  Call to undefined function  get_place() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 89
+[28-Jul-2010 22:50:38] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 98
+[28-Jul-2010 22:55:38] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 196
+[30-Jul-2010 04:12:34] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 322
+[30-Jul-2010 04:14:29] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 324
+[30-Jul-2010 04:14:32] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 324
+[30-Jul-2010 04:14:44] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 324
+[30-Jul-2010 04:14:49] PHP Warning:  Unterminated comment starting line 2 in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 2
+[30-Jul-2010 04:14:49] PHP Fatal error:  fatal flex scanner internal error--end of buffer missed in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 2
+[30-Jul-2010 04:14:52] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 324
+[30-Jul-2010 04:14:57] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 324
+[30-Jul-2010 04:14:59] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 324
+[30-Jul-2010 04:16:54] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 329
+[30-Jul-2010 04:17:33] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 329
+[30-Jul-2010 04:17:35] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 329
+[30-Jul-2010 04:17:46] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 296
+[30-Jul-2010 07:51:47] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 07:52:47] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 07:52:52] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 07:55:22] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/api/index.php on line 21
+[30-Jul-2010 07:55:38] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 07:56:05] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 07:58:38] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 177
+[30-Jul-2010 08:07:33] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 08:08:20] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 08:09:34] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 08:12:50] PHP Fatal error:  Call to undefined function  available_nick() in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 317
+[30-Jul-2010 08:18:42] PHP Parse error:  syntax error, unexpected T_ELSE in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 740
+[30-Jul-2010 08:18:48] PHP Parse error:  syntax error, unexpected T_ELSE in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 740
+[30-Jul-2010 08:19:07] PHP Warning:  Unterminated comment starting line 189 in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 189
+[30-Jul-2010 08:19:07] PHP Fatal error:  fatal flex scanner internal error--end of buffer missed in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 189
+[30-Jul-2010 08:22:24] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 327
+[30-Jul-2010 20:20:37] PHP Parse error:  syntax error, unexpected ';' in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 758
+[30-Jul-2010 20:20:38] PHP Parse error:  syntax error, unexpected ';' in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 758
+[31-Jul-2010 00:33:08] PHP Warning:  mysql_num_rows(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 305
+[31-Jul-2010 19:06:17] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 110
+[31-Jul-2010 19:06:54] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 110
+[31-Jul-2010 19:06:55] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 110
+[31-Jul-2010 19:07:19] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 110
+[31-Jul-2010 19:07:46] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 110
+[31-Jul-2010 19:07:47] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 110
+[31-Jul-2010 19:08:18] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 110
+[31-Jul-2010 19:08:31] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 285
+[31-Jul-2010 19:08:33] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 110
+[31-Jul-2010 19:08:46] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 112
+[31-Jul-2010 19:09:16] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 112
+[31-Jul-2010 19:09:26] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 112
+[31-Jul-2010 19:09:34] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 112
+[31-Jul-2010 19:09:44] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 112
+[31-Jul-2010 19:10:04] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 112
+[31-Jul-2010 19:10:13] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 112
+[31-Jul-2010 19:14:42] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 115
+[31-Jul-2010 19:18:26] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 680
+[31-Jul-2010 19:28:40] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 100
+[01-Aug-2010 01:22:23] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 194
+[01-Aug-2010 01:25:51] PHP Parse error:  syntax error, unexpected $end, expecting ']' in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 680
+[01-Aug-2010 01:30:46] PHP Parse error:  syntax error, unexpected $end, expecting T_STRING in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 190
+[01-Aug-2010 19:41:49] PHP Warning:  mysql_num_rows(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 411
+[01-Aug-2010 19:42:44] PHP Warning:  mysql_num_rows(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 413
+[01-Aug-2010 19:43:00] PHP Warning:  mysql_num_rows(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/api.php on line 413
+[02-Aug-2010 18:34:23] PHP Parse error:  syntax error, unexpected $end in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 401
+[02-Aug-2010 18:35:18] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/sg076/public_html/maps.hitchwiki.org/lib/functions.php on line 776
