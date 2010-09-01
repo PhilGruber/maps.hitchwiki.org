@@ -24,8 +24,6 @@ if($settings["maintenance_api"]===true && !in_array($_SERVER['REMOTE_ADDR'], $se
 }
 
 
-
-
 $api = new maps_api("json");
 
 
@@ -97,10 +95,10 @@ if(isset($_GET["bounds"]) && !empty($_GET["bounds"])) {
 /*
  * Get markers from a city
  */
-if(isset($_GET["city"]) && !empty($_GET["city"])) {
+if(isset($_GET["locality"]) && !empty($_GET["locality"])) {
 
-	// Get by city eg. "Helsinki" (no need to add country to it)
-	echo $api->getMarkersByCity($_GET["city"]);
+	// Get by city/town eg. "Helsinki" (no need to add country to it)
+	echo $api->getMarkersByLocality($_GET["locality"]);
 
 }
 
@@ -170,8 +168,20 @@ if(isset($_GET["countries"])) {
 	
 	
 	// List stuff out
-	if(isset($_GET["all"])) echo $api->getCountries(true, $coordinates); // List all countries
+	if($_GET["countries"]=="all") echo $api->getCountries(true, $coordinates); // List all countries
 	else echo $api->getCountries(false, $coordinates); // List only countries with places
+
+}
+
+
+
+/*
+ * Get a list of countries
+ */
+if(isset($_GET["country_info"])) {
+
+	if(isset($_GET["lang"])) echo $api->getCountry($_GET["country_info"], $_GET["lang"]);
+	else echo $api->getCountry($_GET["country_info"]);
 
 }
 
@@ -221,6 +231,29 @@ if(isset($_GET["remove_comment"])) {
 
 }
 
+
+/*
+ * Add place
+ */
+if(isset($_GET["add_place"])) {
+
+	if(!empty($_POST)) echo $api->addPlace($_POST);
+	else echo $api->API_error("Send place by POST-method.");
+
+}
+
+
+/*
+ * Give a waitingtime for a place
+ */
+if(isset($_GET["add_waitingtime"]) && isset($_GET["place_id"])) {
+
+	if(isset($_GET["user_id"])) echo $api->add_waitingtime($_GET["add_waitingtime"], $_GET["place_id"], $_GET["user_id"]);
+	else echo $api->addWaitingtime($_GET["add_waitingtime"], $_GET["place_id"]);
+
+}
+
+
 /*
  * Rate place
  */
@@ -228,6 +261,28 @@ if(isset($_GET["rate"]) && isset($_GET["place_id"])) {
 
 	if(isset($_GET["user_id"])) echo $api->rate($_GET["rate"], $_GET["place_id"], $_GET["user_id"]);
 	else echo $api->rate($_GET["rate"], $_GET["place_id"]);
+
+}
+
+
+
+/*
+ * Get waitingtime for a place
+ */
+if(isset($_GET["waitingtime"])) {
+
+	echo $api->waitingtime($_GET["waitingtime"]);
+
+}
+
+
+
+/*
+ * Delete user profile
+ */
+if(isset($_GET["delete_profile"])) {
+
+	echo $api->deleteProfile($_GET["delete_profile"]);
 
 }
 
@@ -244,5 +299,6 @@ if(isset($_GET["languages"])) {
 
 // Return "pong"
 if(empty($_GET) && empty($_POST)) header("Location: ../?page=api");
+
 
 ?>

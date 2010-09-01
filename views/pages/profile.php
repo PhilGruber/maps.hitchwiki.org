@@ -8,16 +8,16 @@ $profile = $user;
 
 if(!empty($profile)): ?>
 
-<?php if($user["id"] == $profile["id"]): ?><small><em>This is your profile as others see it.</em></small><?php endif; ?>
+<?php if($user["id"] == $profile["id"]): ?><small><em><?php echo _("This is your profile as others see it."); ?></em></small><?php endif; ?>
 <h2 title="<?php echo $profile["id"]; ?>"><?php echo $profile["name"]; ?></h2>
 
-<table class="infotable" cellspacing="0" cellpadding="0">
+<table class="infotable" cellspacing="0" cellpadding="0" style="float: left; margin-right: 20px;">
     <tbody>
     	
     	
     	<?php if(!empty($profile["registered"])): ?>
     	<tr>
-    		<th><?php echo _("Registered"); ?></th>
+    		<td><b><?php echo _("Member since"); ?></b></td>
     		<td><?php echo date("j.n.Y", strtotime($profile["registered"])); ?></td>
     	</tr>
     	<?php endif; ?>
@@ -25,7 +25,7 @@ if(!empty($profile)): ?>
     	
     	<?php if(!empty($profile["location"])): ?>
     	<tr>
-    		<th><?php echo _("Location"); ?></th>
+    		<td><b><?php echo _("Location"); ?></b></td>
     		<td><?php echo $profile["location"]; ?></td>
     	</tr>
     	<?php endif; ?>
@@ -33,7 +33,7 @@ if(!empty($profile)): ?>
     	
     	<?php if(!empty($profile["country"])): ?>
     	<tr>
-    		<th><?php echo _("Country"); ?></th>
+    		<td><b><?php echo _("Current country"); ?></b></td>
     		<td><?php echo ISO_to_country($profile["country"]); ?> <img class="flag" alt="" src="static/gfx/flags/png/<?php echo strtolower($profile["country"]); ?>.png" /></td>
     	</tr>
     	<?php endif; ?>
@@ -41,7 +41,7 @@ if(!empty($profile)): ?>
     	
     	<?php if(!empty($profile["language"])): ?>
     	<tr>
-    		<th><?php echo _("Language"); ?></th>
+    		<td><b><?php echo _("Language"); ?></b></td>
     		<td><?php echo _($settings["languages_in_english"][$profile["language"]]); ?></td>
     	</tr>
     	<?php endif; ?>
@@ -56,10 +56,15 @@ if(!empty($profile)): ?>
     	
     </tbody>
 </table>
-	
 
+<?php if(!empty($profile["google_latitude"])): ?>
+<iframe src="http://www.google.com/latitude/apps/badge/api?user=<?php echo urlencode($profile["google_latitude"]); ?>&type=iframe&maptype=roadmap" width="400" height="400" frameborder="0"></iframe>
+<?php endif; ?>
 
 
 <div class="clear"></div>
+
+
+
 
 <?php endif; ?>

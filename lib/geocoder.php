@@ -18,13 +18,13 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 /* 
  * Geocode
  */
+
 if(isset($_GET["q"]) && !empty($_GET["q"])) {
 
 	// Get query
 	$q = strip_tags($_GET["q"]);
 
-	/*if(is_unicode($q)) $q = urlencode($q);
-	else*/ $q = urlencode(utf8_encode($q));
+	$q = urlencode(utf8_encode($q));
 	
 
 	// Let's roll...
@@ -32,6 +32,10 @@ if(isset($_GET["q"]) && !empty($_GET["q"])) {
 	
     	case "nominatim":
     	    echo nominatim($q);
+    	    break;
+    	    
+    	case "nominatim_reverse":
+    	    echo nominatim_reverse($q);
     	    break;
     	    
     	case "google":
@@ -60,7 +64,7 @@ else {
 function preview($data) {
 	global $_GET;
 	
-	if(isset($_GET["preview"])) {
+	if(isset($_GET["debug"])) {
 		$return = '<pre>';
 		$return .= print_r(json_decode($data),true);
 		$return .= '</pre>';
@@ -88,6 +92,8 @@ function tiny_geocoder($q) {
 /* 
  * Nominatim
  * http://nominatim.openstreetmap.org
+ * Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0
+ *
  * - Geocode
  <?xml version="1.0" encoding="UTF-8" ?>
 <searchresults timestamp='Wed, 02 Jun 10 23:15:15 +0100' attribution='Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0.' querystring='tampere,finland' polygon='false' exclude_place_ids='89119,149474,65829569' more_url='http://nominatim.openstreetmap.org/search?format=xml&amp;exclude_place_ids=89119,149474,65829569&amp;accept-language=&amp;q=tampere%2Cfinland'>
@@ -114,7 +120,9 @@ function tiny_geocoder($q) {
 
  */
 function nominatim($q) {
-	$xml = readURL('http://nominatim.openstreetmap.org/search?q='.$q.'&format=xml&email=help@liftershalte.info');
+	global $settings;
+	
+	$xml = readURL('http://nominatim.openstreetmap.org/search?q='.$q.'&format=xml&email='.urlencode($settings["email"]));
 	$data = new SimpleXMLElement($xml);
 
 	$return = '{';
@@ -125,6 +133,47 @@ function nominatim($q) {
 	$return .= '}';
   
 	return preview($return);
+}
+
+/* 
+ * Nominatim
+ * http://nominatim.openstreetmap.org
+ * Data Copyright OpenStreetMap Contributors, Some Rights Reserved. CC-BY-SA 2.0
+ *
+ * - Reverse Geocode
+ * q: lat,lon
+ */
+function nominatim_reverse($q) {
+	global $settings;
+
+	$q = explode("%2C",$q); // divide from ","
+
+	$xml = readURL('http://nominatim.openstreetmap.org/reverse?format=xml&lat='.urlencode($q[0]).'&lon='.urlencode($q[1]).'&zoom=18&email='.urlencode($settings["email"]));
+	$raw = new SimpleXMLElement($xml);
+
+	if(empty($raw) OR !empty($raw->error)) $data["error"] = true;
+	else {
+
+		if(!empty($raw->result)) $data["address"] = (string)$raw->result;
+		
+		if(!empty($raw->addressparts->road)) $data["road"] = (string)$raw->addressparts->road;
+		
+		if(!empty($raw->addressparts->postcode)) $data["postcode"] = (string)$raw->addressparts->postcode;
+		
+		if(!empty($raw->addressparts->city)) $data["locality"] = (string)$raw->addressparts->city;
+		elseif(!empty($raw->addressparts->town)) $data["locality"] = (string)$raw->addressparts->town;
+		
+		if(!empty($raw->addressparts->country_code)) $data["country_code"] = strtoupper($raw->addressparts->country_code);
+		
+		if(!empty($raw->addressparts->country_code)) $data["country_name"] = ISO_to_country($raw->addressparts->country_code);
+		
+		$data["lat"] = strip_tags($q[0]);
+		$data["lon"] = strip_tags($q[1]);
+
+	}
+	
+	return json_encode($data);
+ 
 }
 
 
@@ -140,14 +189,17 @@ function google($q) {
 	
 	$latlon = explode(",",$raw->name);
 
+	#return print_r($raw,true);
+
 $data = '{
   "lat": "'.$latlon[0].'",
   "lon": "'.$latlon[1].'",
   "address": "'.$raw->Placemark[0]->address.'",
+  "locality": "'.$raw->Placemark[2]->AddressDetails->Country->AdministrativeArea->AddressLine[0].'",
   "country_name": "'.$raw->Placemark[0]->AddressDetails->Country->CountryName.'",
   "country_code": "'.$raw->Placemark[0]->AddressDetails->Country->CountryNameCode.'"
 }';
-	return $data;
+	return preview($data);
 }
 
 

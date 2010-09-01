@@ -57,4 +57,12 @@
 </form>
 <br /><br />
 
+<div class="clear">
 <p><img src="static/gfx/kml_big.png" class="png align_left" alt="" /><?php printf(_("%s is a Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem."), '<a href="http://en.wikipedia.org/wiki/Kml"><b>KML</b></a>'); ?></p>
+</div>
+
+<br /><br />
+
+<hr />
+
+<p><a href="http://www.openstreetmap.org/export?lat=67.2&lon=-118.5&zoom=4&layers=M" class="icon icon-osm"><?php echo _("Use Open Street Map Export tool"); ?></a></p>

@@ -2,6 +2,7 @@
 
 <p><?php printf( _('There are currently %s places marked.'), '<b>'.total_places().'</b>' ); ?> <a href="./?page=complete_statistics" onclick="open_page('complete_statistics'); return false;"><?php echo _("See more complete statistics."); ?></a></p>
 
+
 <div class="align_left" style="margin: 0 40px 20px 0;">
 
 	<h3><?php printf( _( 'Top %s countries' ), "20" ); ?></h3>
@@ -55,6 +56,11 @@
 	</table>
 	
 	
+<p>
+	<h3><?php echo _("Hitchability"); ?> - <?php echo _("Vote distribution"); ?></h3>
+	<img src="<?php echo rating_chart(rating_stats(), 200); ?>" alt="<?php echo _("Vote distribution"); ?>" />
+</p>
+
 	
 <!--
 	<h3><?php printf( _( 'Top %s users' ), "20" ); ?></h3>

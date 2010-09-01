@@ -36,7 +36,7 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 	if(!is_valid_email_address($_POST["email"])) { echo json_encode( array("error"=>_("Invalid email address.")) ); exit; }
 	elseif(isset($_GET["register"])) {
 		 // Check that email is unique
-		$res4 = mysql_query("SELECT `email` FROM `users` WHERE `email` = '".mysql_real_escape_string($_POST["email"])."' LIMIT 1");
+		$res4 = mysql_query("SELECT `email` FROM `t_users` WHERE `email` = '".mysql_real_escape_string($_POST["email"])."' LIMIT 1");
 	   	if(!$res4) { echo json_encode( array("error"=>_("Oops! Something went wrong! Try again.")) ); exit; }
 		
 		// If we have a result (means email is in use)
@@ -79,7 +79,7 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 	
 	
 	// Location
-	if(!empty($_POST["location"])) $location = "'".mysql_real_escape_string((htmlspecialchars($_POST["name"]))($_POST["location"]))."'";
+	if(!empty($_POST["location"])) $location = "'".mysql_real_escape_string(htmlspecialchars($_POST["location"]))."'";
 	else $location = 'NULL';
 	
 	
@@ -102,7 +102,7 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 	// Register new account
 	if(isset($_GET["register"])) {
 	
-		$query = "INSERT INTO `users` (
+		$query = "INSERT INTO `t_users` (
 					`id`,
 					`name`,
 					`password`,
@@ -130,7 +130,7 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 	// Update old account settings
 	elseif(isset($_GET["settings"])) {
 	
-		$query = "UPDATE `users` SET 
+		$query = "UPDATE `t_users` SET 
 					`name` = '".mysql_real_escape_string($_POST["name"])."',";
 		
 		if(isset($password)) $query .= "`password` = '".$password."',";

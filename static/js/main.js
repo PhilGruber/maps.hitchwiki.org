@@ -13,6 +13,8 @@ var debug = true; // enable / disable the log
 var show_log = false; // show log on start (toggle from footer)
 var mapEventlisteners = false; // These will be turned on when page stops loading and map is ready
 
+var proj4326 = new OpenLayers.Projection("EPSG:4326");
+//var projmerc = new OpenLayers.Projection("EPSG:900913");
 
 /*
  * When page loads
@@ -25,8 +27,8 @@ $(document).ready(function() {
 	// Debug log-box
 	if(debug==true) {
 	
-		$("#log").draggable();
-		$("#log").resizable();
+		$("#log").draggable({handle: '#log .handle'});
+		$("#log ul").resizable({alsoResize: '#log'});
 		
 		// Create a toggle button for log
 		$("#developers").append(' &bull; <a href="#" id="toggle_log">Toggle log</a>');
@@ -36,7 +38,7 @@ $(document).ready(function() {
 		});
 		
 		// Some positioning...
-		$("#log").attr("style","position:absolute; top: 100px; right: 10px;");
+		$("#log").attr("style","position:absolute; top: 100px; left: 100px;");
 		
 		// Show or hide log at the start?
 		if(show_log==true) {
@@ -64,12 +66,14 @@ $(document).ready(function() {
 		$(this).click(function(e){
 			e.preventDefault();
 			open_page( $(this).attr("id") );
+			$(this).blur();
 		});
 	});
 	$(".cardlink").each(function(index) {
 		$(this).click(function(e){
 			e.preventDefault();
 			open_card( $(this).attr("id"), $(this).text() );
+			$(this).blur();
 		});
 	});
 
@@ -165,6 +169,7 @@ $(document).ready(function() {
    				maps_debug("Requesting to login: "+p_email);
 				$.post('lib/login.php', { email: p_email, password: p_password, remember: p_remember },   
 				function(data) {
+				
    					maps_debug("Got login responce, login: "+data.login);
    					
    					// Empty these just in case
@@ -186,8 +191,8 @@ $(document).ready(function() {
     	 			}
     	 			
     	 			
-			}, "json"
-			); // post end
+				}, "json"
+				); // post end
    			
    			} // if empty-else end
    			
@@ -197,21 +202,15 @@ $(document).ready(function() {
     
     
     // Initialize page content area
-	$("#pages").html('<div class="page"><a href="#" class="close ui-button ui-corner-all ui-state-default ui-icon ui-icon-closethick">Close</a><div class="content"> </div></div>');
-	$("#pages .page .close").click(function(e){
+	$("#pages .close").click(function(e){
 		e.preventDefault();
 		close_page();
 	});
 	$("#pages .page .content").hide();
 	$("#pages .page").hide();
+	$("#pages .close").hide();
 
 
-	// Navigation functions
-	$("#add_place").click(function(){
-		init_add_place();
-	});
-	
-	
 	// Map selector
 	/*
 	$("#map_selector").show();
@@ -260,15 +259,22 @@ $(document).ready(function() {
 	*/
 	//$("#maplist").hide();
 	
-	
+
+	// Add a place -panel
+	$("#add_place").click(function(e){
+		e.preventDefault();
+		
+		init_add_place();
+	});
+
 	// Tools Panel - Opening/closing
 	$("#tools").click(function(e){
 		e.preventDefault();
+		$(this).blur();
 		$("#toolsPanel").toggle();
 	});
 	
 	// Tools Panel - Add a close button to tools panel
-	$("#toolsPanel h4").append('<a href="#" class="close ui-button ui-corner-all ui-state-default ui-icon ui-icon-closethick align_right">Close</a>');
 	$("#toolsPanel h4 .close").click(function(e){
 		e.preventDefault();
 		$("#toolsPanel").toggle();
@@ -276,7 +282,7 @@ $(document).ready(function() {
 	
 	// Tools Panel - make it draggable
 	$("#toolsPanel").draggable({ handle: 'h4' });
-	$("#toolsPanel").attr("style","text-align:left; top: 100px; right: 30px;");
+	$("#toolsPanel").attr("style","text-align:left; top: 100px; left: 240px;");
 
 	// Tools Panel - init zoom tool slider
 	$("#toolsPanel #zoom_slider").slider({
@@ -323,12 +329,13 @@ $(document).ready(function() {
 
 });
 
+
+
 /*
  * Initialize map
  */
-
 var map, places, map_center;
-var handle_click = false;
+var handle_add_place_click = false;
 
 function init_map() {
 	maps_debug("Initialize the map");
@@ -338,8 +345,8 @@ function init_map() {
 	
 	// Create map with controls	
 	map = new OpenLayers.Map('map', {
-		projection: new OpenLayers.Projection("EPSG:4326"),
-		displayProjection: new OpenLayers.Projection("EPSG:4326"),
+		projection: proj4326,
+		displayProjection: proj4326,
 		eventListeners: {
 			"move": mapEventMoveStarted,
 		    "moveend": mapEventMove,
@@ -350,13 +357,13 @@ function init_map() {
 	    controls: [
 	        new OpenLayers.Control.Navigation(),
 	        new OpenLayers.Control.PanZoomBar(),
-	        //new OpenLayers.Control.LayerSwitcher({'ascending':false}),
+	        new OpenLayers.Control.LayerSwitcher({'ascending':false}),
 	        new OpenLayers.Control.ScaleLine(),
 	        //new OpenLayers.Control.Permalink('permalink'),
 	        //new OpenLayers.Control.Permalink(),
 	        //new OpenLayers.Control.MousePosition(),
-	        new OpenLayers.Control.OverviewMap(),
-	        new OpenLayers.Control.KeyboardDefaults()
+	        //new OpenLayers.Control.KeyboardDefaults(),
+	        new OpenLayers.Control.OverviewMap()
 	        
 	        
 	    ],
@@ -429,22 +436,6 @@ function init_map() {
 	}
 	
 	document.getElementById('noneToggle').checked = true;
-
-	// Map layers	
-	var layer_osm = 		new OpenLayers.Layer.OSM("Open Street Map");
-	
-/*
-	// Virtual Earth
-	var layer_ve_road = 	new OpenLayers.Layer.VirtualEarth("Virtual Earth Streets", {type: VEMapStyle.Road, visibility: false});
-	var layer_ve_air =		new OpenLayers.Layer.VirtualEarth("Virtual Earth Aerial", {type: VEMapStyle.Aerial, visibility: false});
-	
-	// Yahoo
-	var layer_yahoo = 		new OpenLayers.Layer.Yahoo("Yahoo Maps", {visibility: false});
-	
-	// Google
-	var layer_google = 		new OpenLayers.Layer.Google("Google Maps", {visibility: false});
-	var layer_google_sat = 	new OpenLayers.Layer.Google("Google Maps Satellite", {type: G_SATELLITE_MAP, visibility: false});
-*/
 
 
  	// Different colors for markers depending on their rating
@@ -548,12 +539,62 @@ function init_map() {
 	);
 
 
-	// Add produced layers to the map
-	map.addLayers([
-					layer_osm,
-					places,
-					places_count
-				  ]);
+	/*
+	 * Create base layer for new place
+	 */
+	add_place_target = new OpenLayers.Layer.Vector(
+		"New place",
+		{
+			styleMap: new OpenLayers.StyleMap({
+				"default": new OpenLayers.Style({
+	    	    	cursor: "move",
+        	    	graphicZIndex: 3,
+	    	    	pointRadius: 7,
+        	    	strokeWidth: 5,
+	    	    	strokeColor: "#f57900",
+        	    	fillColor: "#f57900", 
+        	    	fillOpacity: 0
+        	    	//stroke: false
+				    
+				}),
+				"hover": new OpenLayers.Style({
+	    	    	strokeColor: "#ff9834"
+				})
+			}), //stylemap end
+			
+			isBaseLayer: false
+		}
+	);
+	var hover_new_place = new OpenLayers.Control.SelectFeature(add_place_target, {
+	    hover: true,
+	    highlightOnly: true,
+	    renderIntent: "hover"
+	});
+	map.addControl(hover_new_place);
+	hover_new_place.activate();
+	
+
+	// Map layers	
+	var layer_osm = 		new OpenLayers.Layer.OSM("Open Street Map");
+	
+/*
+	// Virtual Earth
+	var layer_ve_road = 	new OpenLayers.Layer.VirtualEarth("Virtual Earth Streets", {type: VEMapStyle.Road, visibility: false});
+	var layer_ve_air =		new OpenLayers.Layer.VirtualEarth("Virtual Earth Aerial", {type: VEMapStyle.Aerial, visibility: false});
+	
+	// Yahoo
+	var layer_yahoo = 		new OpenLayers.Layer.Yahoo("Yahoo Maps", {visibility: false});
+	
+	// Google
+	var layer_google = 		new OpenLayers.Layer.Google("Google Maps", {visibility: false});
+	var layer_google_sat = 	new OpenLayers.Layer.Google("Google Maps Satellite", {type: G_SATELLITE_MAP, visibility: false});
+*/
+
+
+	
+	/*
+	 * Add produced layers to the map
+	 */
 	/*
 					layer_google, 
 					layer_google_sat,
@@ -561,8 +602,18 @@ function init_map() {
 					layer_ve_air, 
 					layer_yahoo, 
 	*/
+	map.addLayers([
+					layer_osm,
+					places,
+					places_count,
+					add_place_target
+				  ]);
+	add_place_target.setVisibility(false);
 	
-	// Hovering markers
+	
+	/*
+	 * Hovering place markers
+	 */
 	var hover_marker = new OpenLayers.Control.SelectFeature(places, {
 	    hover: true,
 	    highlightOnly: true,
@@ -571,7 +622,11 @@ function init_map() {
 	map.addControl(hover_marker);
 	hover_marker.activate();
 
-	// Selecting markers
+
+	
+	/*
+	 * Selecting markers
+	 */
 	var select_marker = new OpenLayers.Control.SelectFeature(places, 
 							{
 								hover: false,
@@ -585,9 +640,11 @@ function init_map() {
 
 
 
-	// Get labels to the map
+	/*
+	 * Get labels to the map
+	 */
 	markerCountLabels();
-	
+
 	// Selecting labels
 	var select_countrydot = new OpenLayers.Control.SelectFeature(places_count, 
 							{
@@ -602,44 +659,38 @@ function init_map() {
     select_countrydot.activate();
 
 
-	// add and expand the overview map control
+	/*
+	 * add and expand the overview map control
+	 */
 	var overview = new OpenLayers.Control.OverviewMap();
 	map.addControl(overview);
 	overview.maximizeControl();
 
-	
-	// Set map
-    map.setCenter(new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()));
-    
-    map.zoomTo(zoom);
-    
-	
-	//if (!map.getCenter()) map.zoomToMaxExtent();
-/*
-    var size = new OpenLayers.Size(16,16);
-    var offset = new OpenLayers.Pixel(0,0) //-(size.w/2), -size.h);
-    var icon = new OpenLayers.Icon('http://maps.hitchwiki.org/img/hitch.png', size, offset);
-    var markers = new OpenLayers.Layer.Markers("Points");
-    var res = rpc.getMarkers(49, 8.3, 3);
-    for (i in res) {
-        markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(res[i][0], res[i][1]), icon.clone()));
-    }
-    var tmp = new OpenLayers.LonLat(49,8.3);
-    
-    markers.addMarker(new OpenLayers.Marker(tmp,icon.clone()));
-    markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(49.1,8.3),icon.clone()));
 
-    map.addLayer(markers);
-*/
+	/*
+	 * Hide panel where we show info about place
+	 */
+	$("#PlacePanel").hide();
 
-	// Let eventlisteners be free! :-)
+	
+	/*
+	 * Set map
+	 * You can set these by $_GET[lat/lon/zoom] - see index.php for more
+	 */
+	// Map position
+    map.setCenter(new OpenLayers.LonLat(lon, lat).transform(proj4326, map.getProjectionObject()));
+    
+    // Zoom
+    if(zoom==false) { map.zoomToMaxExtent(); }
+    else { map.zoomTo(zoom); }
+   
+   	// Let eventlisteners be free! :-)
 	// Meaning, they can be called from now on that page has stopped loading
 	mapEventlisteners = true;
 
-	// Hide panel where we show info about place
-	$("#PlacePanel").hide();
 
-}
+} // init_map end
+
 
 
 
@@ -656,22 +707,29 @@ function onCountrydotSelect(feature) {
 	var point = feature.geometry.getBounds().getCenterLonLat();
 
     if(point.lat > map_center.lat) {
-    	var offset = 5;
+    	var lat_offset = 5;
     } else {
-    	var offset = -5;
+    	var lat_offset = -5;
+    }
+    if(point.lon > map_center.lon) {
+    	var lon_offset = -5;
+    } else {
+    	var lon_offset = 5;
     }
     
+    
     popup = new OpenLayers.Popup.FramedCloud("Country", 
-                             point,
-                             null,
-                             '<div style="color: #111;"><h4 style="margin:0; padding: 0 0 3px 21px; background: url(static/gfx/flags/png/'+feature.attributes.iso.toLowerCase()+'.png) no-repeat 0 3px;">' + feature.attributes.name +'</h4><small class="grey">' + feature.attributes.places +' places. <!--<a href="#" onclick="zoomMapIn(' + feature.geometry.getBounds().getCenterLonLat().lat +',' + feature.geometry.getBounds().getCenterLonLat().lon +',7); return false;">Zoom in</a>--></small></div>',
-                             {
-								'size': new OpenLayers.Size(15,15), 
-								'offset': new OpenLayers.Pixel(5,offset)
-							}, 
-							false);//, onCountrydotPopupClose);
-    feature.popup = popup;
-    map.addPopup(popup);
+		point,
+		null,
+		'<div style="color: #111;"><h4 style="margin:0; padding: 0 0 3px 21px; background: url(static/gfx/flags/png/'+feature.attributes.iso.toLowerCase()+'.png) no-repeat 0 3px;">' + feature.attributes.name +'</h4><small class="grey">' + feature.attributes.places +' places.<br /><i>Zoom closer to see them.</i></small></div>',
+		{
+			'size': new OpenLayers.Size(15,15), 
+			'offset': new OpenLayers.Pixel(lon_offset,lat_offset)
+		}, 
+		false);//, onCountrydotPopupClose);
+		
+	feature.popup = popup;
+	map.addPopup(popup);
 }
 function onCountrydotUnselect(feature) {
     map.removePopup(feature.popup);
@@ -679,7 +737,7 @@ function onCountrydotUnselect(feature) {
     feature.popup = null;
 } 
 
-            
+
 /*
  * Measure controls
  * http://openlayers.org/dev/examples/measure.html
@@ -718,15 +776,35 @@ function toggleGeodesic(element) {
 }
 */
 
-/* Get User Location by current IP
- * http://there4development.com/2010/03/geolocation-services-with-jquery-and-ipinfodb/
- * Requires:
- * - jQuery
- * - jQuery JSON
- * - jQuery Cookie
- * - Snoopy PHP
+
+
+
+
+/*
+ * Get users current location by either W3 geolocation API (if browser supports) or query IP-location database
+ */
+function fetchlocation() {
+	// Test that the browser supports the GeoLocation object
+	if (navigator.geolocation)
+	{
+	   maps_debug("Browser supports Geolocation. Asking to use it...");
+	   
+	   // Callback fetchlocationW3() if success, on failure go for fetchlocationByIP()
+	   navigator.geolocation.getCurrentPosition( fetchlocationW3, fetchlocationByIP );
+	}
+	// If not, use our own fetchlocationByIP -service
+	else
+	{
+	   maps_debug("Browser didn't support geolocation. Using our own IP-based service.");
+	   fetchlocationByIP();
+	}
+}
+
+
+/*
+ * Display users location in webpage
  *
- * JSON example:
+ * Eats JSON like this (we use Latitude, Longitude, City, State, RegionName and CountryName, Status -values):
 {
   "Ip" : "76.121.45.200",
   "Status" : "OK",
@@ -740,50 +818,113 @@ function toggleGeodesic(element) {
   "Longitude" : "-122.41"
 }
  */
-displaylocation = function(location) {
-  if (location.Status == 'OK') {
-  
-  	// Tool is hidden as a default
-  	var show_nearby = false;
-  
-  	// City
-  	if(location.City != '') { 
-  		$('#nearby .city a').text(location.City);
-  		$('#nearby .city a').click(function(){ search(location.City + ', ' + location.CountryName); });
-  		$('#nearby .city').show('fast');
-  		show_nearby = true;
-  	}
-  
-  	// State / Region
-  	if(location.State != '--') {
-  		$('#nearby .state a').text(location.State);
-  		$('#nearby .state a').click(function(){ search(location.State + ', ' + location.CountryName); });
-  		$('#nearby .state').show('fast');
-  		show_nearby = true;
-  	}
-  	else if(location.RegionName != '') {
-  		$('#nearby .state a').text(location.RegionName);
-  		$('#nearby .state a').click(function(){ search(location.RegionName + ', ' + location.CountryName); });
-  		$('#nearby .state').show('fast');
-  		show_nearby = true;
-  	}
-  	
-  	// Country
-  	if(location.CountryName != '') { 
-  		$('#nearby .country a').text(location.CountryName);
-  		$('#nearby .country a').click(function(){ search(location.CountryName); });
-  		$('#nearby .country').show('fast');
-  		show_nearby = true;
-  	}
-  	
-  	// Show tool if content is filled
-    if(show_nearby == true) { $('#nearby').show('fast'); }
-    else { $('#nearby').hide(); }
+function displaylocation(location) {
+	if (location.Status == 'OK') {
+		maps_debug("Showing location under search bar.");
+  		
+  		// Tool is hidden as a default, and stays hidden if no location is found
+		var show_nearby = false;
+		
+		// City
+		if(location.City != '' || location.City != undefined) { 
+			$('#nearby .locality a').text(location.City);
+			$('#nearby .locality a').click(function(){ search(location.City + ', ' + location.CountryName); });
+			$('#nearby .locality').show('fast');
+			show_nearby = true;
+		}
+		
+		// State / Region
+		if(location.State != '--') {
+			$('#nearby .state a').text(location.State);
+			$('#nearby .state a').click(function(){ search(location.State + ', ' + location.CountryName); });
+			$('#nearby .state').show('fast');
+			show_nearby = true;
+		}
+		else if(location.RegionName != '') {
+			$('#nearby .state a').text(location.RegionName);
+			$('#nearby .state a').click(function(){ search(location.RegionName + ', ' + location.CountryName); });
+			$('#nearby .state').show('fast');
+			show_nearby = true;
+		}
+		else {
+			$('#nearby .state a').text('blaa');
+		}
+		
+		// Country
+		if(location.CountryName != '' || location.CountryName != undefined) { 
+			$('#nearby .country a').text(location.CountryName);
+			$('#nearby .country a').click(function(){ search(location.CountryName); });
+			$('#nearby .country').show('fast');
+			show_nearby = true;
+		}
+		
+		// Show tool if content is filled
+		if(show_nearby == true) { $('#nearby').slideDown('fast'); }
+		else { $('#nearby').hide(); }
+		
+		// Move map to the location
+		/*
+		if(location.Latitude != '' && location.Longitude != '') {
+			map_debug("Centering map to the point "+location.Latitude+", "+location.Longitude);
+			zoomMapIn(location.Latitude, location.Longitude, 5);
+		}
+		*/
     
-  }
+	}
 }
 
-fetchlocation = function() {
+
+
+
+/*
+ * Browsers native Geolocation API
+ * http://dev.w3.org/geo/api/spec-source.html
+ */
+function fetchlocationW3(position) {
+	
+	maps_debug("Got location from browser. Sending it to the geocoder.");
+	
+	// Reverse Geocode latlon -> address
+	$.getJSON('lib/geocoder.php?service=nominatim_reverse&q=' + position.coords.latitude + ',' + position.coords.longitude, function(data) {			
+
+			if(data.error==true) {
+				maps_debug("Error when trying to get reverce geocode. Using our own IP-geolocation service");
+				fetchlocationByIP();
+			}
+			else {
+				maps_debug("Geocoded address succesfully.");
+				
+				var location = {
+					"Status" : "OK",
+					"Latitude" : position.coords.longitude,
+					"Longitude" : position.coords.latitude,
+					"CountryCode" : data.country_code,
+					"CountryName" : data.country_name,
+					"RegionName" : "",
+					"State" : "--",
+					"City" : data.locality,
+					"ZipPostalCode" : data.postcode
+				};
+				
+				displaylocation(location);
+			
+			}
+	});
+}
+
+
+
+/* Get User Location by current IP
+ * http://there4development.com/2010/03/geolocation-services-with-jquery-and-ipinfodb/
+ * Requires:
+ * - jQuery
+ * - jQuery JSON
+ * - jQuery Cookie
+ * - Snoopy PHP
+ */
+fetchlocationByIP = function() {
+   maps_debug("Using IP-based geolocation service.");
+   
   // look in the cookie for the location data
   cookiedata = $.cookie(geolocation_cookiename);
   if ('' != cookiedata) {
@@ -808,6 +949,8 @@ fetchlocation = function() {
     }
   );
 }
+
+
 
 
 
@@ -913,7 +1056,7 @@ function markerCountLabels() {
 	    		else if(value.places >= 10) var pointRadius = 9;
 	    		else var pointRadius = 7;
 				
-	    		var coords = new OpenLayers.LonLat(value.lon, value.lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+	    		var coords = new OpenLayers.LonLat(value.lon, value.lat).transform(proj4326, map.getProjectionObject());
 				labelStock.push(
 					new OpenLayers.Feature.Vector(
 						new OpenLayers.Geometry.Point(coords.lon, coords.lat),
@@ -968,8 +1111,8 @@ function refreshMapMarkers() {
 
 		// Get corner coordinates from the map
 		var extent = map.getExtent();
-		var corner1 = new OpenLayers.LonLat(extent.left, extent.top).transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
-		var corner2 = new OpenLayers.LonLat(extent.right, extent.bottom).transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+		var corner1 = new OpenLayers.LonLat(extent.left, extent.top).transform(map.getProjectionObject(), proj4326);
+		var corner2 = new OpenLayers.LonLat(extent.right, extent.bottom).transform(map.getProjectionObject(), proj4326);
 
 		var apiCall = 'api/?bounds='+corner2.lat+','+corner1.lat+','+corner1.lon+','+corner2.lon;	
 		maps_debug("Calling API: "+apiCall);
@@ -997,7 +1140,7 @@ function refreshMapMarkers() {
 					
 					//maps_debug("Adding marker #"+value.id +"<br />("+value.lon+", "+value.lat+")...");
 					
-	                var coords = new OpenLayers.LonLat(value.lon, value.lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+	                var coords = new OpenLayers.LonLat(value.lon, value.lat).transform(proj4326, map.getProjectionObject());
 	                
 	                markerStock.push(
 	                    new OpenLayers.Feature.Vector(
@@ -1039,112 +1182,246 @@ function refreshMapMarkers() {
 /*
  * Initialize add new place
  */
+var add_place_initialized_once = false;
+var add_place_open = false;
 function init_add_place() {
-	
 	maps_debug("Initialize adding a new place");
 	
-	// Start listening single clicks
-	handle_click = true;
+	// Hides possibly open pages
+	close_page();
 	
-	// Add target to the center of the map
+	// Hides possibly open place panel
+	$("#map").click();
+
+	// Inform that we are open now
+	add_place_open = true;
 	
-	// Create base layer for new place
-	var target_style = new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults(
-        {
-        	fillColor: "#f57900", 
-        	fillOpacity: 1, 
-        	stroke: false
-        }, OpenLayers.Feature.Vector.style["default"]));
-        
-    var target = new OpenLayers.Layer.Vector("New place", {styleMap: target_style});
-
-	// Create a dot for new place
-	var new_place = new OpenLayers.Feature.Vector( new OpenLayers.Geometry.Point(map.getCenter().lon, map.getCenter().lat) );
-	target.addFeatures(new_place);
-
-	map.addLayer(target);
-
-	// Add dot dragging
-	var drag = new OpenLayers.Control.DragFeature(target, {
-		onComplete: function(feature) { 
-			var lon = feature.geometry.x; 
-            var lat = feature.geometry.y;
+	// Get panel contents
+	$.ajax({
+		url: "lib/add_place.php",
+		async: false,
+		success: function(content){ 
+			$("#PlacePanel").html(content); 
+			//update_add_place(map.getCenter().lat, map.getCenter().lon);
 			
-			new_place.move(new OpenLayers.LonLat(lon, lat));
-	    	update_add_place(lon, lat);
-		}
-	});
-	map.addControl(drag);
-	drag.activate();
-
-
-	// Click Handler
-	OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
-	       defaultHandlerOptions: {
-	           'single': true,
-	           'double': false,
-	           'pixelTolerance': 0,
-	           'stopSingle': false,
-	           'stopDouble': false
-	       },
+			
+			// Show panel
+			$("#PlacePanel").show();
+			
+			// Shring map a bit and make some space for the panel
+			$("#map").attr("style","right:250px;");
+			
+			
+			// Start listening single clicks
+			handle_add_place_click = true;
+			
+			// Add target to the center of the map
+			
+			add_place_target.setVisibility(true);
+			    
+			if(add_place_initialized_once==false) {
+			    maps_debug("Adding layers for new place.");
+			    
+			    
+			    // Create a dot for new place
+			    var new_place = new OpenLayers.Feature.Vector( new OpenLayers.Geometry.Point(map.getCenter().lon, map.getCenter().lat) );
+			    add_place_target.addFeatures(new_place);
+			    
+			    var new_place_lon = new_place.geometry.x; 
+			    var new_place_lat = new_place.geometry.y;
+			    update_add_place(new_place_lon, new_place_lat);
+			    
+			
+			    // Add dot dragging
+			    var add_place_drag = new OpenLayers.Control.DragFeature(add_place_target, {
+			        onComplete: function(feature) { 
+			        		var lon = feature.geometry.x; 
+			            	var lat = feature.geometry.y;
+			        		
+			        		new_place.move(new OpenLayers.LonLat(lon, lat));
+			        		update_add_place(lon, lat);
+			        		maps_debug("Add marker moved (move): "+lat+", "+lon);
+			        }
+			    });
+			    map.addControl(add_place_drag);
+			    add_place_drag.activate();
+			    
+			
+			    // Click Handler
+			    OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+			           defaultHandlerOptions: {
+			               'single': true,
+			               'double': false,
+			               'pixelTolerance': 0,
+			               'stopSingle': false,
+			               'stopDouble': false
+			           },
+			    
+			           initialize: function(options) {
+			               this.handlerOptions = OpenLayers.Util.extend(
+			                   {}, this.defaultHandlerOptions
+			               );
+			               OpenLayers.Control.prototype.initialize.apply(
+			                   this, arguments
+			               ); 
+			               this.handler = new OpenLayers.Handler.Click(
+			                   this, {
+			                       'click': this.trigger
+			                   }, this.handlerOptions
+			               );
+			           }, 
+			    
+			           trigger: function(e) {
+			           		if(handle_add_place_click != false && add_place_open == true) {
+			    				var new_place_lonlat = map.getLonLatFromViewPortPx(e.xy);
+			    				new_place.move(new_place_lonlat);
+			    				update_add_place(new_place_lonlat.lon, new_place_lonlat.lat);
+			        			maps_debug("Add marker moved (click): "+new_place_lonlat.lat+", "+new_place_lonlat.lon);
+			        		}
+			           }
+			     });
+			    
+			    // Add click-handler to the map
+			    var new_place_click = new OpenLayers.Control.Click();
+			    map.addControl(new_place_click);
+			    new_place_click.activate();
+			
+			    add_place_initialized_once = true;
+			    
+			}
+			else {
+			    // Create a dot for new place
+			    /*
+			    var new_place = new OpenLayers.Feature.Vector( new OpenLayers.Geometry.Point(map.getCenter().lon, map.getCenter().lat) );
+			    add_place_target.addFeatures(new_place);
+			    
+			    var new_place_lon = new_place.geometry.x; 
+			    var new_place_lat = new_place.geometry.y;
+			    update_add_place(new_place_lon, new_place_lat);
+			    */
+			    
+			    maps_debug("Showing old layers for adding a new place.");
+			    
+			    //var keski = map.getPixelFromLonLat( map.getCenter() );
+			    
+			    //new_place.move(keski.x, keski.y);
+			    
+			    /*
+			    var new_place_lon = new_place.geometry.x; 
+			    var new_place_lat = new_place.geometry.y;
+			    update_add_place(new_place_lon, new_place_lat);
+			    */
+			}
+			
 	
-	       initialize: function(options) {
-	           this.handlerOptions = OpenLayers.Util.extend(
-	               {}, this.defaultHandlerOptions
-	           );
-	           OpenLayers.Control.prototype.initialize.apply(
-	               this, arguments
-	           ); 
-	           this.handler = new OpenLayers.Handler.Click(
-	               this, {
-	                   'click': this.trigger
-	               }, this.handlerOptions
-	           );
-	       }, 
 	
-	       trigger: function(e) {
-	       		if(handle_click != false) {
-		           var lonlat = map.getLonLatFromViewPortPx(e.xy);
-	    	       new_place.move(lonlat);
-	    	       update_add_place(lonlat.lon, lonlat.lat);
-				}
-	       }
-	 });
+		}// json got data?
+	});//json call end
 
-	// Add click-handler to the map
-	var click = new OpenLayers.Control.Click();
-	map.addControl(click);
-	click.activate();
-	
-	// Perform when dialog is opened
-	$("#card_add_place").bind( "dialogopen", function(event, ui) {
-			// Add coordinates and address to the card
-			update_add_place(map.getCenter().lon, map.getCenter().lat);
-	});
-	
-	// Perform when dialog is closed
-	$("#card_add_place").bind( "dialogclose", function(event, ui) {
+}
 
-		// Disable single click-listener from map
-		click.deactivate();
-		map.removeControl(click);
+function close_add_place() {
+	if(add_place_open == true) {
+		add_place_open = false;
+		/*
+   			add_place_target.destroyFeatures([new_place]);
+			new_place.destroy();
+			new_place = null;
+			*/
+			
+		/*
+		add_place_drag.deactivate();
+		new_place_click.deactivate();
+		*/
+		//add_place_target.destroyFeatures(0);
 		
-		// Remove layer
-		target.destroy();
-	});
+//		new_place.destroy();
+
+		//add_place_target.destroy(); <-- toimii
+		
+		hidePlacePanel();
+		maps_debug("Closing add Place panel.");
+		add_place_target.setVisibility(false);
+	}
 }
 
 function update_add_place(q_lon, q_lat) {
-	maps_debug("Updating add place -card");
+	maps_debug("Updating add place -info.");
+
+	$("#add_new_place_form #address_row").hide();
+	$("#add_new_place_form #loading_row").show();
 
 	// Convert coordinates to the "Google projection"
-	var g_lonLat = new OpenLayers.LonLat(q_lon, q_lat).transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+	var g_lonLat = new OpenLayers.LonLat(q_lon, q_lat).transform(map.getProjectionObject(), proj4326);
+
+	$("#add_new_place_form input#lat").val(g_lonLat.lat);
+	$("#add_new_place_form input#lon").val(g_lonLat.lon);
 
 	// Reverse Geocode latlon -> address
-	// TODO: Change service from google to something else (we just don't have other reverce geocoders implemented yet...)
-	$.getJSON('lib/geocoder.php?service=google&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {				
-			$("#address_row #address").text(data.address);
-			if($("#address_row").is(":hidden")) { $("#address_row").show(); }
+	$.getJSON('lib/geocoder.php?service=nominatim_reverse&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {				
+			
+			$("#add_new_place_form #loading_row").hide();
+	
+			if(data.error==true) {
+				maps_debug("Error when trying to get reverce geocode. Show manual country selector.");
+				$("#add_new_place_form input#country_iso").val("");
+				$("#add_new_place_form #manual_country_selection").show();
+				$("#add_new_place_form #address_row").hide();
+				$("#add_new_place_form input#locality").val("");
+				
+			} else {
+			
+				$("#add_new_place_form #manual_country_selection").hide();
+				$("#add_new_place_form #address_row").show();
+			
+			
+				// Full address
+				if(data.address != "") {
+					$("#add_new_place_form #address_row #address").html(data.address);
+				} else {
+					$("#add_new_place_form #address_row #address").text("");
+				}
+				
+				if(data.address != "" && data.country_name != "") {
+					$("#add_new_place_form #address_row #address").append("<br />");
+				}
+				
+				
+				// City
+				if(data.locality != undefined) {
+					$("#add_new_place_form input#locality").val(data.locality);
+					$("#add_new_place_form #locality_name").text(data.locality);
+					
+					if(data.country_name != undefined && data.country_code != undefined) {
+						$("#add_new_place_form #locality_name").append("<br />");
+					}
+					
+					$("#add_new_place_form #locality_name").show();
+					
+				}
+				else {
+					$("#add_new_place_form input#locality").val("");
+					$("#add_new_place_form #locality_name").hide();
+					$("#add_new_place_form #locality_name").text("");
+				}
+				
+				
+				// Country name + flag
+				if(data.country_name != undefined && data.country_code != undefined) {
+					$("#add_new_place_form #address_row #country_name").text(data.country_name);
+					$("#add_new_place_form #address_row .flag").hide().attr("src","static/gfx/flags/png/"+data.country_code.toLowerCase()+".png").fadeIn('slow');
+					$("#add_new_place_form input#country_iso").val(data.country_code);
+				} else { 
+					$("#add_new_place_form #address_row #country_name").text(""); 
+					$("#add_new_place_form #address_row .flag").hide();
+					$("#add_new_place_form input#country_iso").val("");
+					$("#add_new_place_form #manual_country_selection").show();
+				}
+				
+				
+				$("#add_new_place_form #address_row").show();
+				
+			}
 	});
 	
 }
@@ -1153,22 +1430,27 @@ function update_add_place(q_lon, q_lat) {
 /* 
  * Show marker panel
  */
-function showPlacePanel(id,zoomin) {
+function showPlacePanel(id, zoomin) {
 	maps_debug("Show marker panel for place: "+id);
+
+	close_add_place();
 
 	$.ajax({
 		url: "lib/place.php?id="+id+"&lang="+locale,
 		async: false,
 		success: function(content){
+		
 			maps_debug("Loaded marker data OK.");
 			$("#PlacePanel").html(content);
 			
+			// Zoom in into a marker if requested so
 			if(zoomin == true) {
-				lat = $("#PlacePanel #coordinates .lat").text(); 
-				lon = $("#PlacePanel #coordinates .lon").text(); 
-				
-				zoomMapIn(lat, lon, 16);
+			    lat = $("#PlacePanel #coordinates .lat").text(); 
+			    lon = $("#PlacePanel #coordinates .lon").text(); 
+			    
+			    zoomMapIn(lat, lon, 16);
 			}
+			
       	}
 	});
 	
@@ -1188,8 +1470,7 @@ function hidePlacePanel() {
 	maps_debug("Hiding Place Panel.");
 	
 	// Map to full width again
-	$("#map").attr("style","right:0;");
-	
+	$("#map").css("right","0");
 	$("#PlacePanel").hide();
 	$("#PlacePanel").html("");
 }
@@ -1229,8 +1510,8 @@ function search(q) {
 			var boundingbox = data.boundingbox.split(',');
 			
 			bounds = new OpenLayers.Bounds();
-			bounds.extend( new OpenLayers.LonLat(boundingbox[2],boundingbox[0]).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()) );
-			bounds.extend( new OpenLayers.LonLat(boundingbox[3],boundingbox[1]).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()) );
+			bounds.extend( new OpenLayers.LonLat(boundingbox[2],boundingbox[0]).transform(proj4326, map.getProjectionObject()) );
+			bounds.extend( new OpenLayers.LonLat(boundingbox[3],boundingbox[1]).transform(proj4326, map.getProjectionObject()) );
 			
 			map.zoomToExtent( bounds );
 			
@@ -1261,8 +1542,19 @@ function search(q) {
  */
 function zoomMapIn(lat, lon, zoom) {
 	maps_debug("Zoom map to a point.");
-	map.setCenter(new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject()));
+	map.setCenter(new OpenLayers.LonLat(lon, lat).transform(proj4326, map.getProjectionObject()));
 	map.zoomTo(zoom);
+}
+
+
+/*
+ * Show information about country
+ */
+function showCountry(country_iso) {
+	maps_debug("Information about country "+country_iso);
+/*
+	open_page("countries");
+*/
 }
 
 
@@ -1283,9 +1575,12 @@ function open_page(name) {
 			if($("#pages .page").is(':hidden')) {
 				$("#pages .page .content").html(content).show();
 				$("#pages .page").slideDown('fast');
+				$("#pages .close").show();
 			} else {
 				$("#pages .page .content").html(content);
+				$("#pages .page").attr({ scrollTop: 0 });
 			}
+			return true;
       	}
 	});
 }
@@ -1300,6 +1595,7 @@ function close_page() {
 	if($("#pages .page").is(':visible')) {
 			$("#pages .page .content").hide('fast').text('');
 			$("#pages .page").slideUp('fast');
+			$("#pages .close").hide();
 	}
 }
 
@@ -1415,29 +1711,40 @@ function removeComment(remove_id) {
 /* 
  * Show simple info/error dialog for user
  */
-function info_dialog(info, title, alert) {
+function info_dialog(dialog_info, dialog_title, dialog_alert, reload_page) {
 	
-	if(alert==true) { var type = "alert"; }
-	else { var type = "info"; }
+	if(dialog_alert) { var dialog_type = "alert"; }
+	else { var dialog_type = "info"; }
 	
-	if(title == undefined) { title = type; }
+	if(dialog_title == undefined) { dialog_title = dialog_type; }
 	
-	maps_debug("Calling "+type+"-dialog box; "+title);
+	maps_debug("Calling "+dialog_type+"-dialog box; "+dialog_title);
 	
 	
 	
-	$("#dialog-message").attr("title",title);
-	$("#dialog-message").html('<p><span class="ui-icon ui-icon-'+type+'" style="float:left; margin:0 7px 50px 0;"></span>'+info+'</p>');
+	$("#dialog-message").attr("title",dialog_title);
+	$("#dialog-message").html('<p><span class="ui-icon ui-icon-'+dialog_type+'" style="float:left; margin:0 7px 50px 0;"></span>'+dialog_info+'</p>');
 	
 	$("#dialog-message").dialog({
 		modal: true,
 		resizable: false,
 		buttons: {
 			Ok: function() {
-				$(this).dialog('close');
+				if(reload_page) { 
+					maps_debug("Reloading the page...");
+					$("#reloadPage").submit();
+					$(this).dialog('close');
+				} else {
+					$(this).dialog('close');
+					maps_debug("Dialog closed.");
+				}
 			}
 		}
 	});
+	
+	dialog_info = null;
+	dialog_title = null;
+	dialog_alert = false;
 }
 
 
@@ -1475,6 +1782,29 @@ function hide_loading_bar() {
 function maps_debug(str) {
 	if(debug==true) {
 		$("#log ul").append("<li>"+str+"</li>");
-		$("#log").attr({ scrollTop: $("#log").attr("scrollHeight") });
+		$("#log ul").attr({ scrollTop: $("#log ul").attr("scrollHeight") });
 	}
+}
+
+
+
+/*
+ * Login with Facebook
+ * TODO
+ * Maybe move into a another js-file?
+ */
+function login_with_facebook() {
+
+	FB.login(function(response) {
+	  if (response.session) {
+	    if (response.perms) {
+	      maps_debug("user is logged in and granted some permissions. perms is a comma separated list of granted permissions");
+	    } else {
+	      maps_debug("user is logged in, but did not grant any permissions");
+	    }
+	  } else {
+	    maps_debug("user is not logged in");
+	  }
+	}, {perms:'read_stream,publish_stream,offline_access'});
+
 }

@@ -109,7 +109,7 @@ class maps_api
     	if($description!=false) $query .= ",`".$description."`";
     	
     	$query .= " FROM `t_points` WHERE 
-					`type` = 2 AND 
+					`type` = 1 AND 
 					`lat` > ".mysql_real_escape_string($lt)." AND 
 					`lat` < ".mysql_real_escape_string($lb)." AND 
 					`lon` > ".mysql_real_escape_string($rt)." AND 
@@ -141,13 +141,13 @@ class maps_api
 
 
 	/*
-	 * Get places by city
+	 * Get places by city/town
 	 */
-	function getMarkersByCity($city) {
+	function getMarkersByLocality($city) {
     	
     	// Build a query
     	$query = "SELECT `id`,`type`,`lat`,`lon`,`rating`,`city` FROM `t_points` WHERE 
-					`type` = 2 AND 
+					`type` = 1 AND 
 					`city` = '".mysql_real_escape_string($city)."'";
 
 	    // Build an array
@@ -175,7 +175,7 @@ class maps_api
     	
     	// Build a query
     	$query = "SELECT `id`,`type`,`lat`,`lon`,`rating`,`country` FROM `t_points` WHERE 
-					`type` = 2 AND 
+					`type` = 1 AND 
 					`country` = '".mysql_real_escape_string($country)."'";
 
 	    // Build an array
@@ -203,7 +203,7 @@ class maps_api
     	
     	// Build a query
     	$query = "SELECT `id`,`type`,`lat`,`lon`,`rating`,`continent` FROM `t_points` WHERE 
-					`type` = 2 AND 
+					`type` = 1 AND 
 					`continent` = '".mysql_real_escape_string($continent)."'";
 
 	    // Build an array
@@ -226,7 +226,24 @@ class maps_api
 
 
 	/*
-	 * Get continents
+	 * Get a country
+	 */
+	function getCountry($iso=false, $lang=false) {
+		global $settings;
+	
+		// Validate ISO country code
+		$codes = countrycodes();
+		if($iso===false OR strlen($iso) != 2 OR !isset($codes[strtoupper($iso)])) return $this->API_error("Wrong countrycode.");
+
+    	$result = country_info($iso, $lang);
+
+   		// Return
+   		return $this->output($result);
+    }
+
+
+	/*
+	 * Get countries
 	 * all: true | false (default)
 	 * coordinates: true | false (default)
 	 */
@@ -269,7 +286,7 @@ class maps_api
     	
     	// Build a query
     	$query = "SELECT `id`,`type`,`lat`,`lon`,`rating` FROM `t_points` WHERE 
-					`type` = 2";
+					`type` = 1";
 
 	    // Build an array
    		$res = mysql_query($query);
@@ -310,7 +327,7 @@ class maps_api
 	
 	/*
 	 * Add comment
-	 * Comment be an array including:
+	 * Comment must be an array including:
 	 * - place_id (required)
 	 * - comment (required)
 	 * - user_id (optional)
@@ -329,8 +346,13 @@ class maps_api
 	
 		// User ID
 		if(isset($comment["user_id"])) {
+			
+	 		$user = current_user();
+		
 			if(!is_numeric($comment["user_id"]) OR empty($comment["user_id"])) return $this->API_error("Invalid user ID.");
+			elseif($comment["user_id"] != $user["id"]) return $this->API_error("Posting commend failde. You need to be logged in. (".$user["id"].")");
 			else $user_id = $comment["user_id"];
+	
 		} else {
 			$user_id = "NULL";
 		}
@@ -372,6 +394,185 @@ class maps_api
 	
 	}
 
+	
+	/*
+	 * Add place
+	 * Place must be an array including:
+	 * - lat (required)
+	 * - lon (required)
+	 * - user_id (optional)
+	 * - descreption[lang_code] (optional) (as many as you wish) lang_code must be valid language in use.
+	 * - hitchability: 1-5 (optional)
+	 */
+	function addPlace($place=array()) {
+		global $settings;
+	
+		// Latitude
+		if(!isset($place["lat"]) OR empty($place["lat"]) OR !is_numeric($place["lat"])) return $this->API_error("Invalid latitude.");
+	
+	
+		// Longitude
+		if(!isset($place["lon"]) OR empty($place["lon"]) OR !is_numeric($place["lon"])) return $this->API_error("Invalid longitude.");
+		
+		
+		// Validate ISO country code
+		if(isset($place["country"]) OR isset($place["manual_country"])) {
+			
+			if(isset($place["country"])) $country_iso = $place["country"];
+			elseif(isset($place["manual_country"])) $country_iso = $place["manual_country"];
+			
+			$codes = countrycodes();
+			if($country_iso===false OR strlen($country_iso) != 2 OR !isset($codes[strtoupper($country_iso)])) return $this->API_error("Invalid countrycode.");
+		}
+		else return $this->API_error("Select country.");
+		
+		
+		// Continent
+		$continent = country_iso_to_continent($country_iso);
+		if($continent===false) return $this->API_error("Problem with the countrycode.");
+		
+		
+		// Description
+		$descreption_fields = "";
+		$descreptions = "";
+		foreach($settings["valid_languages"] as $code => $name) {
+		
+			if(isset($place["description_".$code]) & !empty($place["description_".$code])) {
+
+				// Build a bit of mysql query
+				$descreption_fields .= '`'.mysql_real_escape_string($code).'`, '; 
+				$descreptions .= "'".mysql_real_escape_string(htmlspecialchars($place["description_".$code]))."', "; 
+			
+			}
+		
+		}
+			
+	
+		// User ID
+		if(isset($place["user_id"])) {
+			
+	 		$user = current_user();
+		
+			if(!is_numeric($place["user_id"]) OR empty($place["user_id"])) return $this->API_error("Invalid user ID.");
+			elseif($place["user_id"] != $user["id"]) return $this->API_error("Adding place failed. You need to be logged in. (".$user["id"].")");
+			else $user_id = $place["user_id"];
+	
+		} else {
+			$user_id = "NULL";
+		}
+		
+		
+		// Type
+		if($place["type"] == 1 OR $place["type"] == 2) {
+			$type = $place["type"];
+		}
+		else $type = "NULL";
+		
+		
+		// City/town
+		if(isset($place["locality"]) && !empty($place["locality"])) {
+			$locality = "'".mysql_real_escape_string($place["locality"])."'";
+		} else $locality = 'NULL';
+		
+		
+		// Rating + rating count
+		if(isset($place["rating"])) {
+		
+			if(!is_numeric($place["rating"]) OR $place["rating"] < 0 OR $place["rating"] > 5) return $this->API_error("Invalid rating.");
+			elseif($place["rating"] == "0") {
+				$rating = 0;
+				$rating_count = 0;
+			}
+			else {
+				$rating = mysql_real_escape_string($place["rating"]);
+				$rating_count = 1;
+			}
+			
+		} else {
+			$rating = 0;
+			$rating_count = 0;
+		}
+		
+		// Waitingtime + waitingtime count
+		if(isset($place["waitingtime"])) {
+		
+			if(!is_numeric($place["waitingtime"]) OR $place["waitingtime"] < 0) return $this->API_error("Invalid waiting time.");
+			else {
+				$waitingtime = mysql_real_escape_string($place["waitingtime"]);
+				$waitingtime_count = 1;
+			}
+			
+		} else {
+			$waitingtime = "NULL";
+			$waitingtime_count = 0;
+		}
+		
+		
+		
+		
+		
+		
+		// Build a query
+		$query = "	INSERT INTO `t_points` (	`id`, 
+												`user`, 
+												`type`, 
+												`lat`, 
+												`lon`, 
+												".$descreption_fields."
+												`rating`, 
+												`rating_count`, 
+												`waitingtime`, 
+												`waitingtime_count`, 
+												`country`, 
+												`continent`, 
+												`locality`, 
+												`datetime`) 
+						VALUES (NULL, 
+								".$user_id.",
+								".$type.",
+								'".mysql_real_escape_string($place["lat"])."',
+								'".mysql_real_escape_string($place["lon"])."',
+								".$descreptions."
+								".$rating.",
+								".$rating_count.",  
+								".$waitingtime.",
+								".$waitingtime_count.",  
+								'".mysql_real_escape_string($country_iso)."', 
+								'".mysql_real_escape_string($continent)."', 
+								".$locality.", 
+								NOW())";
+	
+	    // Add place to the DB
+   		$res = mysql_query($query);
+   		if(!$res) return $this->API_error("Query failed!".$query);
+   		
+   		$result["id"] = mysql_insert_id();
+   		$result["success"] = true;
+   		
+   		
+   		// Add possible rating to the database
+   		if($rating_count != 0) {
+   			if($user_id=="NULL") $user_id = false;
+   		
+   			$this->rate($rating, $result["id"], $user_id);
+   		}
+   		
+   		
+   		// Add possible waitingtime to the database
+   		if($rating_count != 0) {
+   			if($user_id=="NULL") $user_id = false;
+   		
+   			$this->addWaitingtime($waitingtime, $result["id"], $user_id);
+   		}
+   		
+   		
+   		// Return
+   		return $this->output($result);
+	
+	}
+	
+	
+	
 	/*
 	 * Get all comments for a place
 	 * 
@@ -385,6 +586,93 @@ class maps_api
 		else return $this->output($result);
 	
 	}
+
+
+
+	/*
+	 * Add a waitingtime for a place
+	 * TODO: flood blocking by IP?
+	 */
+	 function addWaitingtime($waitingtime, $point_id, $user_id=false) {
+	 	
+	 	// Validating values
+		if(empty($point_id) OR !is_numeric($point_id)) return $this->API_error("Giving a waitingtime Failed. Wrong place ID.");
+		
+		if($waitingtime < 0 OR !is_numeric($waitingtime)) return $this->API_error("Giving a waitingtime Failed. Time must be at least one minute.");
+	
+		if($user_id!==false) {
+	 		$user = current_user();
+	 	
+			if(empty($user_id) OR !is_numeric($user_id)) return $this->API_error("Giving a waitingtime Failed. Wrong user ID.");
+			elseif($user_id != $user["id"]) return $this->API_error("Giving a waitingtime Failed. You need to be logged in. ".$user["id"]);
+			
+			$user = mysql_real_escape_string($user_id);
+		}
+		else $user = "NULL";
+
+
+
+		// Build a query
+		$query = "INSERT INTO `t_waitingtimes` (`id`,`fk_user`,`fk_point`,`waitingtime`,`datetime`,`ip`) 
+		    			VALUES (NULL, 
+		    					".$user.", 
+		    					".mysql_real_escape_string($point_id).", 
+		    					".mysql_real_escape_string($waitingtime).", 
+		    					NOW(),
+		    					'".$_SERVER['REMOTE_ADDR']."')";
+
+   		$res = mysql_query($query);
+   		if(!$res) return $this->API_error("Query failed! (1)");
+   		
+   		
+   		$result["success"] = true;
+   		$result["point_id"] = $point_id;
+   		$result["waitingtimes"] = waitingtimes($point_id);
+   		
+   		
+   		// Update "quick access info" to the t_points
+   		$res2 = mysql_query("UPDATE `t_points` SET `waitingtime` = '".mysql_real_escape_string(round($result["waitingtimes"]["avg"]))."',`waitingtime_count` = '".mysql_real_escape_string($result["waitingtimes"]["count"])."' WHERE `id` = ".mysql_real_escape_string($point_id).";");
+   		if(!$res2) return $this->API_error("Query failed! (2)");
+   			
+   		return $this->output($result);
+   		
+	 }
+
+
+
+	/*
+	 * Get a waitingtimes for a place
+	 */
+	 function waitingtime($point_id) {
+	 
+		if(empty($point_id) OR !is_numeric($point_id)) return $this->API_error("Getting a waitingtime Failed. Wrong place ID.");
+	 	
+	 	return $this->output( waitingtimes($point_id) );
+	 	
+	 }
+
+
+
+
+	/*
+	 * Delete profile
+	 */
+	 function deleteProfile($user_id) {
+	 	
+	 	// Only logged in user can delete himself, except admins can delete anybody
+	 	$user = current_user();
+	 		
+		if(empty($user_id) OR !is_numeric($user_id)) return $this->API_error("Wrong user ID.");
+		elseif($user_id != $user["id"] && $user["admin"] !== true) return $this->API_error("Deleting a profile failed. You need to be logged in. ".$user["id"]);
+
+	 	$res = mysql_query("DELETE FROM `t_users` WHERE `t_users`.`id` = ".mysql_real_escape_string($user_id)." LIMIT 1;");
+   		if(!$res) return $this->API_error("Query failed!");
+
+	 	return $this->output( array("success"=>true) );
+	 	
+	 }
+
+
 
 	/*
 	 * Rate a place

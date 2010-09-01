@@ -43,7 +43,7 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 * [GeoPlugin](http://www.geoplugin.com/)
 
 ## jQuery UI
-1.8.2 (stable, for jQuery 1.4+) custom includes:
+1.8.4 (stable, for jQuery 1.4+) custom includes:
 
 #### UI Core
 * Core
@@ -61,6 +61,7 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 * Dialog
 * Slider
 * Tabs
+* Datepicker
 
 #### Theme
 * UI lightness
@@ -72,6 +73,9 @@ Download from: [http://jqueryui.com/download](http://jqueryui.com/download)
 * Using a Google Street view API (check lisence)
 * Using [Panoramio](http://www.panoramio.com/) images
 * Using photos added to Hitchwiki
+* Show links to infopages about public transportation in city
+	* Save vector areas to the map and attach "usefull information about transportation"-links to that vector -> show somehow when browsing the maps
+* Show public transportation stops near hitchhiking spots
 
 
 ## Contact

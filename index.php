@@ -39,10 +39,20 @@ $user = current_user();
 $zoom = (isset($_GET["zoom"]) && ctype_digit($_GET["zoom"])) ? $_GET["zoom"] : '4';
 
 // Centered to Germany (51,9). Projection center would be '49','8.3'
+
 $lat = (isset($_GET["lat"]) && is_numeric($_GET["lat"])) ? $_GET["lat"] : '51';
 $lon = (isset($_GET["lon"]) && is_numeric($_GET["lon"])) ? $_GET["lon"] : '9';
 #$layers = (isset($_GET["layers"]) && !empty($_GET["layers"])) ? strip_tags($_GET["layers"]) : 'B';
 $layers = 'B';
+
+if(!isset($_GET["lat"]) && !isset($_GET["lon"]) && !empty($user["country"])) {
+	$countryinfo = country_info($user["country"]);
+	if($countryinfo!==false) {
+		$lat = $countryinfo["lat"];
+		$lon = $countryinfo["lon"];
+		if(!isset($_GET["zoom"])) $zoom = '5';
+	}
+}
 
 // Markers visible -level
 // Limit loading new markers only to this zoom level and deeper (bigger numbers = more zoom)
@@ -52,30 +62,62 @@ $markersZoomLimit = (isset($_COOKIE[$settings["cookie_prefix"]."markersZoomLimit
 
 
 if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", $_GET["place"])) {
-	$show_place = htmlspecialchars($_GET["place"]);
 	$place = get_place($_GET["place"], true);
+	if($place["error"]!==true) {
+		$show_place = htmlspecialchars($_GET["place"]);
+	}
+	else {
+		$show_place_error = true;
+		unset($place);
+	}
+/* 
+#Maybe here is a key to select one vector from a stack (JS)? (TODO)
+
+sm = new GeoExt.grid.FeatureSelectionModel({layers: layers});
+            t.ok(OpenLayers.Util.indexOf(layer.selectedFeatures,
+272	                                         features[0]) < 0,
+273	                 "click on row 0 does not select feature 0");
+274	            
+275	            // select feature 1
+276	            // test that the second row is not selected
+277	            sm.selectControl.select(features[1]);
+278	            t.ok(!sm.isSelected(1),
+279	                 "selecting feature 1 does not select row 1");
+
+*/
 }
 
+/*
+ *  Build a title
+ */
+// If place
+if(isset($show_place)) {
+    $title .= _("a Hitchhiking spot").' in '; 
+
+    // in city, country
+    if(!empty($place["location"]["locality"])) $title .= $place["location"]["locality"].', ';
+
+    $title .= $place["location"]["country"]["name"];
+    $title .= ' - ';
+}
+$title .= 'Hitchwiki '._("Maps");
+    
+    
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" dir="ltr" lang="<?php echo shortlang(); ?>">
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:og="http://opengraphprotocol.org/schema/" 
+	<?php 
+	// Load schema only if FB-tags are filled in config
+	if(!empty($settings["fb"])): ?>xmlns:fb="http://developers.facebook.com/schema/" <?php endif; ?>
+	dir="ltr" 
+	lang="<?php echo shortlang(); ?>">
     <head profile="http://gmpg.org/xfn/11">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
-    <title><?php
+    <title><?php echo $title; ?></title>
     
-    	// If place
-    	if(isset($show_place)) {
-    		echo _("a Hitchhiking spot").' in '; 
-    		// in city, country
-    		if(!empty($place["location"]["city"])) echo $place["location"]["city"].', ';
-    		
-    		echo $place["location"]["country"]["name"];
-    		
-    		echo ' - ';
-    	}
-    ?>Hitchwiki <?php echo _("Maps"); ?></title>
-    
-        <link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.2.custom.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.4.custom.css" media="all" />
 
         <!-- RPC -->
         <?php 
@@ -97,13 +139,13 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
         	/*
         	 * Misc settings
         	 */
-        	var ip = "<?php echo $_SERVER['REMOTE_ADDR']; ?>";
+			var ip = "<?php echo $_SERVER['REMOTE_ADDR']; ?>";
 			var geolocation = "lib/ipinfodb/ip_proxy.php";
 			var cookie_prefix = "<?php echo $settings["cookie_prefix"]; ?>";
 			var geolocation_cookiename = "<?php echo $settings["cookie_prefix"]; ?>_geolocation";
 			var geolocation_cookieoptions = { path: '/', expires: 24 };
 			var locale = "<?php echo $settings["language"]; ?>";
-
+			
 			/*
 			 * Default map settings
 			 */
@@ -121,7 +163,7 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
         <?php endif; */ ?>
         
         <script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-		<script src="static/js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
+		<script src="static/js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
 		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
         <script src="static/js/main.js<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" type="text/javascript"></script>
@@ -129,7 +171,7 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
         <!-- Keep main stylesheet after main.js -->
         <link rel="stylesheet" type="text/css" href="static/css/main.css<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" media="all" />
         
-        <script type="text/javascript">
+		<script type="text/javascript">
 		//<![CDATA[
 			<?php
 			
@@ -142,6 +184,10 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 			?>
 			$(document).ready(function() {
 			
+				<?php if(isset($_GET["demo"])): ?>
+				showCountry('fi');
+				<?php endif; ?>
+			
 				<?php // Open page
 				if(isset($_GET["page"]) && in_array($_GET["page"], $pages)): ?>
 				
@@ -150,7 +196,12 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 				<?php // Open marker
 				elseif(isset($show_place)): ?>
 				
-					showPlacePanel("<?php echo $show_place; ?>",true);
+					showPlacePanel("<?php echo $show_place; ?>", true);
+
+				<?php // Place asked, but didn't exist
+				elseif(isset($show_place_error)): ?>
+				
+					info_dialog("<?php echo _("Sorry, but the place cannot be found.<br /><br />The place you are looking for might have been removed or is temporarily unavailable."); ?>", "<?php echo _("The place cannot be found"); ?>", true);
 
 				<?php // Perform search
 				elseif(isset($_GET["q"]) && !empty($_GET["q"])): ?>
@@ -160,7 +211,7 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 				<?php endif; ?>
 			});
 		//]]>
-        </script>
+		</script>
 		<link rel="shortcut icon" href="<?php echo $settings["base_url"]; ?>/favicon.png" type="image/png" />
 		<link rel="bookmark icon" href="<?php echo $settings["base_url"]; ?>/favicon.png" type="image/png" />
 		<link rel="image_src" href="<?php echo $settings["base_url"]; ?>/badge.png" />
@@ -169,7 +220,7 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 		<meta name="description" content="<?php echo _("Find good places for hitchhiking and add your own."); ?>" />
 		
 		<!-- The Open Graph Protocol - http://opengraphprotocol.org/ -->
-		<meta property="og:title" content="Maps" />
+		<meta property="og:title" content="<?php echo $title; ?>" />
 		<meta property="og:site_name" content="Hitchwiki.org" />
 		<meta property="og:description" content="<?php echo _("Find good places for hitchhiking and add your own."); ?>" />
 		<meta property="og:image" content="<?php echo $settings["base_url"]; ?>/badge.png" />
@@ -179,12 +230,42 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 	<?php if(isset($place)): ?>
 		<meta property="og:latitude" content="<?php echo $place["lat"]; ?>" />
 		<meta property="og:longitude" content="<?php echo $place["lon"]; ?>" />
-		<meta property="og:locality" content="<?php echo $place["location"]["city"]; ?>" />
+		<meta property="og:locality" content="<?php echo $place["location"]["locality"]; ?>" />
 		<meta property="og:country-name" content="<?php echo $place["location"]["country"]["name"]; ?>" />
 	<?php endif; ?>
 
+		<?php if(isset($settings["fb"]["admins"]) && !empty($settings["fb"]["admins"])): ?><meta property="fb:admins" content="<?php echo $settings["fb"]["admins"]; ?>" /><?php endif; ?>
+		<?php if(isset($settings["fb"]["page_id"]) && !empty($settings["fb"]["page_id"])): ?><meta property="fb:page_id" content="<?php echo $settings["fb"]["page_id"]; ?>" /><?php endif; ?>
+		<?php if(isset($settings["fb"]["app"]["id"]) && !empty($settings["fb"]["app"]["id"])): ?><meta property="fb:app_id" content="<?php echo $settings["fb"]["app"]["id"]; ?>" /><?php endif; ?>
+
 		<link rel="search" type="application/opensearchdescription+xml" href="<?php echo $settings["base_url"]; ?>/opensearch/" title="Hitchwiki <?php echo _("Maps"); ?>" />
 		
+		<?php if(isset($settings["fb"]["app"]["id"]) && !empty($settings["fb"]["app"]["id"])): ?>
+		<div id="fb-root"></div>
+		<script>
+		/*
+		 * Load Facebook JavaScript SDK
+		 * http://developers.facebook.com/docs/reference/javascript/
+		 */
+		  window.fbAsyncInit = function() {
+		    FB.init({appId: '<?php echo $settings["fb"]["app"]["id"]; ?>', status: true, cookie: true,
+		             xfbml: true});
+		  };
+		  (function() {
+		    var e = document.createElement('script'); e.async = true;
+		    e.src = document.location.protocol +
+		      '//connect.facebook.net/<?php
+		      	
+		      	// Localization + a little language fix
+		      	if($settings["language"] == "en_UK") echo 'en_US';
+		      	else echo $settings["language"]; 
+		      	
+		      ?>/all.js';
+		    document.getElementById('fb-root').appendChild(e);
+		  }());
+		</script>
+		<?php endif; ?>
+				
 		<!--[if lt IE 7]>
 		<style type="text/css"> 
     	    .png,
@@ -196,11 +277,7 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 		<![endif]-->
     </head>
     <body class="<?php echo $settings["language"]; ?>">
-		
-		<!-- AJAX Content Area for pages and cards-->
-		<div id="pages"></div>
-		<div id="cards"></div>
-		
+
 		<div id="Content">
 	
 		<div id="Header">
@@ -209,7 +286,11 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 				<h2><?php echo _("Maps"); ?></h2>
 
 				<div class="Navigation">
+					<!--
 					<a href="http://hitchwiki.org/en/Main_Page"><?php echo _("Wiki"); ?></a> | <a href="http://blogs.hitchwiki.org/"><?php echo _("Blogs"); ?></a> | <a href="http://hitchwiki.org/planet/"><?php echo _("Planet"); ?></a>
+					-->
+				 	<b><a href="http://maps.hitchwiki.org/">This is under development! See current working version.</a></b>
+				
 				</div>
 
 				<h3><?php echo _("Find good places for hitchhiking and add your favorites"); ?></h3>
@@ -292,7 +373,22 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 							<button type="submit" id="submit" tabindex="5" class="button align_right"><span class="icon lock"><?php echo _("Login"); ?></span></button>
 							<div id="rememberMeRow" class="align_left"><input type="checkbox" value="1" name="remember_me" id="remember_me" tabindex="4" /> <label for="remember_me"><?php echo _("Remember me"); ?></label></div>
 							<br />
-							<small id="lostPasswordRow"><a href="./?page=lost_password" id="lost_password" class="pagelink"><?php echo _("Lost password?"); ?></a></small>
+							<small id="login_meta">
+								<?php /*if(isset($settings["fb"]["app"]["id"]) && !empty($settings["fb"]["app"]["id"])): ?>
+									<div class="align_right">
+										<?php 
+										#<fb:login-button width="50" max-rows="1"></fb:login-button>
+										 ?>
+										
+										<a href="#" onclick="login_with_facebook();" class="icon facebook" style="margin: 2px 0 0 3px; padding-top: 3px; display: block; float: right;">Login with Facebook</a>
+									</div>
+								<?php endif; */ ?>
+								
+								<a href="./?page=lost_password" id="lost_password" class="pagelink"><?php echo _("Lost password?"); ?></a>
+								
+							</small>
+							
+							
 						</form>
 					</div>
 				<?php endif; ?>
@@ -318,12 +414,12 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 								
 							</li>
 							
-							<li id="nearby" class="hidden">
+							<li id="nearby" style="display:none;">
 								<span class="icon map_magnify"><?php echo _("Nearby places from"); ?>:</span><br />
 								<ul>
-									<li class="city hidden"><a href="#" title="<?php echo _("Show on the map"); ?>"></a></li>
-									<li class="state hidden"><a href="#" title="<?php echo _("Show on the map"); ?>"></a></li>
-									<li class="country hidden"><a href="#" title="<?php echo _("Show on the map"); ?>"></a></li>
+									<li class="locality" style="display:none;"><a href="#" title="<?php echo _("Show the city on the map"); ?>"></a></li>
+									<li class="state" style="display:none;"><a href="#" title="<?php echo _("Show the state on the map"); ?>"></a></li>
+									<li class="country" style="display:none;"><a href="#" title="<?php echo _("Show the country on the map"); ?>"></a></li>
 								</ul>
 							</li>
 						</ul>
@@ -334,7 +430,7 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 						<ul>
 							<li><a href="#" id="news" class="icon new pagelink"><b><?php echo _("Ooh! New Maps!"); ?></b></a></li>
 							
-							<li><a href="#" id="add_place" class="icon add cardlink"><?php echo _("Add place"); ?></a></li>
+							<li><a href="#" id="add_place" class="icon add"><?php echo _("Add place"); ?></a></li>
 							<li><a href="#" id="tools" class="icon lorry"><?php echo _("Tools"); ?></a></li>
 							<li><a href="./?page=countries" id="countries" class="icon world pagelink"><?php echo _("Countries"); ?></a></li>
 							<?php /*
@@ -342,7 +438,7 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 							<li><a href="#" id="new_collection" class="icon table_add pagelink"><?php echo _("New collection"); ?></a></li>
 							*/ ?>
 							<li><a href="#" id="link_here" class="icon link cardlink"><?php echo _("Link here"); ?></a></li>
-							<li><a href="#" id="download" class="icon tag cardlink"><?php echo _("Download KML"); ?></a></li>
+							<li><a href="#" id="download" class="icon page_white_put cardlink"><?php echo _("Download"); ?></a></li>
 							<li><a href="./?page=help" id="help" class="icon help pagelink"><?php echo _("Help & About"); ?></a></li>
 							<li><a href="./?page=statistics" id="statistics" class="icon chart_bar pagelink"><?php echo _("Statistics"); ?></a></li>
 						</ul>
@@ -381,7 +477,7 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 			    	<li>
 			    		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" title="<?php echo _("Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"); ?>"><img alt="Creative Commons License" src="static/gfx/cc-by-sa.png"/></a>
 			    		&nbsp;
-			    		<a href="http://www.facebook.com/pages/Hitchwiki/133644853341506" class="icon facebook" style="margin: 2px 0 0 3px; display: block; float: right;">Facebook</a>
+			    		<a href="http://www.facebook.com/pages/Hitchwiki/133644853341506" class="icon facebook" style="margin: 2px 0 0 3px; padding-top: 3px; display: block; float: right;">Facebook</a>
 			    	</li>
 
 			    	<li>
@@ -408,6 +504,28 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 			</div>
 	        
 	        
+	        <!-- Adding a alace panel -->
+	       <div id="AddPlacePanel">
+	       		<h4 class="icon add"><?php echo _("Add place"); ?></h4>
+	       	</div>
+	        <!-- /Adding a alace panel -->
+	        
+	        
+			<!-- AJAX Content Area for pages-->
+			<div id="pages">
+				<a href="#" class="close ui-button ui-corner-all ui-state-default ui-icon ui-icon-closethick">Close</a>
+				<div class="page">
+					<div class="content"> </div>
+				</div>
+			</div>
+			<!-- /pages -->
+	        
+	        
+			<!-- cards -->
+			<div id="cards"></div>
+			<!-- /pages -->
+	        
+	        
 	        <!-- The Map -->
 	        <div id="map">
 	        	<br /><br />
@@ -415,13 +533,18 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 			</div>
 	       <!-- /map -->
 	       
+	       
 	        <!-- The Place panel -->
 	       <div id="PlacePanel"></div>
 	       <!-- /Place panel -->
 	       
-	       <!-- tools -->
+	       
+	       <!-- Tools -->
 	       <div id="toolsPanel" class="hidden">
-	       		<h4 class="icon lorry"><?php echo _("Tools"); ?></h4>
+	       		<h4 class="icon lorry">
+	       			<?php echo _("Tools"); ?>
+	       			<a href="#" class="close ui-icon ui-icon-closethick align_right" tittle="Close">Close</a>
+	       		</h4>
 				<div id="controlToggle">
 				
 				        <span class="icon cursor">
@@ -470,18 +593,35 @@ if(isset($_GET["place"]) && $_GET["place"] != "" && preg_match ("/^([0-9]+)$/", 
 				</div>
 	       </div>
 	       <!-- /tools -->
+	       
 
 	        <!-- Placeholder for simple error/info -dialog. see info_dialog(); from main.js for more. -->
 	       <div id="dialog-message"></div>
 	       
+	       
 	       <!-- Loading -bar -->
 	       <div id="loading-bar"><small class="title"></small></div>
+	       
 	       
 		<!-- /Content -->
 		</div>
 		
 		<!-- for debugging -->
-		<div id="log" class="hidden"><ul></ul></div>
-		
+		<div id="log" class="hidden"><b class="handle">Log</b><ul></ul></div>
+
+<?php // Google analytics
+if(isset($settings["google_analytics_id"]) && !empty($settings["google_analytics_id"])): ?>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("<?php echo $settings["google_analytics_id"]; ?>");
+pageTracker._trackPageview();
+} catch(err) {}</script>  
+
+<?php endif; ?>
     </body>
 </html>

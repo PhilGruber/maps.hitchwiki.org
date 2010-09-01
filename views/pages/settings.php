@@ -10,11 +10,11 @@ echo '<h2>'._("Settings").'</h2>';
 // Show only when logged in
 if($user["logged_in"]===true): ?>
 
-<?php if($user["admin"]===true): ?>
-	<p><span class="icon tux"><?php echo _("You are an administrator."); ?></span></p>
-<?php endif; ?>
-
-<?php include('profile_form.php'); ?>
+	<?php if($user["admin"]===true): ?>
+		<p><span class="icon tux"><?php echo _("You are an administrator."); ?></span></p>
+	<?php endif; ?>
+	
+	<?php include('profile_form.php'); ?>
 
 <?php 
 // Not logged in?

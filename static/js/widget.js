@@ -21,10 +21,6 @@ $(document).ready(function() {
 		eventListeners: {
 		    "moveend": refreshMapMarkers
 		},
-	    controls: [
-	        new OpenLayers.Control.Navigation(),
-	        new OpenLayers.Control.ScaleLine()
-	    ],
 	    numZoomLevels: 6
 	    
 	});
@@ -124,7 +120,7 @@ function onFeatureSelect(feature) {
     popup = new OpenLayers.Popup.FramedCloud("Info", 
 							point,
 							null,
-							'<div style="font-size:.8em">' + description +'</div>',//<small><a target="_top" href="./?place=' + feature.attributes.id +'">'+read_more_txt+'</a></small></div>',
+							'<div style="font-size: 11px; line-height: 12px; width: 250px;">' + description +'</div>',//<small><a target="_top" href="./?place=' + feature.attributes.id +'">'+read_more_txt+'</a></small></div>',
 							{
 								'size': new OpenLayers.Size(15,15), 
 								'offset': new OpenLayers.Pixel(5,offset)

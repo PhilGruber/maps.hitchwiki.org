@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Hitchwiki Maps 2.0\n"
 "Report-Msgid-Bugs-To: help@liftershalte.info\n"
 "POT-Creation-Date: 2010-05-27 04:21+0000\n"
-"PO-Revision-Date: 2010-05-28 04:15+0200\n"
+"PO-Revision-Date: 2010-07-13 21:37+0200\n"
 "Last-Translator: Mikael Korpela <mikael@ihminen.org>\n"
 "Language-Team: Mikael Korpela <mikael@ihminen.org>, Hitchwiki Maps <help@liftershalte.info>\n"
 "MIME-Version: 1.0\n"
@@ -91,8 +91,8 @@ msgid "New collection"
 msgstr "Uusi kokoelma"
 
 #: index.php
-msgid "All points"
-msgstr "Kaikki pisteet"
+msgid "Countries"
+msgstr "Maat"
 
 #: index.php
 msgid "My points"
@@ -146,6 +146,14 @@ msgstr "Virhe!"
 msgid "There are currently %s places marked."
 msgstr "%s paikkaa merkittynä tällä hetkellä."
 
+#: complete_statistics.php
+msgid "See more compact statistics."
+msgstr "Suppeammat tilastot."
+
+#: statistics.php
+msgid "See more complete statistics."
+msgstr "Laajemmat tilastot."
+
 #: statistics.php
 msgid "Top countries"
 msgstr "Top maat"
@@ -153,6 +161,22 @@ msgstr "Top maat"
 #: statistics.php
 msgid "Top users"
 msgstr "Top käyttäjät"
+
+#: statistics.php
+msgid "Top cities"
+msgstr "Top cities"
+
+#: statistics.php
+msgid "Top %s countries"
+msgstr "Top %s maat"
+
+#: statistics.php
+msgid "Top %s users"
+msgstr "Top %s käyttäjät"
+
+#: statistics.php
+msgid "Top %s cities"
+msgstr "Top %s kaupungit"
 
 #: statistics.php
 msgid "Country"
@@ -164,39 +188,80 @@ msgstr "Käyttäjä"
 
 #: statistics.php
 msgid "Places"
-msgstr "Paikat"
+msgstr "Paikkoja"
 
-#: statistics.php
+#: functions.php
+msgid "Select"
+msgstr "Valitse"
+
+#: statistics.php, map_statistics.php, country.php
 msgid "Hitchability"
 msgstr "Liftattavuus"
 
-msgid "Germany"
-msgstr "Saksa"
+#: countries.php
+msgid "I haven't been everywhere, but it's on my list."
+msgstr "En ole vielä käynyt kaikkialla, mutta se on listallani."
 
-msgid "France"
-msgstr "Ranska"
+msgid "Places in Maps"
+msgstr "Paikkoja kartalla"
 
-msgid "Netherlands"
-msgstr "Alankomaat"
+msgid "Cities in Maps"
+msgstr "Kaupunkeja kartalla"
 
-msgid "United Kingdom"
-msgstr "Iso-Britannia"
+msgid "Capital"
+msgstr "Pääkaupunki"
 
-msgid "Poland"
-msgstr "Puola"
+msgid "Area"
+msgstr "Alue"
 
-msgid "Belgium"
-msgstr "Belgia"
+msgid "Population"
+msgstr "Väestö"
 
-msgid "Latvia"
-msgstr "Latvia"
+msgid "Currency"
+msgstr "Valuutta"
 
-msgid "Canada"
-msgstr "Kanada"
+msgid "City"
+msgstr "Kaupunki"
 
-msgid "Lithuania"
-msgstr "Liettua"
+msgid "Download a KML-file of markers"
+msgstr "Lataa paikat KML-tiedostona"
 
-msgid "United states"
-msgstr "Yhdysvallat"
+msgid "Zipped"
+msgstr "Pakattuna"
+
+msgid "World"
+msgstr "Maailma"
+
+msgid "Visible area on the map"
+msgstr "Kartalla näkyvä alue"
+
+msgid "Continent"
+msgstr "Maanosa"
+
+msgid "Place density"
+msgstr "Paikkatiheys"
+
+msgid "Very good"
+msgstr "Erinomainen"
+
+msgid "Good"
+msgstr "Hyvä"
+
+msgid "Average"
+msgstr "Keskiverto"
+
+msgid "Bad"
+msgstr "Huono"
+
+msgid "Senseless"
+msgstr "Järjetön"
+
+msgid "Cancel"
+msgstr "Peruuta"
+
+msgid "Type"
+msgstr "Tyyppi"
+
+msgid "Address"
+msgstr "Osoite"
 

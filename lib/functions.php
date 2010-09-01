@@ -70,7 +70,9 @@ function get_place($id=false, $more=false) {
 					`type`,
 					`lat`,
 					`lon`,
-					`rating`";
+					`rating`,
+					`waitingtime`,
+					`waitingtime_count`";
 		 
 		// Get more wider set of info
 		if($more==true) {
@@ -79,7 +81,7 @@ function get_place($id=false, $more=false) {
 						`rating_count`,
 			    		`country`,
 			    		`continent`,
-			    		`city`,
+			    		`locality`,
 			    		`datetime`";
 									
 			// Add all available languages to the query
@@ -90,11 +92,17 @@ function get_place($id=false, $more=false) {
 		}//if more end
 		
 		$query .= " FROM `t_points` 
-		    		WHERE `type` = 2 AND `id` = ".mysql_real_escape_string($id)."
+		    		WHERE `type` = 1 AND `id` = ".mysql_real_escape_string($id)."
 		    		LIMIT 1";
 
 		$res = mysql_query($query);
-
+		
+		// Return error for no result
+		if(!$res OR mysql_affected_rows() <= 0) {
+			$place["error"] = true;
+			return $place;
+		}
+		
 		// Loop data in to an array
 		while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
 		    
@@ -102,7 +110,7 @@ function get_place($id=false, $more=false) {
 		 	$place["lon"] = $r["lon"];
 		 	
 		 	if($more==true) {
-		 		$place["location"]["city"] = $r["city"];
+		 		$place["location"]["locality"] = $r["locality"];
 		 		$place["location"]["country"]["iso"] = $r["country"];
 		 		$place["location"]["country"]["name"] = ISO_to_country($r["country"]);
 		 		$place["location"]["continent"]["code"] = $r["continent"];
@@ -137,15 +145,30 @@ function get_place($id=false, $more=false) {
 				else {
 					$place["rating_stats"]["rating_count"] = $r["rating_count"];
 				}
+					
+					
+		 		$place["waiting_stats"]["avg"] = $r["waitingtime"];
+		 		$place["waiting_stats"]["avg_textual"] = nicetime($r["waitingtime"]);
+					
+				// Get stats about waitingtimes if we know there are more than one
+				if($r["waitingtime_count"] > 1) {
+					
+					$place["waiting_stats"] = waitingtimes($id);
+					
+				} // end if more than 1
+				else {
+					$place["waiting_stats"]["count"] = $r["waitingtime_count"];
+				}
 				
 				
+					
+					
 				// Comments
 		 		$place["comments"] = get_comments($id);
 		 		$place["comments_count"] = count($place["comments"]);
 			} // end more
 		
 		} // while end
-		
 		
    
    		// output
@@ -164,38 +187,80 @@ function get_place($id=false, $more=false) {
  * Get rating statistics for a place
  * id: fk_point in t_ratings (required)
  */
-function rating_stats($id) {
+function rating_stats($id=false) {
 
-	if(empty($id) OR !is_numeric($id)) return false;
-
-	$rating_query = "SELECT `fk_user`,`fk_point`,`rating`,
+	
+	$query = "SELECT `fk_user`,`fk_point`,`rating`,
 		    COUNT(DISTINCT rating) AS different_ratings,
 		    COUNT(*) AS ratings_count,	
 		    AVG(rating) AS avg_rating
-		    FROM t_ratings 
-		    WHERE `fk_point` = ".mysql_real_escape_string($id)." 
-		    GROUP BY rating WITH ROLLUP";
+		    FROM t_ratings ";
+		    
+	if($id!==false && !empty($id) && is_numeric($id)) $query .= "WHERE `fk_point` = ".mysql_real_escape_string($id);
 	
-	$place = array();
-	$rating_res = mysql_query($rating_query);
-	while($rating_r = mysql_fetch_array($rating_res, MYSQL_ASSOC)) {
+	$query .= " GROUP BY rating WITH ROLLUP";
+	
+	$stats = array();
+	$res = mysql_query($query);
+	while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	
 	    // It's inforow collected from all ratings
-	    if(empty($rating_r["rating"])) {
-	    	$place["exact_rating"] = $rating_r["avg_rating"];
-	    	$place["rating_count"] = $rating_r["ratings_count"];
-	    	$place["different_ratings"] = $rating_r["different_ratings"];
+	    if(empty($r["rating"])) {
+	    	$stats["exact_rating"] = $r["avg_rating"];
+	    	$stats["rating_count"] = $r["ratings_count"];
+	    	$stats["different_ratings"] = $r["different_ratings"];
 	    }
 	    // Single rating number 1-5
 	    else {
-	    	$place["ratings"][$rating_r["rating"]]["rating"] = $rating_r["rating"];
-	    	$place["ratings"][$rating_r["rating"]]["rating_count"] = $rating_r["ratings_count"];
+	    	$stats["ratings"][$r["rating"]]["rating"] = $r["rating"];
+	    	$stats["ratings"][$r["rating"]]["rating_count"] = $r["ratings_count"];
 	    }
 	}
 	
-	return $place;
+	return $stats;
 }
 
+
+/*
+ * Get waiting time statistics for a place
+ * id: fk_point in t_waitingtimes (required)
+ */
+function waitingtimes($id=false) {
+
+	
+	$query = "SELECT `fk_user`,`fk_point`,`waitingtime`,
+		    COUNT(DISTINCT waitingtime) AS different_times,
+		    COUNT(*) AS count,	
+		    AVG(waitingtime) AS avg
+		    FROM t_waitingtimes ";
+		    
+	if($id!==false && !empty($id) && is_numeric($id)) $query .= "WHERE `fk_point` = ".mysql_real_escape_string($id);
+	
+	
+	$query .= " GROUP BY waitingtime WITH ROLLUP";
+	
+	$stats = array();
+	$res = mysql_query($query);
+	while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
+	
+	    // It's inforow collected from all waitingtimes
+	    if(empty($r["waitingtime"])) {
+	    	$stats["avg"] = round($r["avg"]);
+	    	$stats["avg_textual"] = nicetime(round($r["avg"]));
+	    	$stats["count"] = $r["count"];
+	    	$stats["different_times"] = $r["different_times"];
+	    }
+	    /*
+	    else {
+	    	$stats["times"][$r["waitingtime"]]["minutes"] = $r["waitingtime"];
+	    	$stats["times"][$r["waitingtime"]]["count"] = $r["count"];
+	    }
+	    */
+	}
+	
+	return $stats;
+	
+}
 
 
 /* 
@@ -271,7 +336,7 @@ function list_countries($type="array", $order="markers", $limit=false, $count=tr
 	// Build up a query
 	$query = "SELECT `country`, count(*) AS cnt
 	                    FROM `t_points`
-	                    WHERE type=2
+	                    WHERE `type` = 1
 	                    GROUP BY `country`";
 	
 	
@@ -284,23 +349,23 @@ function list_countries($type="array", $order="markers", $limit=false, $count=tr
 
 	// Create an array out of this stuff
 	$i=0;
-	while($r = mysql_fetch_row($res)) {
+	while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
 	
 		// Remove "used" country from empty countries -list
-		if($world==true) unset($empty_countries[$r[0]]);
+		if($world==true) unset($empty_countries[$r['country']]);
 	
 		// Gather an array
-		$country_array[$r[0]]["iso"] = $r[0];
-		$country_array[$r[0]]["name"] = ISO_to_country($r[0], $codes);
-		$country_array[$r[0]]["places"] = $r[1];
+		$country_array[$r['country']]["iso"] = $r['country'];
+		$country_array[$r['country']]["name"] = ISO_to_country($r['country'], $codes);
+		$country_array[$r['country']]["places"] = $r['cnt'];
 		
 		// Add also coordinates if requested
-		if($coordinates==true && $country_coordinates[$r[0]]["lat"] != "" && $country_coordinates[$r[0]]["lon"] != "") {
-			$country_array[$r[0]]["lat"] = $country_coordinates[$r[0]]["lat"];
-			$country_array[$r[0]]["lon"] = $country_coordinates[$r[0]]["lon"];
+		if($coordinates==true && $country_coordinates[$r['country']]["lat"] != "" && $country_coordinates[$r['country']]["lon"] != "") {
+			$country_array[$r['country']]["lat"] = $country_coordinates[$r['country']]["lat"];
+			$country_array[$r['country']]["lon"] = $country_coordinates[$r['country']]["lon"];
 		} elseif($coordinates==true) {
-			$country_array[$r[0]]["lat"] = "";
-			$country_array[$r[0]]["lon"] = "";
+			$country_array[$r['country']]["lat"] = "";
+			$country_array[$r['country']]["lon"] = "";
 		}
 		
 		// limit results if asked to
@@ -380,7 +445,7 @@ function list_cities($type="array", $order="markers", $limit=false, $count=true,
 	$codes = countrycodes();
 	
 	// Start building a query
-	$query = "SELECT country, city, count(*) AS cnt FROM `t_points` WHERE type=2";
+	$query = "SELECT country, locality, count(*) AS cnt FROM `t_points` WHERE `type` = 1 AND `locality` IS NOT NULL";
 	
 	// Only from some specific country
 	if($country != false && strlen($country) == 2) {
@@ -400,57 +465,57 @@ function list_cities($type="array", $order="markers", $limit=false, $count=true,
 	
 	
 	// Continue with query...
-	$query .= " GROUP BY country, city ORDER BY cnt DESC";
+	$query .= " GROUP BY country, locality ORDER BY cnt DESC";
 	
 
     $res = mysql_query($query);
 
 	$i=0;
-	while($r = mysql_fetch_row($res)) {
+	while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
 		/* 
 		 * $r[#]:
 		 * 0 = countrycode
-		 * 1 = city
+		 * 1 = locality
 		 * 2 = markercount
 		 */
 
-		$countryname = ISO_to_country($r[0], $codes);
+		$countryname = ISO_to_country($r['country'], $codes);
 	
 	
 		if($type=="option") {
-			echo '<option value="'.$r[1].'" class="'.strtolower($r[0]).'">'.$r[1];
+			echo '<option value="'.$r['locality'].'" class="'.strtolower($r['country']).'">'.$r['locality'];
 			
 			if($country != false) echo ', '.$countryname;
 			
-			if($count==true) echo ' ('.$r[2].')';
+			if($count==true) echo ' ('.$r['cnt'].')';
 			
 			echo '</option>';
 		}
 		elseif($type=="li") {
 		
-			if($country == false) echo '<li><img class="flag" alt="'.strtolower($r[0]).'" src="static/gfx/flags/png/'.strtolower($r[0]).'.png" /> '.$r[1].', '.$countryname;
-			else echo '<li>'.$r[1];
+			if($country == false) echo '<li><img class="flag" alt="'.strtolower($r['country']).'" src="static/gfx/flags/png/'.strtolower($r['country']).'.png" /> '.$r['locality'].', '.$countryname;
+			else echo '<li>'.$r['locality'];
 			
-			if($count==true) echo ' <small class="grey">('.$r[2].')</small>';
+			if($count==true) echo ' <small class="grey">('.$r['cnt'].')</small>';
 			
 			echo '</li>';
 		}
 		elseif($type=="tr") {
-			echo '<tr><td>'.$r[1].'</td>';
+			echo '<tr><td>'.$r['locality'].'</td>';
 			
-			if($country == false) echo '<td><img class="flag" alt="'.strtolower($r[0]).'" src="static/gfx/flags/png/'.strtolower($r[0]).'.png" /> '.$countryname.'</td>';
+			if($country == false) echo '<td><img class="flag" alt="'.strtolower($r['country']).'" src="static/gfx/flags/png/'.strtolower($r['country']).'.png" /> '.$countryname.'</td>';
 			
-			if($count == true) echo '<td>'.$r[2].'</td>';
+			if($count == true) echo '<td>'.$r['cnt'].'</td>';
 			
 			echo '</tr>';
 		}
 		else {
-			$array[$i]["city"] = $r[1];
+			$array[$i]["locality"] = $r['locality'];
 			if($country == false) {
-				$array[$i]["country_iso"] = $r[0];
+				$array[$i]["country_iso"] = $r['country'];
 				$array[$i]["country_name"] = $countryname;
 			}
-			$array[$i]["places"] = $r[2];
+			$array[$i]["places"] = $r['cnt'];
 		}
 		
 		if($limit!=false && $i==$limit) break;
@@ -506,13 +571,13 @@ function list_continents($type="array", $count=false) {
 		
 		$query = "SELECT `continent`, count(*) AS cnt
 	                    FROM `t_points`
-	                    WHERE type=2
+	                    WHERE `type` = 1
 	                    GROUP BY `continent`  ORDER BY cnt DESC";
 	
     	$res = mysql_query($query);
 		
-		while($r = mysql_fetch_row($res)) {
-			$continents[$r[0]]["places"] = $r[1];
+		while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
+			$continents[$r["continent"]]["places"] = $r["cnt"];
 		}
 	}
 	
@@ -559,7 +624,7 @@ function list_continents($type="array", $count=false) {
 function total_places($country=false) {
 
 	// Start building a query
-	$query = "SELECT COUNT(id) FROM t_points WHERE type=2";
+	$query = "SELECT COUNT(id) FROM t_points WHERE `type` = 1";
 
 	// Query just from one country
 	if($country != false && strlen($_GET["country"]) == 2) $query .= " AND country = '".$country."'";
@@ -577,6 +642,34 @@ function total_places($country=false) {
 	}
 }
 
+function country_info($iso=false, $lang=false) {
+    global $settings;
+
+    // Validate ISO country code
+    $codes = countrycodes();
+    if($iso===false OR strlen($iso) != 2 OR !isset($codes[strtoupper($iso)])) return false;;
+    
+    // Validate language		
+    if($lang===false OR empty($lang) OR !isset($settings["valid_languages"][$lang])) $lang = $settings["language"]; 
+
+	// Build a query
+	$query = "SELECT `iso`,`".mysql_real_escape_string($lang)."`,`lat`,`lon` FROM `t_countries` WHERE `iso` = '".mysql_real_escape_string(strtoupper($iso))."' LIMIT 1";
+
+    // Build an array
+	$res = mysql_query($query);
+	if(!$res) return false;
+	$i=0;
+    while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
+	    $result["iso"] = $r["iso"];
+	    $result["name"] = $r[$lang];
+	    $result["lat"] = $r["lat"];
+	    $result["lon"] = $r["lon"];
+	    $i++;
+	}
+
+	// Return
+	return $result;
+}
 
 /* 
  * Get countrycode list in two forms:
@@ -603,7 +696,7 @@ function countrycodes($first="code", $lang="", $lowercase=false) {
 	// Most likely it's en_UK
 	if($lang != $settings["default_language"]) $query .= ", ".mysql_real_escape_string($settings["default_language"]);
 	
-	$query .= " FROM country";
+	$query .= " FROM `t_countries`";
 
 
 	// Gather data
@@ -647,7 +740,7 @@ function country_coordinates() {
 
 	// Gather data
 	start_sql();
-	$result = mysql_query("SELECT iso, lat, lon FROM country");
+	$result = mysql_query("SELECT iso, lat, lon FROM `t_countries`");
 	if (!$result) {
 	   die("Error: SQL query failed with country_coordinates()");
 	}
@@ -678,7 +771,7 @@ function country_to_ISO($country,$db=false, $lang="") {
 		
 			// Gather data
 			start_sql();
-			$result = mysql_query("SELECT iso,en_UK FROM country WHERE en_UK = '".mysql_real_escape_string($country)."' LIMIT 1");
+			$result = mysql_query("SELECT iso,en_UK FROM `t_countries` WHERE en_UK = '".mysql_real_escape_string($country)."' LIMIT 1");
 			if (!$result) {
 	   			die("query failed.");
 			}
@@ -715,7 +808,7 @@ function ISO_to_country($iso, $db=false, $lang="") {
 		
 			// Gather data
 			start_sql();
-			$result = mysql_query("SELECT iso,".mysql_real_escape_string($lang)." FROM country WHERE iso = '".mysql_real_escape_string(strtoupper($iso))."' LIMIT 1");
+			$result = mysql_query("SELECT iso,".mysql_real_escape_string($lang)." FROM `t_countries` WHERE iso = '".mysql_real_escape_string(strtoupper($iso))."' LIMIT 1");
 			if (!$result) {
 	   			die("query failed.");
 			}
@@ -760,6 +853,32 @@ function continent_name($code="") {
 	else return $code;
 }
 
+
+/* 
+ * In which continent this country is in?
+ * Returns a short code against country ISO code
+ * FI => EU
+ */
+function country_iso_to_continent($code="") {
+
+	if(!empty($code) && strlen($code) == 2) {
+		start_sql();
+		
+		// Get a continetn code from database
+		$res = mysql_query("SELECT `iso`,`continent` FROM `t_countries` WHERE `iso` = '".mysql_real_escape_string(strtoupper($code))."' LIMIT 1");
+		if(!$res) return false;
+		
+		// If we have a result, go and get the name
+		if(mysql_num_rows($res) > 0) {
+		    while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
+		    	return $r["continent"];
+		    }
+		}
+	}
+}
+
+
+
 /* 
  * Return a user name by ID
  */
@@ -769,8 +888,8 @@ function username($id) {
 		start_sql();
 		
 		// Get users name from database
-		$res = mysql_query("SELECT `id`,`name` FROM `users` WHERE `id` = ".mysql_real_escape_string($id)." LIMIT 1");
-		if(!$res) return _("Unknown");
+		$res = mysql_query("SELECT `id`,`name` FROM `t_users` WHERE `id` = ".mysql_real_escape_string($id)." LIMIT 1");
+		if(!$res) return _("Anonymous");
 		
 		// If we have a result, go and get the name
 		if(mysql_num_rows($res) > 0) {
@@ -778,10 +897,11 @@ function username($id) {
 		    	return htmlspecialchars($r["name"]);
 		    }
 		}
-		else return _("Unknown");
+		else return _("Anonymous");
 	}
-	else return _("Unknown");
+	else return _("Anonymous");
 }
+
 
 
 /* 
@@ -796,6 +916,31 @@ function hitchability2textual($rating=false) {
 	elseif($rating == 5) return _("Senseless");
 	else return _("Unknown");
 }
+
+
+
+/*
+ * Return time in nice hours/minutes -format
+ * TODO
+ */
+function nicetime($minutes) {
+
+
+	if(!is_numeric($minutes) OR $minutes < 0) return _("Unknown");
+	elseif($minutes < 60) return $minutes._("min");
+	else {
+		$hours = floor($minutes/60);
+		$return = $hours._("h");
+		
+		$leftover = $minutes-($hours*60);
+		
+		if($leftover != 0) $return .= " ".$leftover._("min");
+		
+		return $return;
+	}
+}
+
+
 
 /*
  * Returns a graph img-url of ratings
@@ -866,6 +1011,8 @@ function rating_chart($rating_stats=false, $width="50") {
 	return $url;
 }
 
+
+
 /* 
  * Check if nick is available and ok in other ways too
  */
@@ -885,9 +1032,10 @@ function available_nick($nick=false) {
 	);
 
 	// Check if nick is ok and return
-	if(strlen($nick) <= 3 OR empty($nick) OR in_array(strtolower($nick), $taken_nicks)) return false;
+	if(strlen(trim($nick)) <= 3 OR strlen(trim($nick)) > 255 OR empty($nick) OR in_array(strtolower($nick), $taken_nicks)) return false;
 	else return true;
 }
+
 
 
 /* 
@@ -911,6 +1059,8 @@ function current_user($get_password=false) {
 	else return false;
 }
 
+
+
 /*
  * Check if user is in database
  * email = t_user.email
@@ -923,7 +1073,7 @@ function check_login($email=false, $password=false, $get_password=false) {
     if(is_bool($get_password) === false) $get_password = false;
    
    
-	$res = mysql_query("SELECT * FROM `users` WHERE `email` = '".mysql_real_escape_string($email)."' AND `password` = '".mysql_real_escape_string($password)."' LIMIT 1");
+	$res = mysql_query("SELECT * FROM `t_users` WHERE `email` = '".mysql_real_escape_string($email)."' AND `password` = '".mysql_real_escape_string($password)."' LIMIT 1");
    	
    	if(!$res) return false;
 			
@@ -939,6 +1089,8 @@ function check_login($email=false, $password=false, $get_password=false) {
 			$user["location"] = $r["location"];
 			$user["country"] = $r["country"];
 			$user["language"] = $r["language"];
+			$user["registered"] = $r["registered"];
+			$user["google_latitude"] = $r["google_latitude"];
 			
 			// Admin? 1:false
 			if($r["admin"]=="1") $user["admin"] = true;

@@ -1,16 +1,40 @@
 <h2><?php echo _("Help"); ?></h2>
 
-<h3><?php echo _("What is this?"); ?></h3>
-<p><?php echo _("This is supposed to be a worldmap for hitchhikers, showing good and bad hitching places. Feel free to add all your favourite hitching places (or even more) to the map."); ?></p>
 
-<h3><?php echo _("How can I add points?"); ?></h3>
-<p><?php echo _("Just click on 'Add point' in the menu. Set the red marker to the place and click on save. Make sure to zoom as close as possible, so the point will be more accurate. It is also helpful if you give your points a rating and maybe a little description (i.e. what kind of place this is or how to get there)."); ?></p>
+<div class="align_left" style="width: 400px; margin: 0 40px 20px 0;">
 
-<h3><?php echo _("Why should I sign up?"); ?></h3>
-<p><?php echo _("If you are logged in, you will have some more features on this site. I.e. you will be able to modify your points later, and your nickname will be shown on each of your points."); ?></p>
+	<h3><?php echo _("What is this?"); ?></h3>
+	<p><?php echo _("This is supposed to be a worldmap for hitchhikers, showing good and bad hitching places. Feel free to add all your favourite hitching places (or even more) to the map."); ?></p>
+	
+	<h3><?php echo _("How can I add places?"); ?></h3>
+	<p><?php echo _("Just click on <i>Add place</i> in the menu. Set the orange marker to the place and click on <i>Add place</i>. Make sure to zoom as close as possible, so the point will be more accurate. It is also helpful if you give your points a rating and maybe a little description (i.e. what kind of place this is or how to get there). Please write description at least in English."); ?></p>
+	
+	<h3><?php echo _("Can I use HTML tags in descriptions and comments?"); ?></h3>
+	<p><?php echo _('No, but you can use <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">markup</a> syntax.'); ?></p>
+	
+	<h3><?php echo _("Why should I sign up?"); ?></h3>
+	<p><?php echo _("If you are logged in, you will have some more features on this site. I.e. you will be able to modify your places later, and your nickname will be shown on each of your places and comments."); ?></p>
+	
+	<h3><?php echo _("Why is the map always centered to Europe?"); ?></h3>
+	<p><?php echo _("Most of this maps hitchhiking places are in Europe. If you have registered, you can set a point of your current country from settings. The map will center there whenever you log in. You can also login and register with Facebook, since it might be quicker."); ?></p>
+	
+	
+</div>
 
-<h3><?php echo _("Why is the map always centered to Europe?"); ?></h3>
-<p><?php echo _("Most of this maps hitchhiking places are in Europe. If you have registered, you can set a point of your home from settings. The map will center there whenever you log in."); ?></p>
+<div class="align_left" style="width: 300px; margin: 0 0 20px 0;">
+
+	<fb:like-box profile_id="133644853341506" width="300" connections="10" stream="false" header="true"></fb:like-box>
+
+	<fb:activity recommendations="true"></fb:activity>
+
+	<script type="text/javascript">
+	    $(function() {
+	    	FB.XFBML.parse(document.getElementById('pages'));
+	    });
+	</script>
+</div>
+
+<div class="clear"></div>
 
 <br />
 
@@ -50,7 +74,7 @@
 <h4><?php echo _("People involved"); ?></h4>
 <ul>
 	<li><a href="http://www.ihminen.org">Mikael Korpela</a></li>
-	<li>Philipp Gruber</li>
+	<li><a href="http://hitchwiki.org/en/User:MrTweek">Philipp Gruber</a></li>
 </ul>
 
 

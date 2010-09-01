@@ -9,7 +9,8 @@
  * 5) Layout
  * 6) Map
  * 7) Cards
- * 8) Dev-tools
+ * 8) jQuery UI tweaks
+ * 9) Dev-tools
  *
  */
 
@@ -54,6 +55,10 @@ label {
 	font-weight: bold;
 }
 
+.hitchability_question label {
+	font-weight: normal;
+	font-size: 12px;
+}
 
 ul.clean {
 	padding: 10px 0;
@@ -87,10 +92,10 @@ table.infotable {
 .grey {
 	color: #555;	
 }
-.light, .meta {
+.tip, .light, .meta {
 	color: #ad8c55;
 }
-.smaller, .meta {
+.smaller, .meta, .tip {
 	font-size: 11px;
 	line-height: 11px;
 }
@@ -210,21 +215,18 @@ input.copypaste {
 	border: 0;
 }
 
-
+.pstrength-minchar {
+	font-size : 10px;
+}
 
 
 /*
  * 4) Icons
- */ 
-.icon-osm { 	background-image: url('../gfx/icons/osm.gif') !important; }
-.icon-google { 	background-image: url('../gfx/icons/google.gif') !important; }
-.icon-yahoo { 	background-image: url('../gfx/icons/yahoo.gif') !important; }
-.icon-bing { 	background-image: url('../gfx/icons/bing.gif') !important; }
- 
+ */  
 .icon {
 	padding-left: 20px;
 	padding-top: 1px;
-	padding-bottom: 1px;
+	padding-bottom: 3px;
 	background-repeat: no-repeat;
 	background-position: left center;
 }
@@ -232,13 +234,18 @@ textarea.icon {
 	width: auto;
 	padding-left: 23px;
 	padding-top: 3px;
-	background-position: 3px 3px;
+	background-position: 3px 4px;
 }
 .icon_right {
 	padding-right: 20px;
 	padding-left: 0;
 	background-position: right center;
 }
+
+.icon-osm 		{ background-image: url('../gfx/icons/osm.png') !important; }
+.icon-google 	{ background-image: url('../gfx/icons/google.gif') !important; }
+.icon-yahoo 	{ background-image: url('../gfx/icons/yahoo.gif') !important; }
+.icon-bing 		{ background-image: url('../gfx/icons/bing.gif') !important; }
 
 .icon.hitchability_0 	{ background-image: url(../gfx/icons/hitchability_0.png); }
 .icon.hitchability_1 	{ background-image: url(../gfx/icons/hitchability_1.png); }
@@ -282,6 +289,11 @@ textarea.icon {
 .icon.comments 			{ background-image: url(../gfx/icons/comments.png); }
 .icon.tux 				{ background-image: url(../gfx/icons/tux.png); }
 .icon.user_orange 		{ background-image: url(../gfx/icons/user_orange.png); }
+.icon.page_white_put 	{ background-image: url(../gfx/icons/page_white_put.png); }
+.icon.building		 	{ background-image: url(../gfx/icons/building.png); }
+.icon.calendar_view_day	{ background-image: url(../gfx/icons/calendar_view_day.png); }
+.icon.time				{ background-image: url(../gfx/icons/time.png); }
+
 
 
 
@@ -426,7 +438,7 @@ html, body {
 			display: block;
 			padding-bottom: 10px;
 		}
-		#Login #lostPasswordRow {
+		#Login #login_meta {
 			display: block;
 			border-top: 1px solid #ca940f;
 			padding-top: 5px;
@@ -438,17 +450,6 @@ html, body {
 			background: url(../gfx/loading.gif) center center no-repeat;
 		}
 
-#Content {
-	padding: 0;
-	margin: 0;
-	width: 100%;
-	min-width: 990px;
-	
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	margin: 0 auto -30px; /* the bottom margin is the negative value of the footer's height */
-}
 
 #Sidebar {
 	width: 170px;
@@ -595,7 +596,6 @@ ul#Navigation {
 	padding: 0 7px 7px 7px;
 	margin: 0;
 	width: 230px;
-/*	height: 165px;*/
 	background: #edca50 url(../gfx/bg.png) repeat-x left bottom;
 	color: #000;
 	font-size: 11px;
@@ -649,6 +649,7 @@ code.example {
 }
 
 
+
 #PlacePanel {
 	overflow-x: hidden;
 	display: block;
@@ -662,7 +663,8 @@ code.example {
 	border-left: 1px solid #ccc4a0;
 }
 	#PlacePanel #write_comment { width: 185px; }
-	#PlacePanel .copypaste { width: 200px; }
+	#PlacePanel .copypaste { width: 200px; background: transparent; color: #413914; }
+	#PlacePanel .copypaste:hover { border-color: #81722f; }
 	
 
 #loading-bar {
@@ -724,16 +726,18 @@ ul li ul li #comments ol li.own_comment {
 	background-color: #93b3cd;
 	color: #e5f0f9;
 	text-align: center;
-	
-	width: auto; 
-	height: auto; 
+
 	position: absolute; 
 	top: 80px; 
 	left: 170px; 
 	right: 0; 
 	bottom: 0;
-	
+
+	min-width: 630px;
+	min-width: 630px;
 	/*
+	width: auto; 
+	height: auto; 
 	height: 500px;
 	width: 500px;
 	*/
@@ -770,7 +774,42 @@ ul li ul li #comments ol li.own_comment {
 	right: 0;
 }
 
-/* jQuery UI Dialog tweaks */
+.page {
+	position: absolute;
+	text-align: left;
+	padding: 40px 30px;
+	top: 90px;
+	left: 180px;
+	bottom: 10px;
+	right: 10px;
+	min-width: 800px;
+	overflow: auto;
+	z-index: 9998;
+	border: 1px solid #c0b78b;
+	background-color: #faf9f3;
+	
+  	box-shadow: 0px 0px 5px #ccc;
+  	-moz-box-shadow: 0px 0px 5px #ccc;
+  	-webkit-box-shadow: 0px 0px 5px #ccc;
+	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#pages .close {
+    position: absolute;
+    top: 100px;
+    right: 30px;
+	z-index: 9999;
+}
+
+
+
+
+/*
+ * 8) jQuery UI tweaks
+ */
 .ui-dialog-content {
 	font-size: 12px;
 	line-height: 15px;
@@ -824,140 +863,20 @@ ul.ui-tabs-nav { padding:0 0 0 8px; }
 .ui-widget-content a:hover,
 .ui-widget-content a:active { color:#0b559b; }
 
+.ui-datepicker {
+	font-size: 80% !important;
+}
+
+/* To help resizable() textarea */
+.ui-resizable-se {
+    bottom: 17px;
+    right: 5px;
+}
 
 
 
 /*
-#add_new_place_form #tabs { height: 200px; font-size: 70%; } 
-#add_new_place_form textarea { font-size: 100%; } 
-#add_new_place_form .tabs-bottom { position: relative; } 
-#add_new_place_form .tabs-bottom .ui-tabs-panel { height: 140px; overflow: auto; } 
-#add_new_place_form .tabs-bottom .ui-tabs-nav { position: absolute !important; left: 0; bottom: 0; right:0; padding: 0 0.2em 0.2em 0; } 
-#add_new_place_form .tabs-bottom .ui-tabs-nav li { margin-top: -2px !important; margin-bottom: 1px !important; border-top: none; border-bottom-width: 1px; }
-#add_new_place_form .ui-tabs-selected { margin-top: -3px !important; }
-*/
-
-.card {
-	/*
-	position: absolute;
-	top: 100px;
-	left: 280px;
-	z-index: 9990;
-	text-align: left;
-	width: 300px;
-	padding: 7px;
-	background-color: #faf9f3;
-	color: #111;
-	font-size: 12px;
-	line-height: 16px;
-	border: 1px solid #c0b78b;
-	
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	
-  	box-shadow: 0px 0px 5px #ccc;
-  	-moz-box-shadow: 0px 0px 5px #ccc;
-  	-webkit-box-shadow: 0px 0px 5px #ccc;
-  	*/
-	
-}
-/*
-	.card h4 {
-		padding: 0;
-		margin: 0;
-		font-size: 14px;
-		line-height: 17px;
-	}
-	.card.bad {
-		box-shadow: 0 0 7px #ff0000;
-		-webkit-box-shadow: 0 0 7px #ff0000;
-		-moz-box-shadow: 0 0 7px #ff0000;
-	}
-	.card.good {
-		box-shadow: 0 0 7px #00b900;
-		-webkit-box-shadow: 0 0 7px #00b900;
-		-moz-box-shadow: 0 0 7px #00b900;
-	}
-	.ui-draggable-dragging {
-	
-  		box-shadow: 3px 3px 20px #888;
-  		-moz-box-shadow: 3px 3px 20px #888;
-  		-webkit-box-shadow: 3px 3px 20px #888;
-	}
-	
-	.card.add_new_place {
-		
-	}
-	.card .dragArea {
-		width: 100%;
-		display: block;
-		cursor: move;
-	}
-	*/
-
-.page {
-	position: absolute;
-	text-align: left;
-	padding: 40px 30px;
-	top: 90px;
-	left: 180px;
-	bottom: 10px;
-	right: 10px;
-	min-width: 800px;
-	overflow: auto;
-	z-index: 9999;
-	border: 1px solid #c0b78b;
-	background-color: #faf9f3;
-	
-  	box-shadow: 0px 0px 5px #ccc;
-  	-moz-box-shadow: 0px 0px 5px #ccc;
-  	-webkit-box-shadow: 0px 0px 5px #ccc;
-	
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-}
-
-.card .close,
-.page .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    /*
-    margin: 0;
-    padding: 0 7px;
-    height: 20px;
-    text-align: center;
-    line-height: 20px;
-    background-color: #7f4909;
-    color: #fff;
-    font-weight: bold;
-
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    */
-}
-    /*
-.card .close:hover,
-.card .close:active,
-.page .close:hover,
-.page .close:active {
-    background-color: #9f6622;
-}
-    */
-
-
-
-
-.clear { clear: both; }
-.hidden { display: none; }
-
-
-
-/*
- * 8) Dev-tools
+ * 9) Dev-tools
  */
 
 #log { 
@@ -967,21 +886,41 @@ ul.ui-tabs-nav { padding:0 0 0 8px; }
 	font-size: 10px;
 	line-height: 12px;
 	font-family: Courier,serif;
-	padding: 10px;
-	margin: 0;
-	width: 350px;
-	max-height: 600px;
-	max-width: 700px;
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-#log ul {
 	padding: 0;
 	margin: 0;
+	width: 400px;
+	height: 320px;
+	max-height: 620px;
+	max-width: 700px;
 }
-#log li {
-	list-style: square;
-	padding: 2px 0;
-	margin: 0 0 0 10px;
-} 
+	#log .handle {
+		display: block;
+		height: 10px;
+		padding: 5px;
+		background: #003460;
+		color: #fff;
+		cursor: move;
+	} 
+	#log ul {
+		padding: 10px;
+		margin: 0;
+		display: block;
+		width: 380px;
+		height: 280px;
+		max-height: 580px;
+		max-width: 680px;
+		overflow-y: auto;
+		overflow-x: hidden;
+		
+	}
+	#log li {
+		list-style: square;
+		padding: 2px 0;
+		margin: 0 0 0 10px;
+	} 
 
+
+
+/* Misc * extras */
+.clear { clear: both; }
+.hidden { display: none; }

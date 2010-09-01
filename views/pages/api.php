@@ -118,7 +118,7 @@ See an example from "List places from area"-section.
 
 <h3 id="places_country">List places by country</h3>
 <code class="highlight">/api/?country=[COUNTRY ISO CODE]</code><br />
-Get all places from a country by country ISO-code. <a href="<?php echo $settings["base_url"]; ?>/api/?countries&amp;all&amp;format=string" target="_blank">See the list of codes</a>.
+Get all places from a country by country ISO-code. <a href="<?php echo $settings["base_url"]; ?>/api/?countries=all&amp;format=string" target="_blank">See the list of codes</a>.
 <br /><br />
 See an example from "List places from area"-section.
 <br />
@@ -179,7 +179,7 @@ List only countries with places: <br />
 <code class="highlight">/api/?countries</code>
 <br /><br />
 List all countries, also with 0 places:<br />
-<code class="highlight">/api/?countries&all</code>
+<code class="highlight">/api/?countries=all</code>
 <br /><br />
 Get also country coordinates with <span class="highlight">coordinates</span>-variable:<br />
 <code class="highlight">/api/?countries&amp;coordinates</code>

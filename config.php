@@ -9,14 +9,24 @@
  * SETTINGS you might want to adjust:
  */
 // Tools for devs:
-$settings["debug"] = 					false;
+$settings["debug"] = 					true;
 $settings["maintenance_page"] = 		false; // Set true to close down visible page
 $settings["maintenance_api"] = 			false; // Set true to close down API
 $settings["non_maintenance_ip"] = 		array(); // Add IP addresses to whom show a normal page while in maintenance mode.
 
-// Common settings:
+// API-keys:
 $settings["google_maps_api_key"] = 		"";
 $settings["yahoo_maps_appid"] = 		"";
+$settings["google_analytics_id"] =		"";
+
+// fb:admins or fb:app_id - A comma-separated list of either the Facebook IDs of page administrators or a Facebook Platform application ID. At a minimum, include only your own Facebook ID.
+$settings["fb"]["admins"] = 			"";
+$settings["fb"]["page_id"] = 			"";
+
+$settings["fb"]["app"]["id"] = 			"";
+$settings["fb"]["app"]["api"] = 		"";
+$settings["fb"]["app"]["secret"] = 		"";
+
 $settings["email"] = 					"help@liftershalte.info";
 $settings["cookie_prefix"] = 			"hitchwiki_maps_";
 $settings["default_language"] = 		"en_UK"; // Fall back and default language
@@ -39,7 +49,7 @@ $settings["languages_in_english"] = 	array(
 
 
 // Usually you don't need to edit this, but you can set it manually, too. No ending "/".
-$settings["base_url"] = 				"http://devmaps.hitchwiki.org"; //"http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
+$settings["base_url"] = 				"http://maps.hitchwiki.org";#"http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
 
 /*
  * MySQL settings
@@ -53,6 +63,7 @@ $mysql_conf = array(
 
 
 /**** DO NOT EDIT FROM HERE ****/
+
 
 /*
  * Select language

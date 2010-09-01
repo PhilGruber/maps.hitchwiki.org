@@ -78,10 +78,12 @@ elseif($format == 'html') {
 	
 	<table class="infotable" cellspacing="0" cellpadding="0">
 	    <tbody>
+	    	<?php /*
 	    	<tr>
 	    		<td><b><?php echo _("Hitchability"); ?></b></td>
 	    		<td><?php echo $country["hitchability"]; ?></td>
 	    	</tr>
+	    	*/ ?>
 	    	<tr>
 	    		<td><b><?php echo _("Places in Maps"); ?></b></td>
 	    		<td><?php echo $country["places"]; ?></td>

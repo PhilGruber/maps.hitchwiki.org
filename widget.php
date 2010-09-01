@@ -21,13 +21,22 @@ if($settings["maintenance_page"]===true && !in_array($_SERVER['REMOTE_ADDR'], $s
 /*
  * Map settings
  */
-// Zoom, lat, lon, layers
-$zoom = (isset($_GET["zoom"]) && ctype_digit($_GET["zoom"])) ? $_GET["zoom"] : '9';
-
-// Centered to Germany (51,9). Projection center would be '49','8.3'
-$lat = (isset($_GET["lat"]) && is_numeric($_GET["lat"])) ? $_GET["lat"] : '51';
-$lon = (isset($_GET["lon"]) && is_numeric($_GET["lon"])) ? $_GET["lon"] : '9';
-
+ 
+// Show a country
+if(isset($_GET["country"]) && !empty($_GET["country"]) && strlen($_GET["country"]) == 2) {
+	$zoom = '9';
+	$lat = '51';
+	$lon = '9';
+}
+// Show free spot
+else { 
+	// Zoom, lat, lon, layers
+	$zoom = (isset($_GET["zoom"]) && ctype_digit($_GET["zoom"])) ? $_GET["zoom"] : '9';
+	
+	// Centered to Germany (51,9). Projection center would be '49','8.3'
+	$lat = (isset($_GET["lat"]) && is_numeric($_GET["lat"])) ? $_GET["lat"] : '51';
+	$lon = (isset($_GET["lon"]) && is_numeric($_GET["lon"])) ? $_GET["lon"] : '9';
+}
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php echo shortlang(); ?>">

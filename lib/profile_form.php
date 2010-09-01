@@ -27,17 +27,38 @@ else $profile_form = "register";
 
 <form method="post" action="#" id="profile_form">
 
-<div style="float: left; width: 220px;">
+<div style="float: left; width: 230px; padding-right: 20px;">
 
 	<label for="email"><?php echo _("Email"); ?></label> <small>(<?php echo _("Required"); ?>)</small><br />
-	<input type="text" name="email" id="email" size="20" maxlength="255" value="<?php if(isset($user["email"])) echo htmlspecialchars($user["email"]); ?>" />
+	<input type="text" name="email" id="email" size="25" maxlength="255" value="<?php if(isset($user["email"])) echo htmlspecialchars($user["email"]); ?>" />
 	
 	<br /><br />
 
 	<label for="name"><?php echo _("Name"); ?></label> <small>(<?php echo _("Required"); ?>)</small><br />
-	<input type="text" name="name" id="name" size="20" maxlength="80" value="<?php if(isset($user["name"])) echo htmlspecialchars($user["name"]); ?>" />
+	<input type="text" name="name" id="name" size="25" maxlength="80" value="<?php if(isset($user["name"])) echo htmlspecialchars($user["name"]); ?>" />
 	
 	<br /><br />
+
+	<label for="password1"><?php echo _("Password"); ?></label> <small>(<?php 
+	    	
+	    	if($profile_form=="settings") echo _("Leave empty to keep old"); 
+	    	else echo _("Required"); 
+	    
+	    ?>)</small><br />
+	<div style="width: 210px;">
+	<input type="password" name="password1" id="password1" size="25" maxlength="80" />
+	</div>
+	
+	<br />
+	
+	<label for="password12"><?php echo _("Password again"); ?></label><br />
+	<input type="password" name="password2" id="password2" size="25" maxlength="80" />
+		
+	<br /><br />
+	
+</div>
+<div style="float: left; width: 350px;">
+
 	
 	<label for="language"><?php echo _("Language"); ?></label><br />
 	<select name="language" id="language" title="<?php echo _("Choose language"); ?>">
@@ -55,55 +76,53 @@ else $profile_form = "register";
 	</select>
 	
 	<br /><br />
-
-</div>
-<div style="float: left; width: 350px;">
-
-
-	<label for="password1"><?php echo _("Password"); ?></label> <small>(<?php 
-			
-			echo _("Min 8 chars.")." ";
-			
-			if($profile_form=="settings") echo _("Leave empty to keep old"); 
-			else echo _("Required"); 
-		
-		?>)</small><br />
-	<input type="password" name="password1" id="password1" size="20" maxlength="80" />
-	
-	<br /><br />
-	
-	<label for="password12"><?php echo _("Password again"); ?></label><br />
-	<input type="password" name="password2" id="password2" size="20" maxlength="80" />
-	
-	<br /><br />
 	
 	<label for="location"><?php echo _("Location"); ?></label> <small>(<?php echo _("Can be anything, most likely a city."); ?>)</small><br />
-	<input type="text" name="location" id="location" size="20" maxlength="255" value="<?php if(isset($user["location"])) echo htmlspecialchars($user["location"]); ?>" />
+	<div class="ui-widget">
+	<input type="text" name="location" id="location" size="25" maxlength="255" value="<?php if(isset($user["location"])) echo htmlspecialchars($user["location"]); ?>" />
+	</div>
 	
-	<br /><br />
+	<br />
 	
-	<label for="country"><?php echo _("Country"); ?></label> <small>(<?php echo _("Map will be centered to here"); ?>)</small><br />
+	<label for="country"><?php echo _("Current country"); ?></label> <small>(<?php echo _("Map will be centered to here"); ?>)</small><br />
 	<select id="country" name="country">
 		<option value=""><?php echo _("I'd rather not tell"); ?></option>
 		<option value="">-------------</option>
 		<?php list_countries("option", "name", false, false, true); ?>
 	</select> &nbsp; <img class="flag" alt="" src="" class="hidden" />
 	
+	<br /><br />
+	
+	<label for="google_latitude"><?php echo _("Google Latitude user ID"); ?></label><br />
+	<input type="text" name="google_latitude" id="google_latitude" size="25" maxlength="80" value="<?php if(isset($user["google_latitude"])) echo htmlspecialchars($user["google_latitude"]); ?>" />
+	<br /><small><?php printf(_('<a href="%s" target="_blank">Enable Google Latitude</a> first and copy here your 20-digit user ID from the bottom of the page.'), 'http://www.google.com/latitude/apps/badge'); ?></small>
+	
+	<br /><br />
+	
 
 </div>
-<div class="clear"></div>
 
-<br /><br />
+<div style="float: left; width: 600px; padding: 20px 0;" class="clear">
 
-<button id="btn_profile_form_cancel"><?php echo _("Cancel"); ?></button>
+	<!-- save/update -->
+	<button id="btn_profile_form"><?php 
+		if($profile_form=="settings") echo _("Update"); 
+		else echo _("Register!"); 
+	?></button>
+	
+	<!-- cancel -->
+	<button id="btn_profile_form_cancel"><?php echo _("Cancel"); ?></button>
+	
+	<!-- delete profile -->
+	<?php if($profile_form=="settings"): ?><button id="btn_delete_profile" class="align_right"><?php echo _("Delete profile"); ?></button><?php endif; ?>
+	
+</div>
 
-<button id="btn_profile_form"><?php 
-	if($profile_form=="settings") echo _("Update"); 
-	else echo _("Register!"); 
-?></button>
-
+<script type="text/javascript" src="static/js/jquery.pstrength-min.1.2.js"></script>
 <script type="text/javascript">
 $(function() {
+
+	$('#password1').pstrength();
 
 	<?php 
 	// Set country selection
@@ -126,6 +145,46 @@ $(function() {
 	});
 	
 
+	// Autosuggest in Location
+	$(function() {
+		$("#profile_form input#location").autocomplete({
+			source: function(request, response) {
+				$.ajax({
+					url: "http://ws.geonames.org/searchJSON",
+					dataType: "jsonp",
+					data: {
+						featureClass: "P",
+						style: "full",
+						maxRows: 5,
+						name_startsWith: request.term
+					},
+					success: function(data) {
+						response($.map(data.geonames, function(item) {
+							return {
+								label: item.name + (item.adminName1 ? ", " + item.adminName1 : ""),
+								value: item.name + (item.adminName1 ? ", " + item.adminName1 : "")
+								//value: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName
+							}
+						}))
+					}
+				})
+			},
+			minLength: 2,
+			select: function(event, ui) {
+				$("#profile_form input#location").val(ui.item.label);
+				//$("#profile_form #country").val(ui.item.countryCode.toLowerCase());
+			},
+			open: function() {
+				$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+			},
+			close: function() {
+				$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+			}
+		});
+	});
+	
+
+
 	// Cancel
     $("#btn_profile_form_cancel").button({
         icons: {
@@ -136,6 +195,7 @@ $(function() {
     	maps_debug("Cancel: <?php echo $profile_form; ?>");
     	close_page();
     });
+
 
     // add place
     $("#btn_profile_form").button({
@@ -230,6 +290,43 @@ $(function() {
 			
     }); // click end
     		
+    		
+    <?php if($profile_form=="settings"): ?>
+    // Delete profile
+    $("#btn_delete_profile").button({
+        icons: {
+            primary: 'ui-icon-trash'
+        }
+    }).click(function(e) {
+    	e.preventDefault();
+    	
+    	var really_delete = confirm("<?php echo _("Are you sure you want to delete your profile? You cannot undo this action!"); ?>");
+    	if(really_delete) {
+    		close_page();
+    		close_cards();
+    		
+			maps_debug("Asked to delete profile. Requesting API.");
+    		$.getJSON('api/?delete_profile=<?php echo $user["id"]; ?>', function(data) {			
+
+				if(data.success==true) {
+					maps_debug("Profile deleted.");
+					info_dialog('<?php echo _("Your profile was deleted permanently."); ?>', '<?php echo _("Profile deleted"); ?>', false, true);
+				} else {
+					maps_debug("Profile was NOT deleted due error: "+data.error);
+    				info_dialog('<?php echo _("Error while deleting your profile. Please try again!"); ?>', '<?php echo _("Profile was NOT deleted"); ?>', true);
+    			}
+    		});
+    		
+    	} else {
+    		close_page();
+    		close_cards();
+			maps_debug("Profile deletion cancelled.");
+    		info_dialog('<?php echo _("You cancelled your profile deletion."); ?>', '<?php echo _("Deletion cancelled"); ?>', true);
+    	}
+    });
+    <?php endif; ?>
+    
+    
 });
 </script>
 

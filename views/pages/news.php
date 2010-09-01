@@ -2,7 +2,7 @@
 
 <div style="width: 650px;">
 
-<b><small class="light">28.7.2010</small></b><br />
+<b><small class="light">11. August 2010</small></b><br />
 <h3 style="display:inline;">Ooh! New Maps!</h3><br />
 <img src="badge.png" alt="" class="align_right" style="margin: 0 0 20px 20px;" />
 Good day to you all. It was about time to take our great Maps service and make it even better! And shiny! And orange.
@@ -16,6 +16,12 @@ Ok. Ta. Be well.
 PS. You can show your love to us and recommend Hitchwiki Maps to your <br />
 hitchhiker pals on Facebook by pressing this cute little button with a familiar icon on it:
 <br /><br />
-<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fmaps.hitchwiki.org&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>
+
+<fb:like layout="standard" href="<?php echo urlencode($settings["base_url"]); ?>">
+<script type="text/javascript">
+    $(function() {
+    	FB.XFBML.parse(document.getElementById('pages'));
+    });
+</script>
 
 </div>

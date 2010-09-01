@@ -34,26 +34,51 @@ $user = current_user();
 /* 
  * Print stuff out in HTML:
  */
+
+if($place["error"] !== true):
 ?>
 
 
-<ul id="Navigation">
+<ul id="Navigation" id="place">
 
+	<!-- title -->
     <li style="background: #fff;">
 
 		<ul>
 			<li>
 				<h3 style="display: inline;"><?php echo _("Hitchhiking spot"); ?></h3>
 				<div class="align_right">
-					<a class="icon icon_right zoom_in" href="#" onclick="zoomMapIn(<?php echo $place["lat"]; ?>, <?php echo $place["lon"]; ?>, 16);" title="<?php echo _("Zoom in"); ?>"></a>
-					&nbsp;
-					<!-- TODO:  map.places.unselectAll(); ? -->
-					<a href="#" onclick="hidePlacePanel(); return false;" class="ui-button ui-corner-all ui-state-default ui-icon ui-icon-closethick align_right" title="<?php echo _("Close"); ?>"></a>
+					
+					<a href="#" class="closePlacePanel ui-button ui-corner-all ui-state-default ui-icon ui-icon-closethick align_right" title="<?php echo _("Close"); ?>"></a>
+					 
+					<a class="icon icon_right zoom_in align_right" style="margin-right: 5px; background-position: center 1px;" href="#" title="<?php echo _("Zoom in"); ?>">&nbsp;</a>
+					
+					<script type="text/javascript">
+					    $(function() {
+					    
+					    	// Zoom in
+					    	$(".zoom_in").click(function(e) {
+					    		e.preventDefault();
+					    		$(this).blur();
+					    		zoomMapIn(<?php echo $place["lat"]; ?>, <?php echo $place["lon"]; ?>, 16);
+					    	});
+					    
+					    	// Close
+					    	$(".closePlacePanel").click(function(e) {
+					    		e.preventDefault();
+					    		maps_debug("Asked to close place panel from [x]");
+					    		hidePlacePanel();
+					    		$('#map').click();
+					    	});
+					    });
+					</script>
 				</div>
 			</li>
 		</ul>
 	</li>
 
+
+	<!-- name, description & rating -->
 	<li>
 		<ul>
 			<li>
@@ -62,8 +87,8 @@ $user = current_user();
 					// Flag
 					if(!empty($place["location"]["country"]["iso"])) echo '<img class="flag" alt="'.$place["location"]["country"]["iso"].'" src="static/gfx/flags/png/'.strtolower($place["location"]["country"]["iso"]).'.png" /> ';
 					
-					// City
-					if(!empty($place["location"]["city"])) echo $place["location"]["city"].", ";
+					// Town/City
+					if(!empty($place["location"]["locality"])) echo $place["location"]["locality"].", ";
 					
 					// Country
 					if(!empty($place["location"]["country"]["name"])) echo $place["location"]["country"]["name"];
@@ -164,23 +189,28 @@ $user = current_user();
 					echo '>';
 					
 					// Name
-					if(isset($place["user"]["name"])) echo '<strong>'.htmlspecialchars($place["user"]["name"]).'</strong>';
+					if(isset($place["user"]["name"]) && $place["user"]["name"] != _("Anonymous")) echo _("Added by").' <strong>'.htmlspecialchars($place["user"]["name"]).'</strong> &mdash; ';
+					elseif(!empty($place["datetime"])) echo _("Added at")." ";
 					
 					// Date
-					if(!empty($place["datetime"])) echo ' &mdash; '.date("j.n.Y",strtotime($place["datetime"]));
+					if(!empty($place["datetime"])) echo date("j.n.Y",strtotime($place["datetime"]));
 					
 					echo '</div>';
 				?>
 			</li>
 			<?php endif; /* end if empty description */ ?>
 			
+		</ul>
+	</li>
+	<li>
+		<ul>
 			
 			<li>
 
 				<!-- Hitchability -->
 				<?php 
 				#<div class="icon hitchability_'.$place["rating"].'"></div>
-				echo '<b>'._("Hitchability").':</b> '.hitchability2textual($place["rating"]).' <b class="bigger hitchability_color_'.$place["rating"],'">&bull;</b> <small class="light">('; 
+				echo '<b>'._("Hitchability").':</b> '.hitchability2textual($place["rating"]).' <b class="bigger hitchability_color_'.$place["rating"].'">&bull;</b> <small class="light">('; 
 					
 					if($place["rating_stats"]["rating_count"] == 1) echo _("1 vote"); 
 					else printf(_("%s votes"), $place["rating_stats"]["rating_count"]);
@@ -214,9 +244,9 @@ $user = current_user();
 			}
 			
 			?>
-				<br /><label for="rate"><?php echo _("Your opinnion"); ?>: </label> 
-				<select name="rate" id="rate">
-					<?php if($users_rating==false): ?><option value=""><?php echo _("Rate..."); ?></option><?php endif; ?>
+				<br />
+				<select name="rate" id="rate" class="smaller">
+					<?php if($users_rating==false): ?><option value=""><?php echo _("Your opinnion..."); ?></option><?php endif; ?>
 					<option value="1"<?php if($users_rating==1) echo ' selected="selected"'; ?>><?php echo hitchability2textual(1); ?></option>
 					<option value="2"<?php if($users_rating==2) echo ' selected="selected"'; ?>><?php echo hitchability2textual(2); ?></option>
 					<option value="3"<?php if($users_rating==3) echo ' selected="selected"'; ?>><?php echo hitchability2textual(3); ?></option>
@@ -274,6 +304,126 @@ $user = current_user();
 			</li>
 		</ul>
 	</li>
+	<li>
+		<ul>
+			<li>
+				<!-- Waiting time -->
+				<?php 
+				
+				echo '<b>'._("Waiting time").':</b> ';
+				
+				if($place["waiting_stats"]["count"] > 0) {
+					
+					echo $place["waiting_stats"]["avg_textual"].' <small class="light">(<a href="#" id="show_waitingtime_log" title="'._("Show log").'">'; 
+						
+					if($place["waiting_stats"]["count"] == 1) echo _("1 experience"); 
+					else printf(_("%s experiences"), $place["waiting_stats"]["count"]);
+					
+					echo '</a>)</small>';
+					
+				}
+				else echo _("Unknown");
+				?>
+				<!--
+				<a href="#" id="waitingtime_log" class="ui-icon ui-icon-clock align_right"><?php echo _("See log"); ?></a>-->
+				
+				<br />
+				<select name="waitingtime" id="waitingtime" class="smaller">
+					<option value=""><?php echo _("Your experience..."); ?></option>
+					<option value="5"><?php echo nicetime(5); ?></option>
+					<option value="10"><?php echo nicetime(10); ?></option>
+					<option value="15"><?php echo nicetime(15); ?></option>
+					<option value="20"><?php echo nicetime(20); ?></option>
+					<option value="30"><?php echo nicetime(30); ?></option>
+					<option value="45"><?php echo nicetime(45); ?></option>
+					<option value="60"><?php echo nicetime(60); ?></option>
+					<option value="90"><?php echo nicetime(90); ?></option>
+					<option value="120"><?php echo nicetime(120); ?></option>
+					<option value="150"><?php echo nicetime(150); ?></option>
+					<option value="180"><?php echo nicetime(180); ?></option>
+					<option value="210"><?php echo nicetime(210); ?></option>
+					<option value="240"><?php echo nicetime(240); ?></option>
+				</select>&nbsp;
+				<a href="#" id="waitingtime_add" class="ui-button ui-corner-all ui-state-default ui-icon ui-icon-plus"><?php echo _("Add"); ?></a>
+				
+				<div id="waitingtime_log"></div>
+				
+				<!--<button id="waitingtime_add" class="button smaller"><?php echo _("Add"); ?></button>-->
+				<script type="text/javascript">
+					$(function() {
+					
+						// Rate a place
+				    	$("#waitingtime_add").click(function(e){ 
+				    		e.preventDefault();
+							
+				    		var waitingtime = $("#waitingtime").val();
+				    		$(this).blur();
+				    		$("#waitingtime").val("");
+				    	
+				    		if(waitingtime != "") {
+				    			maps_debug("Adding a wating time for a place: "+waitingtime+" mins");
+				    			
+								show_loading_bar("<?php echo _("Adding..."); ?>");
+				    	
+				    			// Send an api call
+								var apiCall = "api/?add_waitingtime="+waitingtime+"&place_id=<?php 
+								
+									echo $place["id"]; 
+								
+									if($user["logged_in"]===true) echo '&user_id='.$user["id"];
+								
+								?>";
+								maps_debug("Calling API: "+apiCall);
+								$.getJSON(apiCall, function(data) {
+									
+									hide_loading_bar();
+									
+									if(data.success == true) {
+										maps_debug("Waiting time saved. Place "+data.point_id);
+										showPlacePanel(<?php echo $place["id"]; ?>);
+									}
+									// Oops!
+									else {
+									    info_dialog("<?php echo _("Adding a waitingtime failed, please try again."); ?>", "<?php echo _("Error"); ?>", true);
+									    maps_debug("Adding a waitingtime failed. <br />- Error: "+data.error+"<br />- Data: "+data);
+									}
+									
+								});
+								
+				    		} else {
+								info_dialog("<?php echo _("Please select time first."); ?>", "<?php echo _("Error"); ?>", true);
+				    		}
+				    				    	
+				    	});
+				    	
+				    	
+						// Show a waiting time log
+				    	$("#show_waitingtime_log").click(function(e){ 
+				    		e.preventDefault();
+				    		$(this).blur();
+				    		
+				    		$("#waitingtime_log").html('<br /><img src="static/gfx/loading.gif" alt="<?php echo _("Loading"); ?>" />');
+				    		
+				    		// Get waitingtime log for this place
+							$.ajax({ url: "lib/waitingtimes.php?id=<?php echo $place["id"]; ?>", success: function(data){
+								
+								$("#waitingtime_log").hide();
+								$("#waitingtime_log").html(data);
+								$("#waitingtime_log").slideDown("fast");
+								
+							}});
+				    		
+				    	});
+				    	
+				    		
+				    });
+				</script>
+			</li>
+		</ul>
+	</li>
+	
+	
+	<!-- Comments -->
 	<li>
 		<ul>
 			<li>
@@ -452,11 +602,47 @@ $user = current_user();
 			</li>
 		</ul>
 	</li>
+
+
+	<!-- infolinks -->
 	<li>
 		<ul>
 			<li>
+				<h4 class="icon magnifier" style="display:inline;"><?php echo _("More about this place"); ?></h4>
+				<a href="#" id="toggle_extralinks" class="ui-icon ui-icon-triangle-1-e align_right" title="<?php echo _("Toggle"); ?>"></a>
+				
+				<script type="text/javascript">
+					// Toggle search place
+					$(function() {
+					
+						$("#toggle_extralinks").click(function(e){
+							e.preventDefault();
+						
+							if($("#extralinks").is(":hidden")) {
+								
+								$(this).removeClass("ui-icon-triangle-1-e").addClass("ui-icon-triangle-1-s"); 
+								$(this).blur();
+								$("#extralinks").slideDown();
+								
+							} else {
+							
+								$(this).removeClass("ui-icon-triangle-1-s").addClass("ui-icon-triangle-1-e"); 
+								$(this).blur();
+								$("#extralinks").slideUp();
+							}
+						
+						
+						});
+					
+					});
+				</script>
+			</li>
+	    	
+	    	<div class="hidden" id="extralinks">
+	    	
+			<li>
 				<div class="icon link"><label for="link_place"><?php echo _("Link to this place:"); ?></label></div>
-				<input type="text" id="link_place" value="<?php echo $place["link"]; ?>" class="copypaste" />
+				<input type="text" id="link_place" value="<?php echo htmlspecialchars($place["link"]); ?>" class="copypaste" />
 				<script type="text/javascript">
 					$(function() {
 						// Select all from textarea on focus
@@ -467,34 +653,22 @@ $user = current_user();
 				</script>
 				
 			</li>
-			<li title="<?php echo _("Recommend this place for your Facebook contacts"); ?>">
-				<!-- Facebook BTN -->
-				<iframe src="http://www.facebook.com/plugins/like.php?locale=<?php echo $settings["language"]; ?>&amp;href=<?php echo urlencode($place["link"]); ?>&amp;layout=button_count&amp;show_faces=true&amp;width=200&amp;action=recommend&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:21px; margin: 7px 0;" allowTransparency="true"></iframe>
-				
-			</li>
-		</ul>
-	</li>
-
-
-	<?php if(!empty($place["location"]["city"]) OR !empty($place["location"]["country"]["name"])): ?>
-	<!-- infolinks -->
-	<li>
-		<ul>
-	    	<?php if(!empty($place["location"]["city"])): ?>
+	    	
+	    	<?php if(!empty($place["location"]["locality"])): ?>
 			<li>
-	    		<small class="icon magnifier">
-	    			<b><?php echo $place["location"]["city"]; ?></b><br />
-	    			<a target="_blank" href="http://hitchwiki.org/en/index.php?title=Special%3ASearch&search=<?php echo urlencode($place["location"]["city"]); ?>&go=Go">Hitchwiki</a>, 
-	    			<a target="_blank" href="http://en.wikipedia.org/wiki/Special:Search?search=<?php echo urlencode($place["location"]["city"]); ?>">Wikipedia</a>, 
-	    			<a target="_blank" href="http://wikitravel.org/en/Special:Search?search=<?php echo urlencode($place["location"]["city"]); ?>&go=Go">Wikitravel</a>
+	    		<small>
+	    			<b class="icon building" style="padding-top: 3px;display:block;"><?php echo $place["location"]["locality"]; ?></b>
+	    			<a target="_blank" href="http://hitchwiki.org/en/index.php?title=Special%3ASearch&search=<?php echo urlencode($place["location"]["locality"]); ?>&go=Go">Hitchwiki</a>, 
+	    			<a target="_blank" href="http://en.wikipedia.org/wiki/Special:Search?search=<?php echo urlencode($place["location"]["locality"]); ?>">Wikipedia</a>, 
+	    			<a target="_blank" href="http://wikitravel.org/en/Special:Search?search=<?php echo urlencode($place["location"]["locality"]); ?>&go=Go">Wikitravel</a>
 	    		</small>
 	    	</li>
 	    	<?php endif; ?>
 
 	    	<?php if(!empty($place["location"]["country"]["name"])): ?>
 	    	<li>
-	    		<small class="icon magnifier">
-	    			<b><?php echo $place["location"]["country"]["name"]; ?></b><br />
+	    		<small>
+	    			<b class="icon world" style="padding-top: 3px;display:block;"><?php echo $place["location"]["country"]["name"]; ?></b>
 	    			<a target="_blank" href="http://hitchwiki.org/en/index.php?title=Special%3ASearch&search=<?php echo urlencode($place["location"]["country"]["name"]); ?>&go=Go">Hitchwiki</a>, 
 	    			<a target="_blank" href="http://en.wikipedia.org/wiki/Special:Search?search=<?php echo urlencode($place["location"]["country"]["name"]); ?>">Wikipedia</a>, 
 	    			<a target="_blank" href="http://wikitravel.org/en/Special:Search?search=<?php echo urlencode($place["location"]["country"]["name"]); ?>&go=Go">Wikitravel</a>, 
@@ -502,37 +676,77 @@ $user = current_user();
 	    		</small>
 			</li>
 	    	<?php endif; ?>
-
-		</ul>
-	</li>
-	<?php endif; ?>
-
+	    	
+	    	<li>
+				<small id="coordinates">
+				    <b class="icon map" style="padding-top: 3px;display:block;">
+				    	<span class="lat" title="<?php echo _("Latitude"); ?>"><?php echo $place["lat"]; ?></span>, 
+				    	<span class="lon" title="<?php echo _("Longitude"); ?>"><?php echo $place["lon"]; ?></span>
+				    </b>
+				    
+					<a href="http://maps.google.com/?q=<?php echo $place["lat"].",".$place["lon"]; ?>" target="_blank">Google</a>, 
+				    <a href="http://www.bing.com/maps/default.aspx?v=2&amp;cp=<?php echo $place["lat"]."~".$place["lon"]; ?>&amp;style=r&amp;lvl=12&amp;sp=Point.<?php echo $place["lat"]."_".$place["lon"]."_".urlencode($place["location"]["locality"]); ?>___" target="_blank">Bing</a>, 
+					<a href="http://www.openstreetmap.org/index.html?mlat=<?php echo $place["lat"]; ?>&amp;mlon=<?php echo $place["lon"]; ?>&amp;zoom=12&amp;layers=B000FTF" target="_blank">OpenStreetMap</a>, 
+					<a href="http://www.wikimapia.org/#lat=<?php echo $place["lat"]; ?>&amp;lon=<?php echo $place["lon"]; ?>&amp;z=12&amp;l=24&amp;m=w" target="_blank">Wikimapia</a>, 
+					<a href="http://www.panoramio.com/map/#lt=<?php echo $place["lat"]; ?>&amp;ln=<?php echo $place["lon"]; ?>&amp;z=0&amp;k=0&amp;a=1&amp;tab=2" target="_blank">Panoramio</a>,
+					<a href="http://www.flickr.com/nearby/<?php echo $place["lat"].",".$place["lon"]; ?>" target="_blank">Flickr</a>, 
+					<a href="http://maps.google.com/maps?&amp;q=<?php echo $place["lat"].",".$place["lon"]; ?>&amp;spn=0.1,0.1&amp;output=kml" target="_blank">Google Earth</a>
 	
-	<li>
-		<ul>
-			<li>
-				
-				<!-- Coordinates -->
-				<?php 
-				/*
-				 * Currently these are needed here for JavaScript, but it ain't too good way...
-				 */
-				?>
-				<small id="coordinates" class="light"><span class="lat" title="<?php echo _("Latitude"); ?>"><?php echo $place["lat"]; ?></span>, <span class="lon" title="<?php echo _("Longitude"); ?>"><?php echo $place["lon"]; ?></span></small>
-			</li>
-		<?php 
-		// Show admin menu
-		if($user["admin"]===true): ?>
-			<li>
-				<small class="light icon wrench" style="display: block;">
-					&nbsp;
-					<a href="admin/?remove_place=<?php echo $place["id"]; ?>" onclick="configrm('Are you sure?');"><?php echo _("Remove place"); ?></a> 
-					&bull; 
-					<a href="admin/?edit_place=<?php echo $place["id"]; ?>"><?php echo _("See user"); ?></a> 
 				</small>
 			</li>
-		<?php endif; ?>
+
+		</div>
 		
 		</ul>
 	</li>
+	
+	<li>
+		<ul>
+			<li title="<?php echo _("Recommend this place for your Facebook contacts"); ?>" id="share_place">
+				<!-- Facebook BTN -->
+					<iframe src="http://www.facebook.com/plugins/like.php?locale=<?php echo $settings["language"]; ?>&amp;href=<?php echo urlencode($place["link"]); ?>&amp;layout=button_count&amp;show_faces=true&amp;width=200&amp;action=recommend&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:21px; margin: 7px 0;" allowTransparency="true"></iframe>
+			</li>
+			
+		</ul>
+	</li>
+
+
+	<?php 
+	// Show admin menu
+	if($user["admin"]===true): ?>
+	<li>
+		<ul>
+			<li>
+				<small class="light icon wrench" style="display: block;">
+				
+					&nbsp;
+					<a href="admin/?remove_place=<?php echo $place["id"]; ?>" onclick="configrm('Are you sure?');"><?php echo _("Remove place"); ?></a> 
+					
+					&bull; 
+					<a href="admin/?edit_place=<?php echo $place["id"]; ?>"><?php echo _("Edit place"); ?></a> 
+					
+					<?php if(!empty($place["user"]["id"])): ?>
+					&bull; 
+					<a href="admin/?user=<?php echo $place["user"]["id"]; ?>"><?php echo _("See user"); ?></a> 
+					<?php endif; ?>
+					
+				</small>
+			</li>
+		</ul>
+	</li>
+	<?php endif; ?>
 </ul>
+
+
+<?php 
+// Error when getting place info, show error popup
+else: ?>
+
+<script type="text/javascript">
+    $(function() {
+    	hidePlacePanel();
+		info_dialog("<?php echo _("Sorry, but the place cannot be found.<br /><br />The place you are looking for might have been removed or is temporarily unavailable."); ?>", "<?php echo _("The place cannot be found"); ?>", true);
+	});
+</script>
+
+<?php endif; ?>
