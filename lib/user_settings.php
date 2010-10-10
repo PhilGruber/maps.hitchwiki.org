@@ -79,7 +79,7 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 	
 	
 	// Location
-	if(!empty($_POST["location"])) $location = "'".mysql_real_escape_string(htmlspecialchars($_POST["location"]))."'";
+	if(!empty($_POST["location"])) $location = "'".mysql_real_escape_string($_POST["location"])."'";
 	else $location = 'NULL';
 	
 	
@@ -93,6 +93,16 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 	else $country = 'NULL';
 	
 	
+	// Google Latitude
+	if(!empty($_POST["google_latitude"])) $google_latitude = "'".mysql_real_escape_string($_POST["google_latitude"])."'";
+	else $google_latitude = 'NULL';
+	
+	
+	// Allow Gravatar
+	if(!empty($_POST["allow_gravatar"]) && $_POST["allow_gravatar"] == "true") $allow_gravatar = "1";
+	else $allow_gravatar = 'NULL';
+	
+	#echo json_encode( array("error"=>print_r($_POST,true)) ); exit;
 
 
 /*
@@ -110,7 +120,9 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 					`registered`,
 					`location`,
 					`country`,
-					`language`
+					`language`,
+					`google_latitude`,
+					`allow_gravatar`
 				) VALUES (
 					NULL, 
 					'".mysql_real_escape_string(htmlspecialchars($_POST["name"]))."', 
@@ -119,7 +131,9 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 					NOW(), 
 					".$location.", 
 					".$country.", 
-					".$language."
+					".$language.",
+					".$google_latitude.",
+					".$allow_gravatar."
 				);";
 				
 		$res = mysql_query($query);   
@@ -138,7 +152,9 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 		$query .= "	`email` = '".mysql_real_escape_string($_POST["email"])."',
 					`location` = ".$location.",
 					`country` = ".$country.",
-					`language` = ".$language." 
+					`language` = ".$language.", 
+					`google_latitude` = ".$google_latitude.",
+					`allow_gravatar` = ".$allow_gravatar."
 				WHERE `id` = ".mysql_real_escape_string($_POST["user_id"])." LIMIT 1;";
 	
 		$res = mysql_query($query);   

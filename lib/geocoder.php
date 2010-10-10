@@ -45,9 +45,17 @@ if(isset($_GET["q"]) && !empty($_GET["q"])) {
     	case "tiny_geocoder":
     	    echo tiny_geocoder($q);
     	    break;
-    	    
+    	
+    	case "hitchwiki":
+    		echo hitchwiki_geocode($q);
+    		break;
+    	
+    	case "geonames":
+    		echo geonames_geocode($q);
+    		break;
+    	
     	default:
-    	    echo nominatim($q);
+    	    echo geonames_geocode($q);
     	    break;
 	}
 }
@@ -81,10 +89,10 @@ function preview($data) {
  * - Geocode
  */
 function tiny_geocoder($q) {
-	$raw = readURL('http://tinygeocoder.com/create-api.php?q='.$q);
+	$raw = readURL('http://tinygeocoder.com/create-api.php?q='.urlencode($q));
 	$latlon = explode(",",$raw);
 
-	$data = '{"lat":"'.$latlon[0].'","lon":"'.$latlon[1].'"}';
+	$data = '{"lat":"'.$latlon[0].'","lon":"'.$latlon[1].'","service": "tiny geocoder"}';
 	
 	return preview($data);
 }
@@ -126,14 +134,26 @@ function nominatim($q) {
 	$data = new SimpleXMLElement($xml);
 
 	$return = '{';
-	foreach($data->place[0]->attributes() as $a => $b) {
-		$return .= '"'.$a.'":"'.$b.'",';
+	
+	if(isset($data->place[0])) {
+		foreach($data->place[0]->attributes() as $a => $b) {
+			$return .= '"'.$a.'":"'.$b.'",';
+		}
+		#$return = substr($return, 0, -1); // take last , away
+		
 	}
-	$return = substr($return, 0, -1); // take last , away
+	else {
+		$return .= '"error":true';
+	}
+	
+  		$return .= ',"service": "nominatim"';
+  		
 	$return .= '}';
   
 	return preview($return);
 }
+
+
 
 /* 
  * Nominatim
@@ -177,6 +197,8 @@ function nominatim_reverse($q) {
 }
 
 
+
+
 /* 
  * Google
  * - Geocode
@@ -184,7 +206,7 @@ function nominatim_reverse($q) {
  */
 function google($q) {
 
-	$return = readURL('http://maps.google.com/maps/geo?q='.$q);
+	$return = readURL('http://maps.google.com/maps/geo?q='.urlencode($q));
 	$raw = json_decode($return);
 	
 	$latlon = explode(",",$raw->name);
@@ -197,10 +219,237 @@ $data = '{
   "address": "'.$raw->Placemark[0]->address.'",
   "locality": "'.$raw->Placemark[2]->AddressDetails->Country->AdministrativeArea->AddressLine[0].'",
   "country_name": "'.$raw->Placemark[0]->AddressDetails->Country->CountryName.'",
-  "country_code": "'.$raw->Placemark[0]->AddressDetails->Country->CountryNameCode.'"
+  "country_code": "'.$raw->Placemark[0]->AddressDetails->Country->CountryNameCode.'",
+  "service": "google"
 }';
 	return preview($data);
 }
 
+
+
+
+/* 
+ * Geonames
+ * http://www.geonames.org/export/geonames-search.html
+ * - Geocode
+ *
+ * Response example:
+
+SimpleXMLElement Object
+(
+    [@attributes] => Array
+        (
+            [style] => SHORT
+        )
+
+    [totalResultsCount] => 4996
+    [geoname] => SimpleXMLElement Object
+        (
+            [toponymName] => London
+            [name] => London
+            [lat] => 51.50853
+            [lng] => -0.12574
+            [geonameId] => 2643743
+            [countryCode] => GB
+            [fcl] => P
+            [fcode] => PPLC
+        )
+
+)
+ */
+function geonames_geocode($q) {
+
+	$xml = readURL('http://ws.geonames.org/search?q='.urlencode($q).'&maxRows=1&style=SHORT');
+	$raw = new SimpleXMLElement($xml);
+	
+	$latlon = explode(",",$raw->name);
+
+	// Define zoom level by object type
+	// http://www.geonames.org/export/codes.html
+	if($raw->geoname->fcl == "A") $zoom = '6';
+	elseif($raw->geoname->fcl == "P") $zoom = '11';
+	else $zoom = '14';
+		
+
+$data = '{
+  "lat": "'.$raw->geoname->lat.'",
+  "lon": "'.$raw->geoname->lng.'",
+  "locality": "'.$raw->geoname->toponymName.'",
+  "country_name": "'.ISO_to_country($raw->geoname->countryCode).'",
+  "country_code": "'.$raw->geoname->countryCode.'",
+  "zoom": "'.$zoom.'",
+  "service": "geonames"
+}';
+	return preview($data);
+}
+
+
+
+/* 
+ * Hitchwiki / lookup from the local DB
+ * - Geocode
+ */
+function hitchwiki_geocode($q) {
+	global $settings;
+	
+	start_sql();
+	
+	// Remove some funny common seperators
+	$seperators = array("|",":","/","-",";","+");
+	
+	$q = str_replace($seperators, ",", $q);
+	
+
+	/* TEST-1 
+	 * Test if it's a countrycode
+	 * * * * * * */
+	
+	if(strlen($q) == 2) {
+		
+		$result = mysql_query("SELECT iso, lat, lon FROM `t_countries` WHERE `iso` = LOWER('".mysql_real_escape_string($q)."') LIMIT 1");
+		
+		if (!$result) die("Error: SQL query failed.");
+		
+		if(mysql_num_rows($result) >= 1) {
+			while ($row = mysql_fetch_array($result)) {
+			    $latlon["iso"] = $row["iso"];
+			    $latlon["lat"] = $row["lat"];
+			    $latlon["lon"] = $row["lon"];
+			}
+		}
+		
+	}
+	if($latlon) return preview('{"lat": "'.$latlon["lat"].'", "lon": "'.$latlon["lon"].'","service":"HW DB/countrycode-list"}');
+	
+	
+	
+	/* TEST-2 
+	 * Test if it's a country in some language
+	 * * * * * * */
+	
+	$country = country_to_ISO($q);
+
+	if($country!==false) {
+		$latlon = explode("|", getCountryCoords($country));
+		return preview('{"lat": "'.$latlon[0].'", "lon": "'.$latlon[1].'","service":"HW DB/country-list"}');
+	}
+	
+	
+	
+	/* TEST-3 
+	 * Try to find by city
+	 * * * * * * */
+	
+	$latlon = explode("|", getCityCoords($q));
+	if($latlon[0] != "0" && $latlon[1] != "0") {
+		return preview('{"lat": "'.$latlon[1].'", "lon": "'.$latlon[0].'","service":"HW DB/city-list"}');
+	}
+	
+	
+	/* TEST-4 
+	 * * * * * * */
+	
+	// Uh oh! Final try!
+	geonames_geocode($q);
+
+	
+}
+
+
+
+
+/*
+ * Helper functions for the Hitchwiki geocoder
+ * * * * * * * * * * * * * * * * * * * * * * *
+ */
+
+/*
+ * Look for city coordinates from our own database
+ * Original function from Hitchwiki Maps v1 maps-functions.php
+ */
+function getCityCoords($c) {
+    $t_cities = "geo_cities";
+    $country = '';
+    start_sql();
+
+	#$c = str_replace("%2C",",",$c);
+	$c = urldecode($c);
+
+    if (preg_match('!,!', $c)) {
+        list($c, $country) = explode(',', $c);
+    }
+    $c = mysql_real_escape_string(trim($c));
+    if (!empty($country)) {
+    	
+        $country = country_to_ISO(trim($country));
+        
+	}
+	
+    if (empty($country)) {
+        $countryquery = '';
+    } else {
+        $countryquery = "AND country = '$country'";
+	}
+	
+    $query = "SELECT lat, lng FROM $t_cities WHERE LOWER(city) = LOWER('$c') $countryquery";
+    $res = mysql_query($query) or die ($query."-".mysql_error());
+
+    if ($r = mysql_fetch_row($res))
+        return $r[0]."|".$r[1];
+
+    $query = "SELECT lat, lng, city FROM $t_cities WHERE (LOWER(city) LIKE LOWER('%$c%')) $countryquery";
+    $res = mysql_query($query) or die ($query."-".mysql_error());
+
+    if ($r = mysql_fetch_row($res))
+        return $r[0]."|".$r[1];
+
+    $query = "SELECT lat, lng, city FROM $t_cities WHERE (city SOUNDS LIKE '$c') $countryquery";
+    $res = mysql_query($query) or die ($query."-".mysql_error());
+
+    if ($r = mysql_fetch_row($res))
+        return $r[0]."|".$r[1];
+
+    #$retval = "48.873663314036996|2.2950804233551025";
+    $retval = "0|0";
+    $last = '';
+    while ($r = mysql_fetch_row($res)) {
+        if (similar_text($last, $c) < similar_text($c, $r[2])) {
+            $last = $r[2];
+            $retval = $r[0]."|".$r[1];
+            
+        }
+    }
+    return $retval; 
+}
+
+
+/*
+ * Get map zoom level for the country (with countrycode)
+ */
+function getCountryZoom($c) {
+
+    $query = "SELECT zoom FROM `t_countries` WHERE iso='".mysql_escape_string($c)."'";
+    $res = mysql_query($query);
+    if ($r = mysql_fetch_row($res)) {
+        return $r[0];
+    } else {
+        return false;
+    }
+}
+
+
+/*
+ * Get lat,lon for the country (with countrycode)
+ */
+function getCountryCoords($c) {
+    global $t_countries;
+    $query = "SELECT lat, lon FROM `t_countries` WHERE iso='".mysql_escape_string($c)."'";
+    $res = mysql_query($query) or die ($query."-".mysql_error());
+    if ($r = mysql_fetch_row($res)) {
+        return $r[0]."|".$r[1];
+    } else {
+        return false;
+    }
+}
 
 ?>

@@ -14,7 +14,6 @@ if(!empty($profile)): ?>
 <table class="infotable" cellspacing="0" cellpadding="0" style="float: left; margin-right: 20px;">
     <tbody>
     	
-    	
     	<?php if(!empty($profile["registered"])): ?>
     	<tr>
     		<td><b><?php echo _("Member since"); ?></b></td>
@@ -53,9 +52,34 @@ if(!empty($profile)): ?>
     	</tr>
     	<?php endif; ?>
     	
+    	<?php 
+    	/*
+		 * Gravatar 
+		 * http://en.gravatar.com/site/implement/
+		 */
+    	if(!empty($profile["email"]) && $profile["allow_gravatar"] == "1") {
+		
+			$str = file_get_contents( 'http://www.gravatar.com/'.md5($profile["email"]).'.php' );
+			$gravatar = unserialize( $str );
+			
+			if ( is_array( $gravatar ) && isset( $gravatar['entry'] ) ) {
+			
+				?>
+    			<tr>
+    				<td colspan="2">
+						<a href="<?php echo $gravatar['entry'][0]['profileUrl']; ?>"><img src="http://www.gravatar.com/avatar/<?php echo md5($profile["email"]); ?>/?s=200&amp;default=<?php echo urlencode($settings["base_url"]."/static/gfx/blank.gif"); ?>"  alt="<?php echo $gravatar['entry'][0]['displayName']; ?>" /></a>
+						<br />
+						<small><?php printf(_("Image from your %s"), '<a href="'.$gravatar['entry'][0]['profileUrl'].'" target="_blank" title="A Globally Recognized Avatar">Gravatar</a>'); ?></small>
+    				</td>
+    			</tr>
+    			<?php 
+    		} // gravatar found 
+    	} // email ok and gravatar allowed 
+    	?>
     	
     </tbody>
 </table>
+
 
 <?php if(!empty($profile["google_latitude"])): ?>
 <iframe src="http://www.google.com/latitude/apps/badge/api?user=<?php echo urlencode($profile["google_latitude"]); ?>&type=iframe&maptype=roadmap" width="400" height="400" frameborder="0"></iframe>

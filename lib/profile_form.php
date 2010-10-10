@@ -93,6 +93,11 @@ else $profile_form = "register";
 	
 	<br /><br />
 	
+	<input type="checkbox" name="allow_gravatar" id="allow_gravatar" value="true" <?php if(isset($user["allow_gravatar"]) && $user["allow_gravatar"] == "1") echo 'checked="checked" '; ?>/> <label for="allow_gravatar"><?php echo _("Allow Hitchwiki Maps to use your Gravatar"); ?></label><br />
+	<small class="icon gravatar"><?php echo _('We would show information from your <a href="http://www.gravatar.com" target="_blank">Gravatar</a> page, if you have one.'); ?></small>
+	
+	<br /><br />
+
 	<label for="google_latitude"><?php echo _("Google Latitude user ID"); ?></label><br />
 	<input type="text" name="google_latitude" id="google_latitude" size="25" maxlength="80" value="<?php if(isset($user["google_latitude"])) echo htmlspecialchars($user["google_latitude"]); ?>" />
 	<br />
@@ -115,7 +120,7 @@ else $profile_form = "register";
 	<button id="btn_profile_form_cancel"><?php echo _("Cancel"); ?></button>
 	
 	<!-- delete profile -->
-	<?php if($profile_form=="settings"): ?><button id="btn_delete_profile" class="align_right"><?php echo _("Delete profile"); ?></button><?php endif; ?>
+	<?php if($profile_form=="settings"): ?><a href="#" id="btn_delete_profile" class="align_right"><span class="ui-icon ui-icon-trash align_left"> </span> &nbsp;<small><?php echo _("Delete your profile"); ?></small></a><?php endif; ?>
 	
 </div>
 
@@ -230,6 +235,13 @@ $(function() {
 			var p_language = $("#profile_form #language").val();
 			var p_location = $("#profile_form #location").val();
 			var p_country = $("#profile_form #country").val();
+			var p_google_latitude = $("#profile_form #google_latitude").val();
+			
+			if($("#profile_form #allow_gravatar").is(":checked")) {
+				var p_allow_gravatar = "true";
+			} else {
+				var p_allow_gravatar = "false";
+			}
 			
 			$.post('lib/user_settings.php?<?php echo $profile_form; ?>', { 
 																			email: p_email, 
@@ -238,6 +250,8 @@ $(function() {
 																			password2: p_password2, 
 																			language: p_language, 
 																			location: p_location, 
+																			google_latitude: p_google_latitude,
+																			allow_gravatar: p_allow_gravatar,
 																			country: p_country<?php
 																			
 																			// Send current logged in user ID if we're about to udpate settings...
@@ -294,11 +308,7 @@ $(function() {
     		
     <?php if($profile_form=="settings"): ?>
     // Delete profile
-    $("#btn_delete_profile").button({
-        icons: {
-            primary: 'ui-icon-trash'
-        }
-    }).click(function(e) {
+    $("#btn_delete_profile").click(function(e) {
     	e.preventDefault();
     	
     	var really_delete = confirm("<?php echo _("Are you sure you want to delete your profile? You cannot undo this action!"); ?>");

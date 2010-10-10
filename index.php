@@ -195,7 +195,8 @@ $title .= 'Hitchwiki '._("Maps");
 				"news", 
 				"settings", 
 				"register", 
-				"profile"
+				"profile",
+				"users"
 			);
 			?>
 			$(document).ready(function() {
@@ -350,7 +351,39 @@ $title .= 'Hitchwiki '._("Maps");
 					if($user["admin"]===true) echo 'tux'; // ;-)
 					else echo 'user_orange';
 					
-					?>"><?php echo _("Hello!"); ?> <a href="./?page=profile" id="profile" class="pagelink"><?php echo $user["name"]; ?></a></span></span>
+					/*
+					 * Pick one random hello
+					 */
+					$hello = array(
+						"Hello!" => "GB",
+						"Tere!" => "EE",
+						"Hei!" => "FI",
+						"Moi!" => "FI",
+						"¡Hola!" => "ES",
+						"Shalom!" => "IL",
+						"Namaste!" => "NP",
+						"Namaste!" => "IN",
+						"Labas!" => "LT",
+						"Mambo!" => "CG",
+						"Bok!" => "HR",
+						"Hallo!" => "NL",
+						"Hallo!" => "DE",
+						"Hej!" => "DK",
+						"Hej!" => "SE",
+						"Ciào!" => "IT",
+						"Sveiki!" => "LV",
+						"Moïen!" => "LU",
+						"Salamaleikum," => "SN",
+						"Čau!" => "SK",
+						"Hoezit!" => "ZA",
+						"Jambo!" => "KE",
+						"Selam!" => "TR"
+					);
+					
+					$hello_greeting = array_rand($hello,1);
+					$hello_from = $hello[$hello_greeting];
+					
+					?>"><span title="<?php printf(_("Hello from %s"), ISO_to_country($hello_from)); ?>"><?php echo $hello_greeting; ?></span> <a href="./?page=profile" id="profile" class="pagelink"><?php echo $user["name"]; ?></a></span></span>
 
 				<?php 
 				// User is NOT logged in:
@@ -456,6 +489,9 @@ $title .= 'Hitchwiki '._("Maps");
 							<li><a href="./?page=countries" id="countries" class="icon world pagelink"><?php echo _("Countries"); ?></a></li>
 							<li><a href="#" id="link_here" class="icon link cardlink"><?php echo _("Link here"); ?></a></li>
 							<li><a href="#" id="download" class="icon page_white_put cardlink"><?php echo _("Download"); ?></a></li>
+							<?php if($user["logged_in"]===true): ?>
+							<li><a href="./?page=users" id="users" class="icon user pagelink"><?php echo _("Users"); ?></a></li>
+							<?php endif; ?>
 							<li><a href="./?page=help" id="help" class="icon help pagelink"><?php echo _("Help & About"); ?></a></li>
 							<li><a href="./?page=statistics" id="statistics" class="icon chart_bar pagelink"><?php echo _("Statistics"); ?></a></li>
 						</ul>

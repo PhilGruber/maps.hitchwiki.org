@@ -35,16 +35,17 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 * [Google Maps](http://maps.google.com/)
 * [Bing Maps](http://maps.bing.com/)
 * [Geonames](http://www.geonames.org/)
+* [Gravatar](http://en.gravatar.com/)
 
 #### (Reverse-) Geocoding, possible services:
-* [Geonames](http://www.geonames.org/export/geonames-search.html)
+* [Geonames](http://www.geonames.org/export/geonames-search.html) - currently in use
 * [Tiny Geocoder](http://tinygeocoder.com/)
-* [Nominatim](http://wiki.openstreetmap.org/wiki/Nominatim) - Open Street Map background - currently in use	
+* [Nominatim](http://wiki.openstreetmap.org/wiki/Nominatim) - Open Street Map background
 * [Google](http://maps.google.com/maps/geo?q=62,24) - [terms of service](http://code.google.com/apis/maps/documentation/geocoding/index.html): _the geocoding service may only be used in conjunction with displaying results on a Google map; geocoding results without displaying them on a map is prohibited_
 * [GeoPlugin](http://www.geoplugin.com/)
 
 ## jQuery UI
-1.8.4 (stable, for jQuery 1.4+) custom includes:
+1.8.5 (stable, for jQuery 1.4+) custom includes:
 
 #### UI Core
 * Core

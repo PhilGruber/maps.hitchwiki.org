@@ -699,7 +699,10 @@ if($place["error"] !== true):
 		
 		</ul>
 	</li>
-	
+	<?php 
+	/*
+	 * Facebook btn will be published only when webpage is at it's final destination, so we won't get wrong URL history to anywhere.
+	 *
 	<li>
 		<ul>
 			<li title="<?php echo _("Recommend this place for your Facebook contacts"); ?>" id="share_place">
@@ -709,6 +712,7 @@ if($place["error"] !== true):
 			
 		</ul>
 	</li>
+	*/ ?>
 
 
 	<?php 

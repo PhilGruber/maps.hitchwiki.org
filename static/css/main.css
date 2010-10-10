@@ -270,6 +270,7 @@ textarea.icon {
 .icon.transportation_inter-city	{ background-image: url(../gfx/icons/transportation_inter-city.png); }
 
 .icon.facebook 			{ background-image: url(../gfx/facebook_small.png); padding-left: 17px; }
+.icon.gravatar 			{ background-image: url(../gfx/icons/gravatar.gif); }
 .icon.magnifier 		{ background-image: url(../gfx/icons/magnifier.png); }
 .icon.add 				{ background-image: url(../gfx/icons/add.png); }
 .icon.chart_bar 		{ background-image: url(../gfx/icons/chart_bar.png); }
@@ -304,6 +305,8 @@ textarea.icon {
 .icon.comments 			{ background-image: url(../gfx/icons/comments.png); }
 .icon.tux 				{ background-image: url(../gfx/icons/tux.png); }
 .icon.user_orange 		{ background-image: url(../gfx/icons/user_orange.png); }
+.icon.users 			{ background-image: url(../gfx/icons/users.png); }
+.icon.user 				{ background-image: url(../gfx/icons/user.png); }
 .icon.page_white_put 	{ background-image: url(../gfx/icons/page_white_put.png); }
 .icon.building		 	{ background-image: url(../gfx/icons/building.png); }
 .icon.calendar_view_day	{ background-image: url(../gfx/icons/calendar_view_day.png); }

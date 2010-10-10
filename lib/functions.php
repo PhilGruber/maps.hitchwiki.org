@@ -758,31 +758,54 @@ function country_coordinates() {
 /* 
  * Shorten country names to ISO 3166-codes
  * Finland -> FI, Germany -> DE, etc
+ * Todo: all languages -search
  */
-function country_to_ISO($country,$db=false, $lang="") {
-
-	if(!empty($country)) {
+function country_to_ISO($country="",$db=false, $lang="") {
+	global $settings;
 	
+	$country = trim($country);
+		
+	if(!empty($country)) {
+
+		// Search from a ready made database
 		if(is_array($db) && !empty($db)) {
 		
-			return $db[strtolower($country)];
+			if(isset($db[strtolower($country)])) return $db[strtolower($country)];
+			else return false;
 		
+		// Check from sql-db
 		} else {
 		
 			// Gather data
 			start_sql();
-			$result = mysql_query("SELECT iso,en_UK FROM `t_countries` WHERE en_UK = '".mysql_real_escape_string($country)."' LIMIT 1");
+			
+			$query = "SELECT iso FROM `t_countries` WHERE ";
+			
+			foreach($settings["valid_languages"] as $code => $lang) {
+				if($code != $settings["default_language"]) $query .= "LOWER(".$code.") = LOWER('".mysql_real_escape_string($country)."') OR ";
+			}
+			// By lefting default language out from foreach loop, we can add it now Without "OR" at the end 
+			$query .= "LOWER(".$settings["default_language"].") = LOWER('".mysql_real_escape_string($country)."') LIMIT 1";
+			
+			
+			$result = mysql_query($query);
 			if (!$result) {
 	   			die("query failed.");
 			}
 			
-			while ($row = mysql_fetch_array($result)) {
-			    if(!empty($row)) return $row[1];
-			    else return $country;
+			// Result
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+				    return $row["iso"];
+				}
 			}
+			else return false;
+			
 		}
+	// Nothing to look for
 	} else return false;
 }
+
 
 
 /* 
@@ -813,14 +836,17 @@ function ISO_to_country($iso, $db=false, $lang="") {
 	   			die("query failed.");
 			}
 			
-			while ($row = mysql_fetch_array($result)) {
-			    if(!empty($row)) return $row[1];
-			    else return $iso;
-			    
+			// Result
+			if(mysql_num_rows($result) > 0) {
+				while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+				    return $row[$lang];
+				}
 			}
+			else return $iso;
 		}
 	} else return false;
 }
+
 
 
 /* 
@@ -1091,6 +1117,7 @@ function check_login($email=false, $password=false, $get_password=false) {
 			$user["language"] = $r["language"];
 			$user["registered"] = $r["registered"];
 			$user["google_latitude"] = $r["google_latitude"];
+			$user["allow_gravatar"] = $r["allow_gravatar"];
 			
 			// Admin? 1:false
 			if($r["admin"]=="1") $user["admin"] = true;
@@ -1207,7 +1234,7 @@ function pt_list($country_iso) {
 	start_sql();
 	$result = mysql_query($query);
 	if (!$result) {
-	   die("Error: SQL query failed with countrycodes()");
+	   die("Error: SQL query failed.");
 	}
 	
 	// If some results, print out
@@ -1225,7 +1252,6 @@ function pt_list($country_iso) {
 				</tr>
 			</thead>
 		    <tbody>
-		    	<tr>
 		    		<?php
 		    		
 						// Print out page rows
@@ -1238,8 +1264,8 @@ function pt_list($country_iso) {
 							else echo '<td> </td>';
 							
 							// URL
-							if(!empty($row["title"])) echo '<td><a href="'.htmlspecialchars($row["URL"]).'" target="_blank">'.htmlspecialchars($row["title"]).'</a></td>';
-							else echo '<td><a href="'.htmlspecialchars($row["URL"]).'" target="_blank">'._("Go the site").'</a></td>';
+							if(!empty($row["title"])) echo '<td><a href="'.urlencode($row["URL"]).'" target="_blank">'.htmlspecialchars($row["title"]).'</a></td>';
+							else echo '<td><a href="'.urlencode($row["URL"]).'" target="_blank">'._("Go the site").'</a></td>';
 							
 							// Type
 							echo '<td class="pt_types">';
@@ -1266,7 +1292,6 @@ function pt_list($country_iso) {
 							echo '</tr>';
 						}
 					?>
-		    	</tr>	    	
 		    </tbody>
 		</table>
 		

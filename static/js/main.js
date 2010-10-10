@@ -1500,25 +1500,43 @@ function search(q) {
 		// Got a place
 		success: function(data){
 		
-			//maps_debug("Search found: lat: "+data.lat+", lon: "+data.lon);
-			maps_debug("Search found and moving to: "+data.boundingbox);
-			
 			// Hide "searching"
 			hide_loading_bar();
-	
-			// build a bounding box coordinates and zoom in
-			var boundingbox = data.boundingbox.split(',');
 			
-			bounds = new OpenLayers.Bounds();
-			bounds.extend( new OpenLayers.LonLat(boundingbox[2],boundingbox[0]).transform(proj4326, map.getProjectionObject()) );
-			bounds.extend( new OpenLayers.LonLat(boundingbox[3],boundingbox[1]).transform(proj4326, map.getProjectionObject()) );
+			maps_debug("Search results came from: "+data.service+"<br /> - Locality: "+data.locality+"<br /> - Country: "+data.country_code);
 			
-			map.zoomToExtent( bounds );
-			
+			// If we got a bounding box as an answr, use it:
+			if(data.boundingbox != undefined) {
+		
+				//maps_debug("Search found: lat: "+data.lat+", lon: "+data.lon);
+				maps_debug("Moving to the bounding box: "+data.boundingbox);
+				
+				// build a bounding box coordinates and zoom in
+				var boundingbox = data.boundingbox.split(',');
+				
+				bounds = new OpenLayers.Bounds();
+				bounds.extend( new OpenLayers.LonLat(boundingbox[2],boundingbox[0]).transform(proj4326, map.getProjectionObject()) );
+				bounds.extend( new OpenLayers.LonLat(boundingbox[3],boundingbox[1]).transform(proj4326, map.getProjectionObject()) );
+				
+				map.zoomToExtent( bounds );
+			}
+			else if(data.lat != undefined && data.lon != undefined) {
+				maps_debug("Moving to lat+lon.");
+				
+				if(data.zoom == undefined) searchZoom = 5;
+				else searchZoom = data.zoom;
+				
+				zoomMapIn(data.lat, data.lon, searchZoom);
+			}
+			// We got a result, but nada...
+			else {
+				maps_debug("Search didn't find anything.");
+				info_dialog('<p>Your search did not match any places.</p><p>Try searching by english city names or/and add a country name with cities.', 'Not found', false);
+			}
 		},
 	 
 	 
-		// Did not got a place
+		// Didn't find anything...
 		error: function( objAJAXRequest, strError ){
 			maps_debug("Search didn't find anything. Error type: "+strError);
 			
