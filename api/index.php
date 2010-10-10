@@ -248,7 +248,7 @@ if(isset($_GET["add_place"])) {
  */
 if(isset($_GET["add_waitingtime"]) && isset($_GET["place_id"])) {
 
-	if(isset($_GET["user_id"])) echo $api->add_waitingtime($_GET["add_waitingtime"], $_GET["place_id"], $_GET["user_id"]);
+	if(isset($_GET["user_id"])) echo $api->addWaitingtime($_GET["add_waitingtime"], $_GET["place_id"], $_GET["user_id"]);
 	else echo $api->addWaitingtime($_GET["add_waitingtime"], $_GET["place_id"]);
 
 }
@@ -296,6 +296,18 @@ if(isset($_GET["languages"])) {
 	echo $api->getLanguages();
 
 }
+
+
+/* 
+ * Add public transport page to the catalog
+ */
+if(isset($_GET["add_public_transport"])) {
+
+	echo $api->AddPublicTransport($_POST);
+
+}
+
+
 
 // Return "pong"
 if(empty($_GET) && empty($_POST)) header("Location: ../?page=api");

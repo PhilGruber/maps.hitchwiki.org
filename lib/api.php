@@ -807,5 +807,63 @@ class maps_api
     }
 
 
-}
+
+	/*
+	 * Add public transport page to the catalog
+	 */
+	 function AddPublicTransport($pageinfo) {
+	 
+	 	// User id
+	 	$user = current_user();
+	 	
+		if(empty($pageinfo["user_id"]) OR !is_numeric($pageinfo["user_id"])) return $this->API_error("Rating Failed. Wrong user ID.");
+		elseif($pageinfo["user_id"] != $user["id"]) return $this->API_error("Rating Failed. You need to be logged in. ".htmlspecialchars($pageinfo["user_id"])."/".$user["id"]);
+	
+		// City
+		if(!empty($pageinfo["city"])) $city = "'".mysql_real_escape_string($pageinfo["city"])."'";
+		else $city = "NULL";
+		
+		// Country
+		$codes = countrycodes();
+		
+		if(!empty($pageinfo["country"]) && isset($codes[$pageinfo["country"]])) $country = "'".mysql_real_escape_string($pageinfo["country"])."'";
+		else return $this->API_error("Missing country.");
+		
+		// URL
+		if(!empty($pageinfo["url"])) $url = "'".mysql_real_escape_string($pageinfo["url"])."'";
+		else return $this->API_error("Missing an URL.");
+		
+		// Title
+		if(!empty($pageinfo["title"])) $title = "'".mysql_real_escape_string($pageinfo["title"])."'";
+		else $title = "NULL";
+		
+		// Type
+		if(!empty($pageinfo["type"])) $type = "'".mysql_real_escape_string($pageinfo["type"])."'";
+		else $type = "NULL";
+		
+	
+		// Build a query
+		$query = "INSERT INTO `t_ptransport` (`id`,`city`,`country`,`URL`,`title`,`type`,`datetime`,`user_id`) 
+		    			VALUES (NULL, 
+		    					".$city.", 
+		    					".$country.", 
+		    					".$url.", 
+		    					".$title.", 
+		    					".$type.", 
+		    					NOW(),
+		    					".$pageinfo["user_id"].")";
+
+   		$res = mysql_query($query);
+   		if(!$res) return $this->API_error("Query failed!");
+   			
+   			
+	 	$result["success"] = true;
+	 
+   		// Return
+   		return $this->output($result);
+	 }
+
+
+
+} // the class ends
 ?>

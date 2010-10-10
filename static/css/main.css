@@ -254,6 +254,21 @@ textarea.icon {
 .icon.hitchability_4 	{ background-image: url(../gfx/icons/hitchability_4.png); }
 .icon.hitchability_5 	{ background-image: url(../gfx/icons/hitchability_5.png); }
 
+.icon.transportation_1 	{ background-image: url(../gfx/icons/transportation_1.png); }
+.icon.transportation_2 	{ background-image: url(../gfx/icons/transportation_2.png); }
+.icon.transportation_3 	{ background-image: url(../gfx/icons/transportation_3.png); }
+.icon.transportation_4 	{ background-image: url(../gfx/icons/transportation_4.png); }
+.icon.transportation_5 	{ background-image: url(../gfx/icons/transportation_5.png); }
+.icon.transportation_6 	{ background-image: url(../gfx/icons/transportation_6.png); }
+.icon.transportation_7 	{ background-image: url(../gfx/icons/transportation_7.png); }
+.icon.transportation_8 	{ background-image: url(../gfx/icons/transportation_8.png); }
+.icon.transportation_9 	{ background-image: url(../gfx/icons/transportation_9.png); }
+.icon.transportation_10	{ background-image: url(../gfx/icons/transportation_10.png); }
+.icon.transportation_11	{ background-image: url(../gfx/icons/transportation_11.png); }
+.icon.transportation_12	{ background-image: url(../gfx/icons/transportation_12.png); }
+.icon.transportation_in-city	{ background-image: url(../gfx/icons/transportation_in-city.png); }
+.icon.transportation_inter-city	{ background-image: url(../gfx/icons/transportation_inter-city.png); }
+
 .icon.facebook 			{ background-image: url(../gfx/facebook_small.png); padding-left: 17px; }
 .icon.magnifier 		{ background-image: url(../gfx/icons/magnifier.png); }
 .icon.add 				{ background-image: url(../gfx/icons/add.png); }
@@ -293,6 +308,7 @@ textarea.icon {
 .icon.building		 	{ background-image: url(../gfx/icons/building.png); }
 .icon.calendar_view_day	{ background-image: url(../gfx/icons/calendar_view_day.png); }
 .icon.time				{ background-image: url(../gfx/icons/time.png); }
+.icon.underground 		{ background-image: url(../gfx/icons/underground.png); }
 
 
 
@@ -307,6 +323,10 @@ html, body {
 	margin: 0;
 	height: 100%;
 	background-color: #e7e2c9;
+}
+
+body.admin {
+	background-color: #fff;
 }
 
 

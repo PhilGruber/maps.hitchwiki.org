@@ -26,6 +26,7 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 * [jQuery Cookie Plugin](http://plugins.jquery.com/project/cookie)
 * [jQuery JSON](http://code.google.com/p/jquery-json/)
 * [Fam Fam Fam icons](http://www.famfamfam.com/lab/icons/)
+* [Aiga - Symbol Signs](http://www.aiga.org/content.cfm/symbol-signs)
 
 
 ### Services:

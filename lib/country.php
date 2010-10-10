@@ -177,6 +177,9 @@ elseif($format == 'html') {
 </div>
 <div class="clear"></div>
 
+<h3><?php echo _("Public transport"); ?></h3>
+<?php pt_list($country["iso"]); ?>
+
 <?php
 }
 

@@ -131,11 +131,13 @@ $title .= 'Hitchwiki '._("Maps");
         <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt=<?php echo str_replace("_", "-", $settings["language"]); ?>" type="text/javascript"></script>
         <script src="http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=<?php echo $settings["yahoo_maps_appid"]; ?>" type="text/javascript"></script>
         -->
+        <!-- Last version check: 2.10 -->
         <script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript" type="text/javascript"></script>
     
     	<!-- Scripts -->
         <script type="text/javascript">
 		//<![CDATA[
+
         	/*
         	 * Misc settings
         	 */
@@ -145,7 +147,7 @@ $title .= 'Hitchwiki '._("Maps");
 			var geolocation_cookiename = "<?php echo $settings["cookie_prefix"]; ?>_geolocation";
 			var geolocation_cookieoptions = { path: '/', expires: 24 };
 			var locale = "<?php echo $settings["language"]; ?>";
-			
+
 			/*
 			 * Default map settings
 			 */
@@ -154,7 +156,7 @@ $title .= 'Hitchwiki '._("Maps");
 			var layers = '<?php echo $layers; ?>';
 			var zoom = <?php echo $zoom; ?>;
 			var markersZoomLimit = <?php echo $markersZoomLimit; ?>; 
-	
+
 		//]]>
         </script>
         
@@ -180,7 +182,21 @@ $title .= 'Hitchwiki '._("Maps");
         	 */
         	 
         	// Allowed page names
-			$pages = array("help", "statistics", "complete_statistics", "translate", "countries", "lost_password", "api", "news", "settings", "register", "profile");
+			$pages = array(
+				"help", 
+				"statistics", 
+				"complete_statistics", 
+				"public_transport", 
+				"add_public_transport", 
+				"translate", 
+				"countries", 
+				"lost_password", 
+				"api", 
+				"news", 
+				"settings", 
+				"register", 
+				"profile"
+			);
 			?>
 			$(document).ready(function() {
 			
@@ -432,11 +448,12 @@ $title .= 'Hitchwiki '._("Maps");
 							
 							<li><a href="#" id="add_place" class="icon add"><?php echo _("Add place"); ?></a></li>
 							<li><a href="#" id="tools" class="icon lorry"><?php echo _("Tools"); ?></a></li>
-							<li><a href="./?page=countries" id="countries" class="icon world pagelink"><?php echo _("Countries"); ?></a></li>
 							<?php /*
 							<li><a href="#" id="my_points" class="icon table pagelink"><?php echo _("My points"); ?></a></li>
 							<li><a href="#" id="new_collection" class="icon table_add pagelink"><?php echo _("New collection"); ?></a></li>
 							*/ ?>
+							<li><a href="./?page=public_transport" id="public_transport" class="icon pagelink underground"><?php echo _("Public transport"); ?></a></li>
+							<li><a href="./?page=countries" id="countries" class="icon world pagelink"><?php echo _("Countries"); ?></a></li>
 							<li><a href="#" id="link_here" class="icon link cardlink"><?php echo _("Link here"); ?></a></li>
 							<li><a href="#" id="download" class="icon page_white_put cardlink"><?php echo _("Download"); ?></a></li>
 							<li><a href="./?page=help" id="help" class="icon help pagelink"><?php echo _("Help & About"); ?></a></li>
@@ -513,7 +530,7 @@ $title .= 'Hitchwiki '._("Maps");
 	        
 			<!-- AJAX Content Area for pages-->
 			<div id="pages">
-				<a href="#" class="close ui-button ui-corner-all ui-state-default ui-icon ui-icon-closethick">Close</a>
+				<a href="#" class="close ui-button ui-corner-all ui-state-default ui-icon ui-icon-closethick" title="<?php echo _("Close"); ?>"><?php echo _("Close"); ?></a>
 				<div class="page">
 					<div class="content"> </div>
 				</div>

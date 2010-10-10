@@ -167,10 +167,9 @@ elseif(isset($_GET["map"]) && $_GET["map"] == "3"): ?>
  * http://code.google.com/apis/visualization/documentation/gallery/geomap.html
  */
 elseif(isset($_GET["map"]) && $_GET["map"] == "4" && isset($_GET["country"]) && strlen($_GET["country"]) == 2): ?>
-
 <?php
 	// Gather data
-	$data = list_cities("array", "markers", false, true, htmlspecialchars(strtoupper($_GET["country"])))
+	$data = list_cities("array", "markers", false, true, htmlspecialchars(strtoupper($_GET["country"])));
 ?>
   <script type='text/javascript'>
    google.load('visualization', '1', {'packages': ['geomap']});
@@ -204,7 +203,7 @@ dataTable.setValue(0,3,"Hello World!");
 	  $i=0;
       foreach($data as $city) {
 
-      	echo "\t data.setValue(".$i.", 0, '".utf8_encode($city["city"]).", ".$country."');\n";
+      	echo "\t data.setValue(".$i.", 0, '".utf8_encode($city["locality"]).", ".$country."');\n";
       	echo "\t data.setValue(".$i.", 1, ".$city["places"].");\n\n";
 
 		$i++;

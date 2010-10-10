@@ -95,7 +95,8 @@ else $profile_form = "register";
 	
 	<label for="google_latitude"><?php echo _("Google Latitude user ID"); ?></label><br />
 	<input type="text" name="google_latitude" id="google_latitude" size="25" maxlength="80" value="<?php if(isset($user["google_latitude"])) echo htmlspecialchars($user["google_latitude"]); ?>" />
-	<br /><small><?php printf(_('<a href="%s" target="_blank">Enable Google Latitude</a> first and copy here your 20-digit user ID from the bottom of the page.'), 'http://www.google.com/latitude/apps/badge'); ?></small>
+	<br />
+	<img src="static/gfx/icons/latitude-icon-small.png" alt="Google Latitude" class="align_left" style="margin: 5px 5px 5px 0;" /><small><?php printf(_('<a href="%s" target="_blank">Enable Google Latitude</a> first and copy here your 20-digit user ID from the bottom of the page.'), 'http://www.google.com/latitude/apps/badge'); ?></small>
 	
 	<br /><br />
 	
@@ -197,7 +198,7 @@ $(function() {
     });
 
 
-    // add place
+    // submit form
     $("#btn_profile_form").button({
         icons: {
             primary: 'ui-icon-heart'
@@ -218,7 +219,7 @@ $(function() {
 			$("#profile_alert").show();
     	} else {
     	
-    		show_loading_bar("Loading...");
+    		show_loading_bar("<?php echo _("Loading..."); ?>");
     		$("#profile_form").hide();
 
 			// Call API
