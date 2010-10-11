@@ -117,7 +117,7 @@ $title .= 'Hitchwiki '._("Maps");
     
     <title><?php echo $title; ?></title>
     
-        <link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.4.custom.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.5.custom.css" media="all" />
 
         <!-- RPC -->
         <?php 
@@ -131,7 +131,6 @@ $title .= 'Hitchwiki '._("Maps");
         <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt=<?php echo str_replace("_", "-", $settings["language"]); ?>" type="text/javascript"></script>
         <script src="http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=<?php echo $settings["yahoo_maps_appid"]; ?>" type="text/javascript"></script>
         -->
-        <!-- Last version check: 2.10 -->
         <script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript" type="text/javascript"></script>
     
     	<!-- Scripts -->
@@ -165,7 +164,7 @@ $title .= 'Hitchwiki '._("Maps");
         <?php endif; */ ?>
         
         <script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-		<script src="static/js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
+		<script src="static/js/jquery-ui-1.8.5.custom.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
 		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
         <script src="static/js/main.js<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" type="text/javascript"></script>
@@ -544,7 +543,7 @@ $title .= 'Hitchwiki '._("Maps");
 			    		
 			    		<a href="#" id="api" class="pagelink"><?php echo _("API"); ?></a>
 			    		
-			    		<!-- toggle log link will be added here for devs -->
+			    		<?php /* toggle log link will be added here from main.js for devs */ ?>
 			    	</li>
 			    </ul>
 			    

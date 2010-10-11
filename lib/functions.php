@@ -1182,6 +1182,7 @@ function is_valid_email_address($email){
  */
 function pt_types() {
 	return array(
+		0 => _("Other"),
 		1 => _("Local bus"),
 		2 => _("Trolleybus"),
 		3 => _("Tram"),
@@ -1274,7 +1275,7 @@ function pt_list($country_iso) {
 									echo '<small>'.pt_type($type, 'icon_text').'</small><br />';
 								}
 							}
-							elseif(!empty($row["type"])) {
+							elseif($row["type"] != "") {
 								echo '<small>'.pt_type($row["type"], 'icon_text').'</small>';
 							}
 							echo ' </td>';
