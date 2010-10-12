@@ -3,8 +3,26 @@
  * Geocoder
  * Reverse Geocoder
  * 
- * Example:
- * geocoder.php?q=Finland or geocoder.php?q=Tampere,+Finland&service=nominatim
+ * Examples:
+ * geocoder.php?q=Finland
+ * geocoder.php?q=Tampere,+Finland&service=nominatim
+ * geocoder.php?q=64.363,25.332&service=nominatim_reverse&debug
+ *
+ * Default service is always geocoder, not reverse geocoder.
+ * 
+ * File has setup for multiple geocoding services, including our own database -based.
+ * These are not all in use around the service, but maintained in here "just in case".
+ * 
+ * TODO:
+ *
+ * - Geonames reverse encoder
+ * 
+ * - If one service fails, jump to the next one: error handling.
+ *   Change geocoders to respond false in failure, and output function 
+ *   turns fail into an error-json
+ *
+ * - Class
+ *
  */
 
 require_once("../config.php");
@@ -15,8 +33,16 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 #header("Content-type: application/json");
 
 
+/*
+ * Precoded zoom levels
+ */ 
+$zoomlevels["country"] = '6';
+$zoomlevels["city"] = '11';
+$zoomlevels["street"] = '14';
+	
+
 /* 
- * Geocode
+ * Geocode by get
  */
 
 if(isset($_GET["q"]) && !empty($_GET["q"])) {
@@ -31,7 +57,7 @@ if(isset($_GET["q"]) && !empty($_GET["q"])) {
 	switch (strtolower($_GET["service"])) {
 	
     	case "nominatim":
-    	    echo nominatim($q);
+    	    echo nominatim_geocode($q);
     	    break;
     	    
     	case "nominatim_reverse":
@@ -43,7 +69,7 @@ if(isset($_GET["q"]) && !empty($_GET["q"])) {
     	    break;
     	    
     	case "tiny_geocoder":
-    	    echo tiny_geocoder($q);
+    	    echo tiny_geocode($q);
     	    break;
     	
     	case "hitchwiki":
@@ -60,25 +86,23 @@ if(isset($_GET["q"]) && !empty($_GET["q"])) {
 	}
 }
 else {
-	echo '{error:"true"}';
+	echo geocoder_output( array("error" => true) );
 	exit;
 }
 
 
 
 /* 
- * Preview
+ * Output
  */
-function preview($data) {
+function geocoder_output($data) {
 	global $_GET;
 	
-	if(isset($_GET["debug"])) {
-		$return = '<pre>';
-		$return .= print_r(json_decode($data),true);
-		$return .= '</pre>';
-		return $return;
-	}
-	else return $data;
+	// Turn on debug view (human readable output) with get "debug"
+	if(isset($_GET["debug"])) return '<pre>'.print_r($data,true).'</pre>';
+	
+	// By defalt output json
+	else return json_encode($data);
 }
 
 
@@ -88,13 +112,20 @@ function preview($data) {
  * http://tinygeocoder.com/
  * - Geocode
  */
-function tiny_geocoder($q) {
-	$raw = readURL('http://tinygeocoder.com/create-api.php?q='.urlencode($q));
-	$latlon = explode(",",$raw);
-
-	$data = '{"lat":"'.$latlon[0].'","lon":"'.$latlon[1].'","service": "tiny geocoder"}';
+function tiny_geocode($q) {
 	
-	return preview($data);
+	$raw = readURL('http://tinygeocoder.com/create-api.php?q='.$q);
+	
+	if(empty($raw)) $output = array("error"=>true);
+	else {
+		$latlon = explode(",",$raw);
+
+		$output["lat"] = $latlon[0];
+		$output["lon"] = $latlon[1];
+		$output["service"] = "tiny geocoder";
+	}
+	
+	return geocoder_output($output);
 }
 
 /* 
@@ -127,30 +158,25 @@ function tiny_geocoder($q) {
                 )
 
  */
-function nominatim($q) {
+function nominatim_geocode($q) {
 	global $settings;
 	
 	$xml = readURL('http://nominatim.openstreetmap.org/search?q='.$q.'&format=xml&email='.urlencode($settings["email"]));
 	$data = new SimpleXMLElement($xml);
-
-	$return = '{';
-	
+;
+	// Loop XML trough and output if we had a result	
 	if(isset($data->place[0])) {
 		foreach($data->place[0]->attributes() as $a => $b) {
-			$return .= '"'.$a.'":"'.$b.'",';
-		}
-		#$return = substr($return, 0, -1); // take last , away
-		
+			$output[$a] = $b;
+		}		
 	}
 	else {
-		$return .= '"error":true';
+		$output["error"] = true;
 	}
 	
-  		$return .= ',"service": "nominatim"';
-  		
-	$return .= '}';
-  
-	return preview($return);
+	$output["service"] = "nominatim geocoder";
+
+	return geocoder_output($output);
 }
 
 
@@ -166,33 +192,34 @@ function nominatim($q) {
 function nominatim_reverse($q) {
 	global $settings;
 
-	$q = explode("%2C",$q); // divide from ","
+	$q = explode("%2C",$q); // divide from "," - $q is already urlencoded, that's why it's in this format
 
 	$xml = readURL('http://nominatim.openstreetmap.org/reverse?format=xml&lat='.urlencode($q[0]).'&lon='.urlencode($q[1]).'&zoom=18&email='.urlencode($settings["email"]));
 	$raw = new SimpleXMLElement($xml);
 
-	if(empty($raw) OR !empty($raw->error)) $data["error"] = true;
+	if(empty($raw) OR !empty($raw->error)) $output["error"] = true;
 	else {
 
-		if(!empty($raw->result)) $data["address"] = (string)$raw->result;
+		if(!empty($raw->result)) $output["address"] = (string)$raw->result;
 		
-		if(!empty($raw->addressparts->road)) $data["road"] = (string)$raw->addressparts->road;
+		if(!empty($raw->addressparts->road)) $output["road"] = (string)$raw->addressparts->road;
 		
-		if(!empty($raw->addressparts->postcode)) $data["postcode"] = (string)$raw->addressparts->postcode;
+		if(!empty($raw->addressparts->postcode)) $output["postcode"] = (string)$raw->addressparts->postcode;
 		
-		if(!empty($raw->addressparts->city)) $data["locality"] = (string)$raw->addressparts->city;
-		elseif(!empty($raw->addressparts->town)) $data["locality"] = (string)$raw->addressparts->town;
+		if(!empty($raw->addressparts->city)) $output["locality"] = (string)$raw->addressparts->city;
+		elseif(!empty($raw->addressparts->town)) $output["locality"] = (string)$raw->addressparts->town;
 		
-		if(!empty($raw->addressparts->country_code)) $data["country_code"] = strtoupper($raw->addressparts->country_code);
+		if(!empty($raw->addressparts->country_code)) $output["country_code"] = strtoupper($raw->addressparts->country_code);
 		
-		if(!empty($raw->addressparts->country_code)) $data["country_name"] = ISO_to_country($raw->addressparts->country_code);
+		if(!empty($raw->addressparts->country_code)) $output["country_name"] = ISO_to_country($raw->addressparts->country_code);
 		
-		$data["lat"] = strip_tags($q[0]);
-		$data["lon"] = strip_tags($q[1]);
+		$output["lat"] = strip_tags($q[0]);
+		$output["lon"] = strip_tags($q[1]);
 
 	}
+	$output["service"] = "nominatim reverse geocoder";
 	
-	return json_encode($data);
+	return geocoder_output($output);
  
 }
 
@@ -203,26 +230,33 @@ function nominatim_reverse($q) {
  * Google
  * - Geocode
  * - Reverse geocode
+ *
+ * Notice, use this only when outputting results into a google map layer: 
+ *
+ * "The geocoding service may only be used in conjunction with displaying results on a Google map; 
+ * geocoding results without displaying them on a map is prohibited."
+ *
+ * - Terms of service: http://code.google.com/apis/maps/documentation/geocoding/index.html
+ *
+ *
  */
 function google($q) {
 
-	$return = readURL('http://maps.google.com/maps/geo?q='.urlencode($q));
-	$raw = json_decode($return);
+	$json = readURL('http://maps.google.com/maps/geo?q='.$q);
+	$raw = json_decode($json);
 	
-	$latlon = explode(",",$raw->name);
+	$latlon = explode(",",(string)$raw->name);
 
-	#return print_r($raw,true);
+	// Re format json
+	$output["lat"] = trim($latlon[0]);
+	$output["lon"] = trim($latlon[1]);
+	$output["address"] = (string)$raw->Placemark[0]->address;
+	$output["locality"] = (string)$raw->Placemark[2]->AddressDetails->Country->AdministrativeArea->AddressLine[0];
+	$output["country_name"] = (string)$raw->Placemark[0]->AddressDetails->Country->CountryName;
+	$output["country_code"] = (string)$raw->Placemark[0]->AddressDetails->Country->CountryNameCode;
+	$output["service"] = "google";
 
-$data = '{
-  "lat": "'.$latlon[0].'",
-  "lon": "'.$latlon[1].'",
-  "address": "'.$raw->Placemark[0]->address.'",
-  "locality": "'.$raw->Placemark[2]->AddressDetails->Country->AdministrativeArea->AddressLine[0].'",
-  "country_name": "'.$raw->Placemark[0]->AddressDetails->Country->CountryName.'",
-  "country_code": "'.$raw->Placemark[0]->AddressDetails->Country->CountryNameCode.'",
-  "service": "google"
-}';
-	return preview($data);
+	return geocoder_output($output);
 }
 
 
@@ -258,29 +292,29 @@ SimpleXMLElement Object
 )
  */
 function geonames_geocode($q) {
+	global $zoomlevels;
 
-	$xml = readURL('http://ws.geonames.org/search?q='.urlencode($q).'&maxRows=1&style=SHORT');
+	$xml = readURL('http://ws.geonames.org/search?q='.$q.'&maxRows=1&style=SHORT');
 	$raw = new SimpleXMLElement($xml);
 	
 	$latlon = explode(",",$raw->name);
 
 	// Define zoom level by object type
 	// http://www.geonames.org/export/codes.html
-	if($raw->geoname->fcl == "A") $zoom = '6';
-	elseif($raw->geoname->fcl == "P") $zoom = '11';
-	else $zoom = '14';
+	if($raw->geoname->fcl == "A") $zoom = $zoomlevels["country"];
+	elseif($raw->geoname->fcl == "P") $zoom = $zoomlevels["city"];
+	else $zoom = $zoomlevels["street"];
+			
 		
+	$output["lat"] = (string)$raw->geoname->lat;
+	$output["lon"] = (string)$raw->geoname->lng;
+	$output["locality"] = (string)$raw->geoname->toponymName;
+	$output["country_name"] = ISO_to_country((string)$raw->geoname->countryCode);
+	$output["country_code"] = (string)$raw->geoname->countryCode;
+	$output["zoom"] = $zoom;
+	$output["service"] = "geonames";
 
-$data = '{
-  "lat": "'.$raw->geoname->lat.'",
-  "lon": "'.$raw->geoname->lng.'",
-  "locality": "'.$raw->geoname->toponymName.'",
-  "country_name": "'.ISO_to_country($raw->geoname->countryCode).'",
-  "country_code": "'.$raw->geoname->countryCode.'",
-  "zoom": "'.$zoom.'",
-  "service": "geonames"
-}';
-	return preview($data);
+	return geocoder_output($output);
 }
 
 
@@ -290,7 +324,7 @@ $data = '{
  * - Geocode
  */
 function hitchwiki_geocode($q) {
-	global $settings;
+	global $settings,$zoomlevels;
 	
 	start_sql();
 	
@@ -319,7 +353,16 @@ function hitchwiki_geocode($q) {
 		}
 		
 	}
-	if($latlon) return preview('{"lat": "'.$latlon["lat"].'", "lon": "'.$latlon["lon"].'","service":"HW DB/countrycode-list"}');
+	if($latlon) return geocoder_output(
+			array(
+				"lat" => $latlon["lat"],
+				"lon" => $latlon["lon"],
+				"country_name" => ISO_to_country($latlon["iso"]),
+				"country_code" => $latlon["iso"],
+				"zoom" => $zoomlevels["country"],
+				"service" => "HW DB/countrycode-list"
+			)
+		);
 	
 	
 	
@@ -331,7 +374,16 @@ function hitchwiki_geocode($q) {
 
 	if($country!==false) {
 		$latlon = explode("|", getCountryCoords($country));
-		return preview('{"lat": "'.$latlon[0].'", "lon": "'.$latlon[1].'","service":"HW DB/country-list"}');
+		return geocoder_output(
+			array(
+				"lat" => $latlon[0],
+				"lon" => $latlon[1],
+				"country_name" => ISO_to_country($country),
+				"country_code" => $country,
+				"zoom" => $zoomlevels["country"],
+				"service" => "HW DB/country-list"
+			)
+		);
 	}
 	
 	
@@ -342,14 +394,21 @@ function hitchwiki_geocode($q) {
 	
 	$latlon = explode("|", getCityCoords($q));
 	if($latlon[0] != "0" && $latlon[1] != "0") {
-		return preview('{"lat": "'.$latlon[1].'", "lon": "'.$latlon[0].'","service":"HW DB/city-list"}');
+		return geocoder_output(
+			array(
+				"lat"=>$latlon[1],
+				"lon"=>$latlon[0],
+				"zoom" => $zoomlevels["city"],
+				"service" => "HW DB/city-list"
+			)
+		);
 	}
 	
 	
 	/* TEST-4 
 	 * * * * * * */
 	
-	// Uh oh! Final try!
+	// Uh oh! Final try! With online service!
 	geonames_geocode($q);
 
 	
@@ -368,11 +427,9 @@ function hitchwiki_geocode($q) {
  * Original function from Hitchwiki Maps v1 maps-functions.php
  */
 function getCityCoords($c) {
-    $t_cities = "geo_cities";
     $country = '';
     start_sql();
 
-	#$c = str_replace("%2C",",",$c);
 	$c = urldecode($c);
 
     if (preg_match('!,!', $c)) {
@@ -380,9 +437,7 @@ function getCityCoords($c) {
     }
     $c = mysql_real_escape_string(trim($c));
     if (!empty($country)) {
-    	
         $country = country_to_ISO(trim($country));
-        
 	}
 	
     if (empty($country)) {
@@ -391,25 +446,24 @@ function getCityCoords($c) {
         $countryquery = "AND country = '$country'";
 	}
 	
-    $query = "SELECT lat, lng FROM $t_cities WHERE LOWER(city) = LOWER('$c') $countryquery";
+    $query = "SELECT lat, lng FROM `geo_cities` WHERE LOWER(city) = LOWER('$c') $countryquery";
     $res = mysql_query($query) or die ($query."-".mysql_error());
 
     if ($r = mysql_fetch_row($res))
         return $r[0]."|".$r[1];
 
-    $query = "SELECT lat, lng, city FROM $t_cities WHERE (LOWER(city) LIKE LOWER('%$c%')) $countryquery";
+    $query = "SELECT lat, lng, city FROM `geo_cities` WHERE (LOWER(city) LIKE LOWER('%$c%')) $countryquery";
     $res = mysql_query($query) or die ($query."-".mysql_error());
 
     if ($r = mysql_fetch_row($res))
         return $r[0]."|".$r[1];
 
-    $query = "SELECT lat, lng, city FROM $t_cities WHERE (city SOUNDS LIKE '$c') $countryquery";
+    $query = "SELECT lat, lng, city FROM `geo_cities` WHERE (city SOUNDS LIKE '$c') $countryquery";
     $res = mysql_query($query) or die ($query."-".mysql_error());
 
     if ($r = mysql_fetch_row($res))
         return $r[0]."|".$r[1];
 
-    #$retval = "48.873663314036996|2.2950804233551025";
     $retval = "0|0";
     $last = '';
     while ($r = mysql_fetch_row($res)) {
@@ -425,8 +479,10 @@ function getCityCoords($c) {
 
 /*
  * Get map zoom level for the country (with countrycode)
+ * Original function from Hitchwiki Maps v1 maps-functions.php
  */
 function getCountryZoom($c) {
+    start_sql();
 
     $query = "SELECT zoom FROM `t_countries` WHERE iso='".mysql_escape_string($c)."'";
     $res = mysql_query($query);
@@ -440,9 +496,11 @@ function getCountryZoom($c) {
 
 /*
  * Get lat,lon for the country (with countrycode)
+ * Original function from Hitchwiki Maps v1 maps-functions.php
  */
 function getCountryCoords($c) {
-    global $t_countries;
+    start_sql();
+    
     $query = "SELECT lat, lon FROM `t_countries` WHERE iso='".mysql_escape_string($c)."'";
     $res = mysql_query($query) or die ($query."-".mysql_error());
     if ($r = mysql_fetch_row($res)) {

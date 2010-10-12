@@ -1265,8 +1265,8 @@ function pt_list($country_iso) {
 							else echo '<td> </td>';
 							
 							// URL
-							if(!empty($row["title"])) echo '<td><a href="'.urlencode($row["URL"]).'" target="_blank">'.htmlspecialchars($row["title"]).'</a></td>';
-							else echo '<td><a href="'.urlencode($row["URL"]).'" target="_blank">'._("Go the site").'</a></td>';
+							if(!empty($row["title"])) echo '<td><a href="'.htmlspecialchars($row["URL"]).'" rel="nofollow" target="_blank">'.htmlspecialchars($row["title"]).'</a></td>';
+							else echo '<td><a href="'.htmlspecialchars($row["URL"]).'" rel="nofollow" target="_blank">'._("Go the site").'</a></td>';
 							
 							// Type
 							echo '<td class="pt_types">';
