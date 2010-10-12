@@ -1,0 +1,3 @@
+/*
+ * Hitchwiki Maps: admin.js
+ */

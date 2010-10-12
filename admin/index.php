@@ -52,7 +52,7 @@ else:
     
     <title><?php echo 'Hitchwiki '._("Maps").' - '._("Admin"); ?></title>
     
-        <link rel="stylesheet" type="text/css" href="../static/css/ui-lightness/jquery-ui-1.8.4.custom.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="../static/css/ui-lightness/jquery-ui-1.8.5.custom.css" media="all" />
 
     	<!-- Scripts -->
         <script type="text/javascript">
@@ -64,7 +64,7 @@ else:
         </script>
         
         <script src="../static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-		<script src="../static/js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
+		<script src="../static/js/jquery-ui-1.8.5.custom.min.js" type="text/javascript"></script>
         <script src="../static/js/admin.js<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" type="text/javascript"></script>
         
         <!-- Keep main stylesheet after main.js -->
@@ -106,12 +106,47 @@ else:
     	</div>
     	
     	<ul class="AdminNavigation">
+    		<li><a href="./">Dashboard</a></li>
     		<li><a href="./?page=places">Places</a></li>
     		<li><a href="./?page=users">Users</a></li>
+    		<li><a href="./?page=new_language">Add new language</a></li>
+    		<li><a href="./?page=translate_countrynames">Translate countries</a></li>
+    		<li><a href="http://github.com/MrTweek/maps.hitchwiki.org/">@GitHub</a></li>
+    		<li><a href="http://maps.hitchwiki.org">maps.hitchwiki.org</a></li>
     	</ul>
     	
-    	<div>
-	    	Lorem ipsum
+    	<div class="AdminContent">
+	    	<?php
+	    	
+			/*
+			 * Show page
+			 */
+			 
+			 
+			if( isset($_GET["page"])):
+			
+				$file = "views/".$_GET["page"].".php";
+			 
+				if( !empty($_GET["page"]) && !ereg('[^0-9A-Za-z_-]', $_GET["page"]) && file_exists($file) ):
+				
+					include($file);
+					
+				else:
+				?>
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em; margin: 20px 0;"> 
+					    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+					    What you seek for, just isn't there...</p>
+					</div>
+				<?php 
+				endif;
+			
+			else:
+				
+				include("views/dashboard.php");
+			
+			endif;
+	    	
+	    	?>
     	</div>
     	
     	</div>

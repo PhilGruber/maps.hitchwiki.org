@@ -225,8 +225,8 @@ input.copypaste {
  */  
 .icon {
 	padding-left: 20px;
-	padding-top: 1px;
-	padding-bottom: 3px;
+	padding-top: 3px;
+	padding-bottom: 4px;
 	background-repeat: no-repeat;
 	background-position: left center;
 }
@@ -254,6 +254,7 @@ textarea.icon {
 .icon.hitchability_4 	{ background-image: url(../gfx/icons/hitchability_4.png); }
 .icon.hitchability_5 	{ background-image: url(../gfx/icons/hitchability_5.png); }
 
+.icon.transportation_0 	{ background-image: url(../gfx/icons/transportation_0.png); }
 .icon.transportation_1 	{ background-image: url(../gfx/icons/transportation_1.png); }
 .icon.transportation_2 	{ background-image: url(../gfx/icons/transportation_2.png); }
 .icon.transportation_3 	{ background-image: url(../gfx/icons/transportation_3.png); }
@@ -326,10 +327,6 @@ html, body {
 	margin: 0;
 	height: 100%;
 	background-color: #e7e2c9;
-}
-
-body.admin {
-	background-color: #fff;
 }
 
 

@@ -346,9 +346,19 @@ $title .= 'Hitchwiki '._("Maps");
 					</ul>
 					<span id="Hello"><span class="icon <?php
 					
-					// Icon
+					/*
+					 * Icon
+					 */
 					if($user["admin"]===true) echo 'tux'; // ;-)
 					else echo 'user_orange';
+					
+					echo '"'; //end class
+					
+					// Gravatar
+					//if($user["allow_gravatar"]=="1" && !empty($user["email"])) echo ' style="background-image: url(http://www.gravatar.com/avatar/'.md5($user["email"]).'/?s=16);"';
+					
+					echo '>'; //end tag
+					
 					
 					/*
 					 * Pick one random hello
@@ -382,7 +392,7 @@ $title .= 'Hitchwiki '._("Maps");
 					$hello_greeting = array_rand($hello,1);
 					$hello_from = $hello[$hello_greeting];
 					
-					?>"><span title="<?php printf(_("Hello from %s"), ISO_to_country($hello_from)); ?>"><?php echo $hello_greeting; ?></span> <a href="./?page=profile" id="profile" class="pagelink"><?php echo $user["name"]; ?></a></span></span>
+					?><span title="<?php printf(_("Hello from %s"), ISO_to_country($hello_from)); ?>"><?php echo $hello_greeting; ?></span> <a href="./?page=profile" id="profile" class="pagelink"><?php echo $user["name"]; ?></a></span></span>
 
 				<?php 
 				// User is NOT logged in:
@@ -544,7 +554,13 @@ $title .= 'Hitchwiki '._("Maps");
 			    		<a href="#" id="api" class="pagelink"><?php echo _("API"); ?></a>
 			    		
 			    		<?php /* toggle log link will be added here from main.js for devs */ ?>
+			    		
 			    	</li>
+			    	
+			    	<?php
+			    		// Visible only for admins
+			    		if($user["admin"]===true) echo '<li><a href="./admin/">Admins</a></li>';
+			    	?>
 			    </ul>
 			    
 

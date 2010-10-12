@@ -4,7 +4,6 @@
  *
  */
 
-
 /* 
  * SETTINGS you might want to adjust:
  */
@@ -49,16 +48,16 @@ $settings["languages_in_english"] = 	array(
 
 
 // Usually you don't need to edit this, but you can set it manually, too. No ending "/".
-$settings["base_url"] = 				"http://maps.hitchwiki.org";#"http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
+$settings["base_url"] = "http://maps.hitchwiki.org";#"http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://".$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
 
 /*
  * MySQL settings
  */
 $mysql_conf = array(
-    "user"		=> 		'', 
-    "password"	=> 		'',
-    "host"		=> 		'',
-    "database"	=> 		''
+	"user"		=> 		'', 
+	"password"	=> 		'',
+	"host"		=> 		'',
+	"database"	=> 		''
 );
 
 

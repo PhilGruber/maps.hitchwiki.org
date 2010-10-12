@@ -1,0 +1,26 @@
+body, html {
+	background-color: #fff;	
+}
+
+
+.AdminContent {
+	padding: 20px 10px 40px 20px;
+	margin: 0;
+	float: left;
+	overflow: auto;
+}
+
+.AdminNavigation {
+	padding: 0;
+	margin: 20px 15px;
+	width: 170px;
+	float: left;
+	list-style: none;
+	display: block;
+	border-top: 1px solid #ccc;
+}
+	.AdminNavigation li {
+		padding: 5px 5px;
+		margin: 0;
+		border-bottom: 1px solid #ccc;
+	}
