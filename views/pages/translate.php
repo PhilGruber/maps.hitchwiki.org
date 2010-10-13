@@ -1,5 +1,5 @@
 
-<h3><?php printf("Hitchwiki Maps is currently available in %s languages", count($settings["valid_languages"])); ?>:</h3>
+<h3><?php printf(_("Hitchwiki Maps is currently available in %s languages"), count($settings["valid_languages"])); ?>:</h3>
 
 <ul class="clean" style="width: 300px;">
 <?php 
@@ -14,4 +14,7 @@ foreach($settings["valid_languages"] as $code => $lang) {
 </ul>
 
 <h3><?php echo _("Help us with translating!"); ?></h3>
-<?php echo _("Contact us"); ?>: <a href="mailto:<?php echo $settings["email"]; ?>"></a>.
+
+<p><?php echo _("If you would like to add content in your own language, or translate all visible interface texts, contact us so we can put up a new language."); ?></p>
+
+<p><a href="mailto:<?php echo $settings["email"]; ?>"><?php echo $settings["email"]; ?></a></p>
