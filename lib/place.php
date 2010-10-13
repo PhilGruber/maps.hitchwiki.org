@@ -724,14 +724,14 @@ if($place["error"] !== true):
 				<small class="light icon wrench" style="display: block;">
 				
 					&nbsp;
-					<a href="admin/?remove_place=<?php echo $place["id"]; ?>" onclick="configrm('Are you sure?');"><?php echo _("Remove place"); ?></a> 
+					<a href="admin/?page=places&amp;remove=<?php echo $place["id"]; ?>" onclick="configrm('Are you sure?');"><?php echo _("Remove place"); ?></a> 
 					
 					&bull; 
-					<a href="admin/?edit_place=<?php echo $place["id"]; ?>"><?php echo _("Edit place"); ?></a> 
+					<a href="admin/?page=places&amp;edit=<?php echo $place["id"]; ?>"><?php echo _("Edit place"); ?></a> 
 					
 					<?php if(!empty($place["user"]["id"])): ?>
 					&bull; 
-					<a href="admin/?user=<?php echo $place["user"]["id"]; ?>"><?php echo _("See user"); ?></a> 
+					<a href="admin/?users&amp;user=<?php echo $place["user"]["id"]; ?>"><?php echo _("See user"); ?></a> 
 					<?php endif; ?>
 					
 				</small>

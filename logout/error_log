@@ -1,6 +1,0 @@
-[02-Aug-2010 02:25:17] PHP Warning:  require_once(lib/login.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/sg076/public_html/maps.hitchwiki.org/logout/index.php on line 9
-[02-Aug-2010 02:25:17] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'lib/login.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/sg076/public_html/maps.hitchwiki.org/logout/index.php on line 9
-[02-Aug-2010 02:29:05] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/sg076/public_html/maps.hitchwiki.org/lib/login.php:28) in /home/sg076/public_html/maps.hitchwiki.org/logout/index.php on line 12
-[02-Aug-2010 02:29:06] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/sg076/public_html/maps.hitchwiki.org/lib/login.php:28) in /home/sg076/public_html/maps.hitchwiki.org/logout/index.php on line 12
-[02-Aug-2010 02:29:29] PHP Parse error:  syntax error, unexpected T_STRING in /home/sg076/public_html/maps.hitchwiki.org/logout/index.php on line 9
-[02-Aug-2010 02:29:31] PHP Parse error:  syntax error, unexpected T_STRING in /home/sg076/public_html/maps.hitchwiki.org/logout/index.php on line 9

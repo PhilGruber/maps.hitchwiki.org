@@ -559,7 +559,7 @@ $title .= 'Hitchwiki '._("Maps");
 			    	
 			    	<?php
 			    		// Visible only for admins
-			    		if($user["admin"]===true) echo '<li><a href="./admin/">Admins</a></li>';
+			    		if($user["admin"]===true) echo '<li><a href="./admin/">'._("Admins").'</a></li>';
 			    	?>
 			    </ul>
 			    

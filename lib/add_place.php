@@ -91,7 +91,7 @@ $user = current_user();
 			  			
 			  				// Toggle parts for a hitchhiking spot
 			  				$("#hitchability_question").show(); 
-			  				$("waitingtime_question").show();
+			  				$("#waitingtime_question").show();
 			  				
 			  				// Toggle Event stuff
 			  				$("#event_info").hide();  
@@ -100,7 +100,7 @@ $user = current_user();
 			  			
 			  				// Toggle parts for a hitchhiking spot
 			  				$("#hitchability_question").hide(); 
-			  				$("waitingtime_question").hide();
+			  				$("#waitingtime_question").hide();
 			  				
 			  				// Toggle Event stuff
 			  				$("#event_info").show();
@@ -181,33 +181,32 @@ $user = current_user();
 
 	<li id="event_info" style="display:none;">
 		<ul>
-			<li>
-				<label for="start_date" class="icon calendar_view_day">Starting date</label> <input type="text" value="" size="10" name="start_date" id="start_date" class="datepicker" /> <a href="#" id="clear_start_date"><small><?php echo _("Clear"); ?></small></a>
+			<li class="clear">
+				<label for="start_date" class="icon calendar_view_day align_left">Starting date</label> <input type="text" value="" size="10" name="start_date" id="start_date" class="datepicker align_left" style="margin-left: 5px;" /> <a href="#" id="clear_start_date" class="ui-icon ui-icon-cancel align_left" title="<?php echo _("Clear"); ?>"><?php echo _("Clear"); ?></a>
 			</li>
-			<li>
-				<label for="end_date" class="icon calendar_view_day">Ending date</label> <input type="text" value="" size="10" name="end_date" id="end_date" class="datepicker" /> <a href="#" id="clear_end_date"><small><?php echo _("Clear"); ?></small></a>
-				
-				<script type="text/javascript">
-				$(function() {
-					// Date picker
-					$("#add_new_place_form .datepicker").datepicker({
-						showButtonPanel: true
-					});
-					
-					// Clear btns
-					$("#add_new_place_form #clear_start_date").click(function(e){
-						e.preventDefault();
-						$("#add_new_place_form #start_date").val("");
-					});
-					$("#add_new_place_form #clear_end_date").click(function(e){
-						e.preventDefault();
-						$("#add_new_place_form #end_date").val("");
-					});
-				});
-				</script>
+			<li class="clear">
+				<label for="end_date" class="icon calendar_view_day align_left">Ending date</label> <input type="text" value="" size="10" name="end_date" id="end_date" class="datepicker align_left" style="margin-left: 5px;" /> <a href="#" id="clear_end_date" class="ui-icon ui-icon-cancel align_left" title="<?php echo _("Clear"); ?>"><?php echo _("Clear"); ?></a>
+				<div class="clear"></div>
 			</li>
-
 		</ul>
+		<script type="text/javascript">
+		$(function() {
+		    // Date picker
+		    $("#add_new_place_form .datepicker").datepicker({
+		    	showButtonPanel: true
+		    });
+		    
+		    // Clear btns
+		    $("#add_new_place_form #clear_start_date").click(function(e){
+		    	e.preventDefault();
+		    	$("#add_new_place_form #start_date").val("");
+		    });
+		    $("#add_new_place_form #clear_end_date").click(function(e){
+		    	e.preventDefault();
+		    	$("#add_new_place_form #end_date").val("");
+		    });
+		});
+		</script>
 	</li>
 	
 	<li id="hitchability_question">

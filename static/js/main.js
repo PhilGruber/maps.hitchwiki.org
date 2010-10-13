@@ -27,24 +27,25 @@ $(document).ready(function() {
 	// Debug log-box
 	if(debug==true) {
 	
-		$("#log").draggable({handle: '#log .handle'});
+		// Some positioning...
+		var log = $("#log").attr("style","position:absolute; top: 100px; left: 100px;");
+	
+		log.draggable({handle: '#log .handle'});
 		$("#log ul").resizable({alsoResize: '#log'});
 		
 		// Create a toggle button for log
 		$("#developers").append(' &bull; <a href="#" id="toggle_log">Toggle log</a>');
 		$("#toggle_log").click(function(e){
 			e.preventDefault();
-			$("#log").toggle();
+			log.toggle();
 		});
 		
-		// Some positioning...
-		$("#log").attr("style","position:absolute; top: 100px; left: 100px;");
 		
 		// Show or hide log at the start?
 		if(show_log==true) {
-			$("#log").show();
+			log.show();
 		} else { 
-			$("#log").hide();
+			log.hide();
 		}
 		
 	}
@@ -54,7 +55,7 @@ $(document).ready(function() {
 
 
 	// Remove JS-required alert	
-	$("#map").text('');
+	$("div#map").text('');
 
 
 	// Load Map
@@ -62,17 +63,17 @@ $(document).ready(function() {
 
 
 	// Navigation
-	$(".pagelink").each(function(index) {
+	$("a.pagelink").each(function(index) {
 		$(this).click(function(e){
 			e.preventDefault();
-			open_page( $(this).attr("id") );
+			open_page( this.id );
 			$(this).blur();
 		});
 	});
-	$(".cardlink").each(function(index) {
+	$("a.cardlink").each(function(index) {
 		$(this).click(function(e){
 			e.preventDefault();
-			open_card( $(this).attr("id"), $(this).text() );
+			open_card( this.id, $(this).text() );
 			$(this).blur();
 		});
 	});
@@ -80,52 +81,50 @@ $(document).ready(function() {
 
 	// Search form
 	$("#search_form").submit(function(){ 
-  		search($("#search_form #q").val());
+  		search($("#search_form input#q").val());
         return false; 
     });
 
 	// Autosuggest in search
-	$(function() {
-		$("#search_form #q").autocomplete({
-			source: function(request, response) {
-				$.ajax({
-					url: "http://ws.geonames.org/searchJSON",
-					dataType: "jsonp",
-					data: {
-						featureClass: "P",
-						style: "full",
-						maxRows: 10,
-						name_startsWith: request.term
-					},
-					success: function(data) {
-						response($.map(data.geonames, function(item) {
-							return {
-								label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
-								value: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName
-								//value: item.name + ", " + item.countryName
-							}
-						}))
-					}
-				})
-			},
-			minLength: 2,
-			select: function(event, ui) {
-				search(ui.item.label);
-			},
-			open: function() {
-				$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-			},
-			close: function() {
-				$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-			}
-		});
+	$("#search_form input#q").autocomplete({
+	    source: function(request, response) {
+	    	$.ajax({
+	    		url: "http://ws.geonames.org/searchJSON",
+	    		dataType: "jsonp",
+	    		data: {
+	    			featureClass: "P",
+	    			style: "full",
+	    			maxRows: 10,
+	    			name_startsWith: request.term
+	    		},
+	    		success: function(data) {
+	    			response($.map(data.geonames, function(item) {
+	    				return {
+	    					label: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName,
+	    					value: item.name + (item.adminName1 ? ", " + item.adminName1 : "") + ", " + item.countryName
+	    					//value: item.name + ", " + item.countryName
+	    				}
+	    			}))
+	    		}
+	    	})
+	    },
+	    minLength: 2,
+	    select: function(event, ui) {
+	    	search(ui.item.label);
+	    },
+	    open: function() {
+	    	$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+	    },
+	    close: function() {
+	    	$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+	    }
 	});
 	
 	
 	// Language selection
-	$("#language_selection #submit").hide();
-	$("#language_selection select").change(function() {
-		$("#language_selection #submit").click();
+	$("form#language_selection input#submit").hide();
+	$("form#language_selection select").change(function() {
+		$("form#language_selection input#submit").click();
 		//$(this).parent("form").submit(); //<- Ain't working for some reason?
 	});
     
@@ -206,9 +205,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		close_page();
 	});
-	$("#pages .page .content").hide();
-	$("#pages .page").hide();
-	$("#pages .close").hide();
+	$("#pages .page .content, #pages .page, #pages .close").hide();
 
 
 	// Map selector
@@ -261,56 +258,52 @@ $(document).ready(function() {
 	
 
 	// Add a place -panel
-	$("#add_place").click(function(e){
+	$("#Navigation #add_place").click(function(e){
 		e.preventDefault();
 		
 		init_add_place();
 	});
 
 	// Tools Panel - Opening/closing
-	$("#tools").click(function(e){
+	// Tools Panel - Add a close button to tools panel
+	$("#Navigation #tools, div#toolsPanel h4 .close").click(function(e){
 		e.preventDefault();
 		$(this).blur();
-		$("#toolsPanel").toggle();
-	});
-	
-	// Tools Panel - Add a close button to tools panel
-	$("#toolsPanel h4 .close").click(function(e){
-		e.preventDefault();
-		$("#toolsPanel").toggle();
+		$("div#toolsPanel").toggle();
 	});
 	
 	// Tools Panel - make it draggable
-	$("#toolsPanel").draggable({ handle: 'h4' });
-	$("#toolsPanel").attr("style","text-align:left; top: 100px; left: 240px;");
+	$("div#toolsPanel")
+		.draggable({ handle: 'h4' })
+		.attr("style","text-align:left; top: 100px; left: 240px;");
 
 	// Tools Panel - init zoom tool slider
-	$("#toolsPanel #zoom_slider").slider({
+	$("div#toolsPanel #zoom_slider").slider({
 	    range: "max",
 	    min: 0,
 	    max: 18,
 	    value: markersZoomLimit,
 	    slide: function(event, ui) {
 	    
-	    		$("#toolsPanel #zoom_slider_amount").text(ui.value);
+	    		$("div#toolsPanel #zoom_slider_amount").text(ui.value);
 	    		
 	    		markersZoomLimit = ui.value;
 	    		
 	    		if(ui.value <= 6) {
-	    			$("#toolsPanel #zoomlevel *").hide();
-	    			$("#toolsPanel #zoomlevel .z_continent").show();
+	    			$("div#toolsPanel #zoomlevel *").hide();
+	    			$("div#toolsPanel #zoomlevel .z_continent").show();
 	    		}
 	    		else if(ui.value <= 10) {
-	    			$("#toolsPanel #zoomlevel *").hide();
-	    			$("#toolsPanel #zoomlevel .z_country").show();
+	    			$("div#toolsPanel #zoomlevel *").hide();
+	    			$("div#toolsPanel #zoomlevel .z_country").show();
 	    		}
 	    		else if(ui.value <= 14) {
-	    			$("#toolsPanel #zoomlevel *").hide();
-	    			$("#toolsPanel #zoomlevel .z_city").show();
+	    			$("div#toolsPanel #zoomlevel *").hide();
+	    			$("div#toolsPanel #zoomlevel .z_city").show();
 	    		}
 	    		else {
-	    			$("#toolsPanel #zoomlevel *").hide();
-	    			$("#toolsPanel #zoomlevel .z_streets").show();
+	    			$("div#toolsPanel #zoomlevel *").hide();
+	    			$("div#toolsPanel #zoomlevel .z_streets").show();
 	    		}
 	    		
 	    		$.cookie(cookie_prefix+'markersZoomLimit', ui.value, { path: '/', expires: 666 });
@@ -319,13 +312,13 @@ $(document).ready(function() {
 	    }
 	});
 	
-	$("#toolsPanel #zoom_slider_amount").text($("#toolsPanel #zoom_slider").slider("value"));
+	$("div#toolsPanel #zoom_slider_amount").text($("#toolsPanel #zoom_slider").slider("value"));
 	
 	// Tools Panel and loading animation - hide at the beginning
-	$("#toolsPanel, #loading-bar").hide();
+	$("div#toolsPanel, #loading-bar").hide();
 	
 	var sidebar_height = $("#Sidebar").height();
-	$("#map").attr("style","min-height: "+sidebar_height+"px");
+	$("div#map").attr("style","min-height: "+sidebar_height+"px");
 
 });
 
@@ -827,22 +820,25 @@ function displaylocation(location) {
 		
 		// City
 		if(location.City != '' || location.City != undefined) { 
-			$('#nearby .locality a').text(location.City);
-			$('#nearby .locality a').click(function(){ search(location.City + ', ' + location.CountryName); });
+			$('#nearby .locality a')
+				.text(location.City)
+				.click(function(){ search(location.City + ', ' + location.CountryName); });
 			$('#nearby .locality').show('fast');
 			show_nearby = true;
 		}
 		
 		// State / Region
 		if(location.State != '--') {
-			$('#nearby .state a').text(location.State);
-			$('#nearby .state a').click(function(){ search(location.State + ', ' + location.CountryName); });
+			$('#nearby .state a')
+				.text(location.State)
+				.click(function(){ search(location.State + ', ' + location.CountryName); });
 			$('#nearby .state').show('fast');
 			show_nearby = true;
 		}
 		else if(location.RegionName != '') {
-			$('#nearby .state a').text(location.RegionName);
-			$('#nearby .state a').click(function(){ search(location.RegionName + ', ' + location.CountryName); });
+			$('#nearby .state a')
+				.text(location.RegionName)
+				.click(function(){ search(location.RegionName + ', ' + location.CountryName); });
 			$('#nearby .state').show('fast');
 			show_nearby = true;
 		}
@@ -852,8 +848,9 @@ function displaylocation(location) {
 		
 		// Country
 		if(location.CountryName != '' || location.CountryName != undefined) { 
-			$('#nearby .country a').text(location.CountryName);
-			$('#nearby .country a').click(function(){ search(location.CountryName); });
+			$('#nearby .country a')
+				.text(location.CountryName)
+				.click(function(){ search(location.CountryName); });
 			$('#nearby .country').show('fast');
 			show_nearby = true;
 		}
@@ -1401,8 +1398,7 @@ function update_add_place(q_lon, q_lat) {
 				}
 				else {
 					$("#add_new_place_form input#locality").val("");
-					$("#add_new_place_form #locality_name").hide();
-					$("#add_new_place_form #locality_name").text("");
+					$("#add_new_place_form #locality_name").hide().text("");
 				}
 				
 				
@@ -1471,8 +1467,7 @@ function hidePlacePanel() {
 	
 	// Map to full width again
 	$("#map").css("right","0");
-	$("#PlacePanel").hide();
-	$("#PlacePanel").html("");
+	$("#PlacePanel").hide().html("");
 }
 
 
@@ -1740,10 +1735,10 @@ function info_dialog(dialog_info, dialog_title, dialog_alert, reload_page) {
 	
 	
 	
-	$("#dialog-message").attr("title",dialog_title);
-	$("#dialog-message").html('<p><span class="ui-icon ui-icon-'+dialog_type+'" style="float:left; margin:0 7px 50px 0;"></span>'+dialog_info+'</p>');
-	
-	$("#dialog-message").dialog({
+	$("#dialog-message")
+		.attr("title",dialog_title)
+		.html('<p><span class="ui-icon ui-icon-'+dialog_type+'" style="float:left; margin:0 7px 50px 0;"></span>'+dialog_info+'</p>')
+		.dialog({
 		modal: true,
 		resizable: false,
 		buttons: {
@@ -1799,8 +1794,9 @@ function hide_loading_bar() {
  */
 function maps_debug(str) {
 	if(debug==true) {
-		$("#log ul").append("<li>"+str+"</li>");
-		$("#log ul").attr({ scrollTop: $("#log ul").attr("scrollHeight") });
+		$("#log ul")
+			.append("<li>"+str+"</li>")
+			.attr({ scrollTop: $("#log ul").attr("scrollHeight") });
 	}
 }
 

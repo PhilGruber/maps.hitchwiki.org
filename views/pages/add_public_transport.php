@@ -16,7 +16,7 @@
 
 <br /><br />
 
-<label for="url"><?php echo _("Webpage"); ?></label> <small><?php echo _("Required. Please try to English version of the page."); ?></small><br />
+<label for="url"><?php echo _("Webpage"); ?></label> <small><?php echo _("Required.")." "._("Please try to add an English version of the page."); ?></small><br />
 <input type="text" value="" name="url" id="url" size="35" maxlength="255" />
 
 <br /><br />
@@ -27,7 +27,7 @@
 
 <br /><br />
 
-<label for="country"><?php echo _("Country"); ?></label> <small><?php echo _("Required"); ?></small><br />
+<label for="country"><?php echo _("Country"); ?></label> <small><?php echo _("Required."); ?></small><br />
 <select id="country" name="country">
 		<option value=""><?php echo _("Select"); ?></option>
 		<?php list_countries("option", "name", false, false, true); ?>

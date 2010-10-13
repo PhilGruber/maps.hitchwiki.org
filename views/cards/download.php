@@ -41,7 +41,7 @@
 		
 		// Visible area on the map
 		$("#download_visible").click( function () { 
-			alert("download_visible -todo...");
+			alert("Not in use yet.");
 		});
 		
 		function fileloader(url,name) {
@@ -58,7 +58,7 @@
 <br /><br />
 
 <div class="clear">
-<p><img src="static/gfx/kml_big.png" class="png align_left" alt="" /><?php printf(_("%s is a Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem."), '<a href="http://en.wikipedia.org/wiki/Kml"><b>KML</b></a>'); ?></p>
+<p><img src="static/gfx/kml_big.png" class="png align_left" alt="" /><?php printf(_("%s is widely used format for sharing location based information."), '<a href="http://en.wikipedia.org/wiki/Kml"><b>KML</b></a>'); ?></p>
 </div>
 
 <br /><br />

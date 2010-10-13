@@ -94,7 +94,7 @@ else $profile_form = "register";
 	<br /><br />
 	
 	<input type="checkbox" name="allow_gravatar" id="allow_gravatar" value="true" <?php if(isset($user["allow_gravatar"]) && $user["allow_gravatar"] == "1") echo 'checked="checked" '; ?>/> <label for="allow_gravatar"><?php echo _("Allow Hitchwiki Maps to use your Gravatar"); ?></label><br />
-	<small class="icon gravatar"><?php echo _('We would show information from your <a href="http://www.gravatar.com" target="_blank">Gravatar</a> page, if you have one.'); ?></small>
+	<small class="icon gravatar"><?php printf(_('We would show information from your %s page, if you have one.'), '<a href="http://www.gravatar.com" target="_blank">Gravatar</a>'); ?></small>
 	
 	<br /><br />
 
