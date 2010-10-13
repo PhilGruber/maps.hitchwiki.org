@@ -71,13 +71,8 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 Download from: [http://jqueryui.com/download](http://jqueryui.com/download)
 
 
-## Ideas
-* Using a Google Street view API (check lisence)
-* Using [Panoramio](http://www.panoramio.com/) images
-* Using photos added to Hitchwiki
-* Show links to infopages about public transportation in city
-	* Save vector areas to the map and attach "usefull information about transportation"-links to that vector -> show somehow when browsing the maps
-* Show public transportation stops near hitchhiking spots
+## Ideas / Bugs / TODO
+See [http://hitchwiki.org/en/Hitchwiki:Maps](http://hitchwiki.org/en/Hitchwiki:Maps)
 
 
 ## Contact
