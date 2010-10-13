@@ -6,7 +6,7 @@
  * - Config file loaded before
  * - Gettext
  */
- 
+
 
 // Set langauge from URL
 if(isset($_GET["lang"]) && array_key_exists($_GET["lang"], $settings["valid_languages"])) {
@@ -59,6 +59,7 @@ textdomain("maps");
  * Not too nice way though. :-)
  */
 function get_http_locale() {
+	global $settings;
 
 	foreach($settings["valid_languages"] as $code => $lang) {
 		$replace_these[] = substr($code,0,2);
