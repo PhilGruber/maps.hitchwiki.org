@@ -246,7 +246,7 @@ if($place["error"] !== true):
 			?>
 				<br />
 				<select name="rate" id="rate" class="smaller">
-					<?php if($users_rating==false): ?><option value=""><?php echo _("Your opinnion..."); ?></option><?php endif; ?>
+					<?php if($users_rating==false): ?><option value=""><?php echo _("Your opinion..."); ?></option><?php endif; ?>
 					<option value="1"<?php if($users_rating==1) echo ' selected="selected"'; ?>><?php echo hitchability2textual(1); ?></option>
 					<option value="2"<?php if($users_rating==2) echo ' selected="selected"'; ?>><?php echo hitchability2textual(2); ?></option>
 					<option value="3"<?php if($users_rating==3) echo ' selected="selected"'; ?>><?php echo hitchability2textual(3); ?></option>

@@ -112,41 +112,47 @@ $title .= 'Hitchwiki '._("Maps");
 	if(!empty($settings["fb"])): ?>xmlns:fb="http://developers.facebook.com/schema/" <?php endif; ?>
 	dir="ltr" 
 	lang="<?php echo shortlang(); ?>">
-    <head profile="http://gmpg.org/xfn/11">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    
-    <title><?php echo $title; ?></title>
-    
-        <link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.5.custom.css" media="all" />
+	<head profile="http://gmpg.org/xfn/11">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+		<title><?php echo $title; ?> (BETA)</title>
+		
+		<link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.5.custom.css" media="all" />
+		
+		<?php
+		
+		/*
+		 * Map Services
+		 * You need to enable these from init_map() in static/js/main.js 
+		 * Set API keys and such to the config.php
+		 */
+		 
+		 // Google maps
+		if(!empty($settings["google_maps_api_key"])) echo '<script src="http://maps.google.com/maps?file=api&l='.shortlang().'&v=2&key='.$settings["google_maps_api_key"].'"></script>';
 
-        <!-- RPC -->
-        <?php 
-        	#$server->javascript("rpc"); 
-        ?>
-
-        <!-- Map Services -->
-        <!-- You need to enable these from init_map() in static/js/main.js -->
-        <!--
-        <script src="http://maps.google.com/maps?file=api&l=<?php echo substr($settings["language"], 0, 2); /* ISO_639-1 ('en_UK' => 'en') */ ?>&v=2&key=<?php echo $settings["google_maps_api_key"]; ?>"></script>
-        <script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt=<?php echo str_replace("_", "-", $settings["language"]); ?>" type="text/javascript"></script>
-        <script src="http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=<?php echo $settings["yahoo_maps_appid"]; ?>" type="text/javascript"></script>
-        -->
-        <script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript" type="text/javascript"></script>
-    
-    	<!-- Scripts -->
-        <script type="text/javascript">
+		// Yahoo
+		if(!empty($settings["yahoo_maps_appid"])) echo '<script src="http://api.maps.yahoo.com/ajaxymap?v=3.0&appid='.$settings["yahoo_maps_appid"].'" type="text/javascript"></script>';
+		
+		// MS VirtualEarth
+		if($settings["ms_virtualearth"]===true) echo '<script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt='.str_replace("_", "-", $settings["language"]).'" type="text/javascript"></script>';
+		
+		?>
+		<script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript"></script>
+		
+		<!-- Scripts -->
+		<script type="text/javascript">
 		//<![CDATA[
 
-        	/*
-        	 * Misc settings
-        	 */
+			/*
+			 * Misc settings
+			 */
 			var ip = "<?php echo $_SERVER['REMOTE_ADDR']; ?>";
 			var geolocation = "lib/ipinfodb/ip_proxy.php";
 			var cookie_prefix = "<?php echo $settings["cookie_prefix"]; ?>";
 			var geolocation_cookiename = "<?php echo $settings["cookie_prefix"]; ?>_geolocation";
 			var geolocation_cookieoptions = { path: '/', expires: 24 };
 			var locale = "<?php echo $settings["language"]; ?>";
-
+			
 			/*
 			 * Default map settings
 			 */
@@ -157,21 +163,21 @@ $title .= 'Hitchwiki '._("Maps");
 			var markersZoomLimit = <?php echo $markersZoomLimit; ?>; 
 
 		//]]>
-        </script>
-        
-        <?php /* if(!empty($settings["google_maps_api_key"])): ?>
-        <script src="http://maps.google.com/maps?file=api&v=2&key=<?php echo $settings["google_maps_api_key"]; ?>&sensor=false" type="text/javascript"></script>
-        <?php endif; */ ?>
-        
-        <script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		</script>
+		
+		<?php /* if(!empty($settings["google_maps_api_key"])): ?>
+		<script src="http://maps.google.com/maps?file=api&v=2&key=<?php echo $settings["google_maps_api_key"]; ?>&sensor=false" type="text/javascript"></script>
+		<?php endif; */ ?>
+		
+		<script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery-ui-1.8.5.custom.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
 		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
-        <script src="static/js/main.js<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" type="text/javascript"></script>
-        
-        <!-- Keep main stylesheet after main.js -->
-        <link rel="stylesheet" type="text/css" href="static/css/main.css<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" media="all" />
-        
+		<script src="static/js/main.js<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" type="text/javascript"></script>
+		
+		<!-- Keep main stylesheet after main.js -->
+		<link rel="stylesheet" type="text/css" href="static/css/main.css<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" media="all" />
+		
 		<script type="text/javascript">
 		//<![CDATA[
 			<?php
@@ -195,7 +201,8 @@ $title .= 'Hitchwiki '._("Maps");
 				"settings", 
 				"register", 
 				"profile",
-				"users"
+				"users",
+				"beta"
 			);
 			?>
 			$(document).ready(function() {
@@ -236,7 +243,7 @@ $title .= 'Hitchwiki '._("Maps");
 		<meta name="description" content="<?php echo _("Find good places for hitchhiking and add your own."); ?>" />
 		
 		<!-- The Open Graph Protocol - http://opengraphprotocol.org/ -->
-		<meta property="og:title" content="<?php echo $title; ?>" />
+		<meta property="og:title" content="<?php echo $title; ?> (BETA)" />
 		<meta property="og:site_name" content="Hitchwiki.org" />
 		<meta property="og:description" content="<?php echo _("Find good places for hitchhiking and add your own."); ?>" />
 		<meta property="og:image" content="<?php echo $settings["base_url"]; ?>/badge.png" />
@@ -248,13 +255,26 @@ $title .= 'Hitchwiki '._("Maps");
 		<meta property="og:longitude" content="<?php echo $place["lon"]; ?>" />
 		<meta property="og:locality" content="<?php echo $place["location"]["locality"]; ?>" />
 		<meta property="og:country-name" content="<?php echo $place["location"]["country"]["name"]; ?>" />
+
+		<meta name="geo.position" content="<?php echo $place["lat"].','.$place["lon"]; ?>" />
 	<?php endif; ?>
 
 		<?php if(isset($settings["fb"]["admins"]) && !empty($settings["fb"]["admins"])): ?><meta property="fb:admins" content="<?php echo $settings["fb"]["admins"]; ?>" /><?php endif; ?>
 		<?php if(isset($settings["fb"]["page_id"]) && !empty($settings["fb"]["page_id"])): ?><meta property="fb:page_id" content="<?php echo $settings["fb"]["page_id"]; ?>" /><?php endif; ?>
 		<?php if(isset($settings["fb"]["app"]["id"]) && !empty($settings["fb"]["app"]["id"])): ?><meta property="fb:app_id" content="<?php echo $settings["fb"]["app"]["id"]; ?>" /><?php endif; ?>
 
+		<link rel="home" href="<?php echo $settings["base_url"]; ?>/" title="Hitchwiki <?php echo _("Maps"); ?>" />
+		<link rel="help" href="<?php echo $settings["base_url"]; ?>/?page=help" title="Hitchwiki <?php echo htmlspecialchars(_("Help & About")); ?>" />
 		<link rel="search" type="application/opensearchdescription+xml" href="<?php echo $settings["base_url"]; ?>/opensearch/" title="Hitchwiki <?php echo _("Maps"); ?>" />
+		<?php
+		/*
+		 * Language versions of the frontpage
+		 */ 
+		foreach($settings["valid_languages"] as $code => $name) {
+			// Don't print current in-use-language page
+			if($settings["language"] != $code) echo '<link type="text/html" rel="alternate" hreflang="'.shortlang($code).'" href="'.$settings["base_url"].'/?lang='.$code.'" title="'.$name.'" />';
+		}
+		?>
 		
 		<?php if(isset($settings["fb"]["app"]["id"]) && !empty($settings["fb"]["app"]["id"])): ?>
 		<div id="fb-root"></div>
@@ -288,8 +308,8 @@ $title .= 'Hitchwiki '._("Maps");
     	    .icon
     	     { behavior: url(static/js/iepngfix.htc); }
 		</style>
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-		<link rel="bookmark icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="<?php echo $settings["base_url"]; ?>/favicon.ico" type="image/x-icon" />
+		<link rel="bookmark icon" href="<?php echo $settings["base_url"]; ?>/favicon.ico" type="image/x-icon" />
 		<![endif]-->
     </head>
     <body class="<?php echo $settings["language"]; ?>">
@@ -330,7 +350,7 @@ $title .= 'Hitchwiki '._("Maps");
 				</div>
 			</div>
 */ ?>
-			<div id="Login" class="<?php
+			<div id="LoginNavi" class="<?php
 				if($user["logged_in"]===true) echo 'logged_in';
 				else echo 'logged_out';
 				
@@ -428,7 +448,7 @@ $title .= 'Hitchwiki '._("Maps");
 							<label for="password"><?php echo _("Password"); ?></label><br />
 							<input tabindex="3" type="password" value="" name="password" id="password" /><br />
 							<br />
-							<button type="submit" id="submit" tabindex="5" class="button align_right"><span class="icon lock"><?php echo _("Login"); ?></span></button>
+							<button type="submit" tabindex="5" class="button align_right"><span class="icon lock"><?php echo _("Login"); ?></span></button>
 							<div id="rememberMeRow" class="align_left"><input type="checkbox" value="1" name="remember_me" id="remember_me" tabindex="4" /> <label for="remember_me"><?php echo _("Remember me"); ?></label></div>
 							<br />
 							<small id="login_meta">
@@ -455,17 +475,17 @@ $title .= 'Hitchwiki '._("Maps");
 			
 			<div id="Sidebar">
 			
-				<ul id="Navigation" role="Navigation">
+				<ul id="Navigation" role="navigation">
 				
 					<!-- 1st block -->
 					<li>
 						<ul>
 							<li><h3><?php echo _("Find places"); ?></h3></li>
 							<li id="search">
-								<form method="get" action="#" id="search_form" name="search">
+								<form method="get" action="#" id="search_form" name="search" role="search">
 									<div class="ui-widget">
 									<input type="text" value="" id="q" name="q" />
-									<button type="submit" id="submit" class="button"> <span class="icon magnifier">&nbsp;</span><span class="hidden"><?php echo _("Search"); ?></span></button>
+									<button type="submit" class="search_submit button"> <span class="icon magnifier">&nbsp;</span><span class="hidden"><?php echo _("Search"); ?></span></button>
 									<div class="clear"></div>
 									</div>
 								</form>
@@ -501,7 +521,7 @@ $title .= 'Hitchwiki '._("Maps");
 							<?php if($user["logged_in"]===true): ?>
 							<li><a href="./?page=users" id="users" class="icon user pagelink"><?php echo _("Users"); ?></a></li>
 							<?php endif; ?>
-							<li><a href="./?page=help" id="help" class="icon help pagelink"><?php echo _("Help & About"); ?></a></li>
+							<li><a href="./?page=help" id="help" class="icon help pagelink"><?php echo htmlspecialchars(_("Help & About")); ?></a></li>
 							<li><a href="./?page=statistics" id="statistics" class="icon chart_bar pagelink"><?php echo _("Statistics"); ?></a></li>
 						</ul>
 					</li>
@@ -611,7 +631,7 @@ $title .= 'Hitchwiki '._("Maps");
 	       <div id="toolsPanel" class="hidden">
 	       		<h4 class="icon lorry">
 	       			<?php echo _("Tools"); ?>
-	       			<a href="#" class="close ui-icon ui-icon-closethick align_right" tittle="Close">Close</a>
+	       			<a href="#" class="close ui-icon ui-icon-closethick align_right" title="<?php echo _("Close"); ?>"><?php echo _("Close"); ?></a>
 	       		</h4>
 				<div id="controlToggle">
 				
@@ -675,7 +695,7 @@ $title .= 'Hitchwiki '._("Maps");
 		</div>
 		
 		<!-- for debugging -->
-		<div id="log" class="hidden"><b class="handle">Log</b><ul></ul></div>
+		<div id="log" class="hidden"><b class="handle">Log</b><ul><li /></ul></div>
 
 <?php // Google analytics
 if(isset($settings["google_analytics_id"]) && !empty($settings["google_analytics_id"])): ?>

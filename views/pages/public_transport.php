@@ -6,12 +6,9 @@
 	 * List public transportation -countries
 	 */
 	 
-	// Built up a query
-	$query = "SELECT `country` FROM `t_ptransport` GROUP BY `country` ORDER BY `country` ASC";
-
 	// Gather data
 	start_sql();
-	$result = mysql_query($query);
+	$result = mysql_query("SELECT `country` FROM `t_ptransport` GROUP BY `country` ORDER BY `country` ASC");
 	if (!$result) {
 	   die("Error: SQL query failed with countrycodes()");
 	}
@@ -24,6 +21,11 @@
 	?>
 </select></h2>
 
+<div class="ui-state-error ui-corner-all hidden" style="padding: 0 .7em; margin: 20px 0;" id="public_transport_error"> 
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+    <strong><?php echo _("Error"); ?>:</strong> <span class="error_text"></span></p>
+</div>
+
 <script type="text/javascript">
 	$(function() {
 	
@@ -32,12 +34,25 @@
 
 		$("#show_country").change( function () { 
 		
+			if( $("#public_transport_error").is(":visible") ) { $("#public_transport_error").slideUp(); }
+		
+			var country_select = $(this);
+			
+			// Show "loading" and disable select
+			show_loading_bar("<?php echo _("Loading..."); ?>");
+			country_select.attr("disabled", true);
+		
 			var country = $(this).val();
 
 			// When selecting "select", show the world map
 			if(country=="") {
 
+				maps_debug("Catalog: back to start");
 				$("#public_t").html(startingData);
+				
+				// Hide "loading" and enable select
+				hide_loading_bar();
+				country_select.removeAttr("disabled");
 
 			} else {
 		
@@ -45,18 +60,55 @@
 				if( $("#public_t").is(":visible") ) { $("#public_t").slideUp("fast"); }
 				
 				// Get country info
+				
+				$("#public_t").load('lib/public_transportation.php?format=html&country=' + country, function(response, status, xhr) {
+				
+					// Hide "loading" and enable select
+				  	hide_loading_bar();
+					country_select.removeAttr("disabled");
+					
+					if (status == "error") {
+						maps_debug("Sorry but there was an error: " + xhr.status + " " + xhr.statusText);
+						if( $("#public_t").is(":visible") ) { $("#public_t").slideUp("fast"); }
+						$("#public_transport_error .error_text").text("Couldn't load catalog. Please try again.");
+						$("#public_transport_error").slideDown();
+					}
+					else {
+				  		maps_debug("Got catalog for "+country);
+				  		
+						// Show infotable if hidden
+						if( $("#public_t").is(":hidden") ) { $("#public_t").slideDown("fast"); }
+						
+						// Empty result? 
+						if($("#public_t").text() == "") {
+							$("#public_transport_error .error_text").text("Couldn't load catalog. Please try again.");
+							$("#public_transport_error").slideDown();
+						}
+					}
+				});
+				
+				/*
 				$.ajax({
 				  url: 'lib/public_transportation.php?format=html&country=' + country,
+				  dataType: 'html',
+				  error: function(da
 				  success: function(data) {
+				  	maps_debug("Got catalog for "+country);
 				  
+				  	hide_loading_bar();
+				  
+					$(this).removeAttr("disabled");
+					
 					// Push info to the div
 					$("#public_t").html(data);
 				
 					// Show infotable if hidden
 					if( $("#public_t").is(":hidden") ) { $("#public_t").slideDown("fast"); }
 					
+					
 				  }
 				});
+				*/
 			}
 
 		});

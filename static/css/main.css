@@ -388,23 +388,23 @@ html, body {
 		margin: 0 0 0 0;
 	}
 
-	#Login {
+	#LoginNavi {
 		float: right;
 	}
-		#Login #Hello {
+		#LoginNavi #Hello {
 			display: block;
 			padding-top: 25px;
 			font-style: italic;
 			color: #9d8100;
 		}
-		#Login #loginSidemenu {
+		#LoginNavi #loginSidemenu {
 			padding: 13px 10px 3px 20px;
 			margin: 0 0 0 20px;
 			border-left: 1px solid #c9ab22;
 			list-style: none;
 			font-size: 11px;
 		}
-		#Login #loginOpener {
+		#LoginNavi #loginOpener {
 			padding: 5px 10px 10px 30px;
 			font-size: 13px;
 			font-weight: bold;
@@ -423,13 +423,14 @@ html, body {
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
 		}
-		#Login #loginOpener.open {
+		#LoginNavi #loginOpener.open {
 			background-color: #e4b330;
 			border: 1px solid #ca940f;
 			color: #000;
 			border-bottom: 0;
 		}
-		#Login #loginPanel {
+		
+		#loginPanel {
 			position: absolute;
 			background: #f2d871 url(../gfx/login_bg.gif) repeat-x;
 			border: 1px solid #ca940f;
@@ -448,23 +449,23 @@ html, body {
 			border-radius: 5px;
 			border-top-right-radius: 0;
 		}
-		#Login #email,
-		#Login #password {
+		#loginPanel #email,
+		#loginPanel #password {
 			width: 100%;
 		}
-		#Login #rememberMeRow {
+		#loginPanel #rememberMeRow {
 			font-size: 11px;
 			line-height: 11px;
 			display: block;
 			padding-bottom: 10px;
 		}
-		#Login #login_meta {
+		#loginPanel #login_meta {
 			display: block;
 			border-top: 1px solid #ca940f;
 			padding-top: 5px;
 			clear: both;
 		}
-		#Login .loading {
+		#loginPanel .loading {
 			display: none;
 			padding: 30px 0;
 			background: url(../gfx/loading.gif) center center no-repeat;
@@ -539,7 +540,7 @@ ul#Navigation {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 	}
-	ul#Navigation #search #submit {
+	ul#Navigation #search .search_submit {
 		display: block;
 		float: left;
 		border-left: 0;
