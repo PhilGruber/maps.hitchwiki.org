@@ -130,7 +130,7 @@ $(document).ready(function() {
     
     
     // Login panel
-    if($("#Login").hasClass("logged_out")) {
+    if($("#LoginNavi").hasClass("logged_out")) {
 		maps_debug("Initialize the login form");
 		
     	$("#loginPanel").hide();
@@ -1782,10 +1782,10 @@ function show_loading_bar(title) {
 function hide_loading_bar() {
 	maps_debug("Hide loading bar.");
 	
-	$("#loading-bar .title").text("");
 	if($("#loading-bar").is(":visible") == true) {
 		$("#loading-bar").fadeOut('slow');
 	}
+	$("#loading-bar .title").text("");
 }
 
 
