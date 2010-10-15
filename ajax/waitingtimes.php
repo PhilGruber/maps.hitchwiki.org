@@ -11,6 +11,11 @@ require_once "../config.php";
 
 start_sql();
 
+/*
+ * Returns an info-array about logged in user (or false if not logged in) 
+ */
+$user = current_user();
+
 
 /* 
  * Check ID
@@ -28,12 +33,28 @@ if(!isset($_GET["id"]) OR !is_numeric($_GET["id"])) {
 }
 
 
-
-$query = "SELECT `fk_user`,`fk_point`,`waitingtime`,`datetime` FROM `t_waitingtimes` WHERE `fk_point` = '".mysql_real_escape_string($_GET["id"])."'";
+/* 
+ * List out
+ */
 
 // Build an array
-$res = mysql_query($query);
+$res = mysql_query("SELECT `fk_user`,`fk_point`,`waitingtime`,`datetime` FROM `t_waitingtimes` WHERE `fk_point` = '".mysql_real_escape_string($_GET["id"])."'");
 if(!$res) return $this->API_error("Query failed!");
+
+// Gather data first into an array, so we can tell if there 
+// were records by current user, and print out little different <thead>
+$current_user_rows = false;
+while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
+
+	$waitingtimes[] = array(
+		"datetime" 		=> strtotime($r["datetime"]),
+		"waitingtime" 	=> nicetime($r["waitingtime"]),
+		"username" 		=> username($r["fk_user"]),
+		"user_id" 		=> $r["fk_user"]
+	);
+	
+	if($user["id"] == $r["fk_user"]) $current_user_rows = true;
+}
 
 ?>
 <br />
@@ -43,20 +64,41 @@ if(!$res) return $this->API_error("Query failed!");
 	    	<th><span class="ui-icon ui-icon-calendar"><?php echo _("Date"); ?></span></th>
 	    	<th><span class="ui-icon ui-icon-clock"><?php echo _("Waiting time"); ?></span></th>
 	    	<th><span class="ui-icon ui-icon-person"><?php echo _("User"); ?></span></th>
+	    	<?php if($current_user_rows===true) echo '<th> </th>'; ?>
 	    </tr>
 	</thead>
 	<tbody>
 <?php
-while($r = mysql_fetch_array($res, MYSQL_ASSOC)) {
+
+// Print out the array
+foreach($waitingtimes as $waitingtime) {
 
 	echo '<tr>';
-	echo '<td title="'.date("r",strtotime($r["datetime"])).'">'.date("j.n.Y", strtotime($r["datetime"])).'</td>';
-	echo '<td>'.nicetime($r["waitingtime"]).'</td>';
-	echo '<td>'.username($r["fk_user"]).'</td>';
+	echo '<td title="'.date("r", $waitingtime["datetime"]).'">'.date("j.n.Y", $waitingtime["datetime"]).'</td>';
+	echo '<td>'.$waitingtime["waitingtime"].'</td>';
+	echo '<td>'.$waitingtime["username"].'</td>';
+	
+	// Print extra cell if in this list there are some of this users waitingtimes. 
+	// Print delete-icon into users own rows
+	if($current_user_rows===true && $user["id"] == $waitingtime["user_id"]) echo '<td><a href="#" class="remove_waitingtime ui-icon ui-icon-trash align_right" title="'._("Remove record").'"></a></td>';
+	elseif($current_user_rows===true) echo '<td> </td>';
+	
 	echo '</tr>';
-
 }
 
 ?>
 	</tbody>
 </table>
+
+<script type="text/javascript">
+	$(function() {
+	
+	    // Remove time row
+	    $(".remove_waitingtime").click(function(e) {
+	    	e.preventDefault();
+	    	maps_debug("Remove waiting time");
+	    	alert("Not in use yet...");
+	    });
+
+	});
+</script>

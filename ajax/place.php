@@ -85,7 +85,7 @@ if($place["error"] !== true):
 				<h3 style="display: inline;"><?php
 				
 					// Flag
-					if(!empty($place["location"]["country"]["iso"])) echo '<img class="flag" alt="'.$place["location"]["country"]["iso"].'" src="static/gfx/flags/png/'.strtolower($place["location"]["country"]["iso"]).'.png" /> ';
+					if(!empty($place["location"]["country"]["iso"])) echo '<img class="flag" alt="'.$place["location"]["country"]["iso"].'" src="static/gfx/flags/'.strtolower($place["location"]["country"]["iso"]).'.png" /> ';
 					
 					// Town/City
 					if(!empty($place["location"]["locality"])) echo $place["location"]["locality"].", ";

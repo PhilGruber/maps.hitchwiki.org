@@ -134,7 +134,7 @@ $(function() {
 	// Set country selection
 	if($profile_form=="settings" && !empty($user["country"])) {
 		echo '$("#profile_form #country").val("'.$user["country"].'");'; 
-		echo '$("#profile_form .flag").attr("src","static/gfx/flags/png/'.strtolower($user["country"]).'.png");';	
+		echo '$("#profile_form .flag").attr("src","static/gfx/flags/'.strtolower($user["country"]).'.png");';	
 	}
 	?>
 	
@@ -142,7 +142,7 @@ $(function() {
 		
 		var selected_country = $(this).val();
 		if(selected_country != "") {
-			$("#profile_form .flag").attr("src","static/gfx/flags/png/"+selected_country.toLowerCase()+".png");
+			$("#profile_form .flag").attr("src","static/gfx/flags/"+selected_country.toLowerCase()+".png");
 			$("#profile_form .flag").show();
 		} else {
 			$("#profile_form .flag").hide();

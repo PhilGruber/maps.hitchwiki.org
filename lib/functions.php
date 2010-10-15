@@ -418,14 +418,14 @@ function list_countries($type="array", $order="markers", $limit=false, $count=tr
 		
 		// print a list item
 		elseif($type=="li") {
-			echo '<li><img class="flag" alt="'.strtolower($country["iso"]).'" src="static/gfx/flags/png/'.strtolower($country["iso"]).'.png" /> <a href="#" onclick="alert();">'.$country["name"]."</a>";
+			echo '<li><img class="flag" alt="'.strtolower($country["iso"]).'" src="static/gfx/flags/'.strtolower($country["iso"]).'.png" /> <a href="#" onclick="alert();">'.$country["name"]."</a>";
 			if($count==true) echo ' <small class="grey">('.$country["places"].')</small>';
 			echo '</li>';
 		}
 		
 		// print a table row
 		elseif($type=="tr") {
-			echo '<tr><td><img class="flag" alt="'.strtolower($country["iso"]).'" src="static/gfx/flags/png/'.strtolower($country["iso"]).'.png" /> '.$country["name"].'</td>';
+			echo '<tr><td><img class="flag" alt="'.strtolower($country["iso"]).'" src="static/gfx/flags/'.strtolower($country["iso"]).'.png" /> '.$country["name"].'</td>';
 			if($count==true) echo '<td>'.$country["places"].'</td>';
 			echo '</tr>';
 		}
@@ -503,17 +503,17 @@ function list_cities($type="array", $order="markers", $limit=false, $count=true,
 		}
 		elseif($type=="li") {
 		
-			if($country == false) echo '<li><img class="flag" alt="'.strtolower($r['country']).'" src="static/gfx/flags/png/'.strtolower($r['country']).'.png" /> '.$r['locality'].', '.$countryname;
-			else echo '<li>'.$r['locality'];
+			if($country == false) echo '<li><img class="flag" alt="'.strtolower($r['country']).'" src="static/gfx/flags/'.strtolower($r['country']).'.png" /> <a href="#" id="search_for_this">'.$r['locality'].', '.$countryname.'</a>';
+			else echo '<li><a href="#" id="search_for_this">'.$r['locality'].'</a>';
 			
 			if($count==true) echo ' <small class="grey">('.$r['cnt'].')</small>';
 			
 			echo '</li>';
 		}
 		elseif($type=="tr") {
-			echo '<tr><td>'.$r['locality'].'</td>';
+			echo '<tr><td><a href="#" id="search_for_this">'.$r['locality'].'</a></td>';
 			
-			if($country == false) echo '<td><img class="flag" alt="'.strtolower($r['country']).'" src="static/gfx/flags/png/'.strtolower($r['country']).'.png" /> '.$countryname.'</td>';
+			if($country == false) echo '<td><img class="flag" alt="'.strtolower($r['country']).'" src="static/gfx/flags/'.strtolower($r['country']).'.png" /> <a href="#" id="search_for_this">'.$countryname.'</a></td>';
 			
 			if($count == true) echo '<td>'.$r['cnt'].'</td>';
 			
@@ -526,6 +526,18 @@ function list_cities($type="array", $order="markers", $limit=false, $count=true,
 				$array[$i]["country_name"] = $countryname;
 			}
 			$array[$i]["places"] = $r['cnt'];
+		}
+		
+		// Attach search function to cities for li/tr -lists
+		if($type=="li" OR $type=="tr") {
+		?>
+	    <script type="text/javascript">
+	    	$("a#search_for_this").click(function(e){
+	    		e.preventDefault();
+		    	search($(this).text());
+	    	});
+	    </script>
+		<?php
 		}
 		
 		if($limit!=false && $i==$limit) break;
@@ -1077,7 +1089,6 @@ function available_nick($nick=false) {
 /* 
  * Return info about logged in user
  * or if user isn't logged in
- * TODO!
  */
 function current_user($get_password=false) {
 	global $_COOKIE,$settings;

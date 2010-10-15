@@ -532,6 +532,7 @@ function init_map() {
 		}
 	);
 
+  
 
 	/*
 	 * Create base layer for new place
@@ -715,7 +716,7 @@ function onCountrydotSelect(feature) {
     popup = new OpenLayers.Popup.FramedCloud("Country", 
 		point,
 		null,
-		'<div style="color: #111;"><h4 style="margin:0; padding: 0 0 3px 21px; background: url(static/gfx/flags/png/'+feature.attributes.iso.toLowerCase()+'.png) no-repeat 0 3px;">' + feature.attributes.name +'</h4><small class="grey">' + feature.attributes.places +' places.<br /><i>Zoom closer to see them.</i></small></div>',
+		'<div style="color: #111;"><h4 style="margin:0; padding: 0 0 3px 21px; background: url(static/gfx/flags/'+feature.attributes.iso.toLowerCase()+'.png) no-repeat 0 3px;">' + feature.attributes.name +'</h4><small class="grey">' + feature.attributes.places +' places.<br /><i>Zoom closer to see them.</i></small></div>',
 		{
 			'size': new OpenLayers.Size(15,15), 
 			'offset': new OpenLayers.Pixel(lon_offset,lat_offset)
@@ -1406,7 +1407,7 @@ function update_add_place(q_lon, q_lat) {
 				// Country name + flag
 				if(data.country_name != undefined && data.country_code != undefined) {
 					$("#add_new_place_form #address_row #country_name").text(data.country_name);
-					$("#add_new_place_form #address_row .flag").hide().attr("src","static/gfx/flags/png/"+data.country_code.toLowerCase()+".png").fadeIn('slow');
+					$("#add_new_place_form #address_row .flag").hide().attr("src","static/gfx/flags/"+data.country_code.toLowerCase()+".png").fadeIn('slow');
 					$("#add_new_place_form input#country_iso").val(data.country_code);
 				} else { 
 					$("#add_new_place_form #address_row #country_name").text(""); 

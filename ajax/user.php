@@ -99,7 +99,7 @@ elseif($format == 'html') {
 	    			if(!empty($user["location"])) echo $user["location"].", ";
 	    			
 	    			// Country + flag
-	    			if(!empty($user["country"])) echo ISO_to_country($user["country"]).' <img class="flag" alt="'.$user["country"].'" src="static/gfx/flags/png/'.strtolower($user["country"]).'.png" />';
+	    			if(!empty($user["country"])) echo ISO_to_country($user["country"]).' <img class="flag" alt="'.$user["country"].'" src="static/gfx/flags/'.strtolower($user["country"]).'.png" />';
 
 	    		?></td>
 	    	</tr>
@@ -159,7 +159,7 @@ elseif($format == 'html') {
 <?php /*
 <div class="align_left" style="margin: 0 0 20px 0;">
 	
-	<h3><img class="flag" alt="<?php echo $country["iso"]; ?>" src="static/gfx/flags/png/<?php echo strtolower($country["iso"]); ?>.png" /> <?php echo $country["name"]; ?></h3>
+	<h3><img class="flag" alt="<?php echo $country["iso"]; ?>" src="static/gfx/flags/<?php echo strtolower($country["iso"]); ?>.png" /> <?php echo $country["name"]; ?></h3>
 
 	
 </div>

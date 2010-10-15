@@ -92,10 +92,14 @@ elseif($format == 'html') {
 	    		<td><b><?php echo _("Cities in Maps"); ?></b></td>
 	    		<td><?php echo $country["cities_count"]; ?></td>
 	    	</tr>
+	    	
+	    	<?php if(!empty($country["capital"])): ?>
 	    	<tr>
 	    		<td><b><?php echo _("Capital"); ?></b></td>
-	    		<td><?php echo $country["capital"]; ?></td>
+	    		<td><a href="#" id="search_for_this"><?php echo $country["capital"]; ?></a></td>
 	    	</tr>
+	    	<?php endif; ?>
+	    	
 	    	<tr>
 	    		<td><b><?php echo _("Continent"); ?></b></td>
 	    		<td><?php echo continent_name($country["continent"]); ?></td>
@@ -104,14 +108,21 @@ elseif($format == 'html') {
 	    		<td><b><?php echo _("Area"); ?></b></td>
 	    		<td><?php echo $country["areaInSqKm"]; ?> <sup>2</sup>km</td>
 	    	</tr>
+	    	
+	    	<?php if(!empty($country["capital"])): ?>
 	    	<tr>
 	    		<td><b><?php echo _("Population"); ?></b></td>
 	    		<td><?php echo $country["population"]; ?></td>
 	    	</tr>
+	    	<?php endif; ?>
+	    	
+	    	<?php if(!empty($country["capital"])): ?>
 	    	<tr>
 	    		<td><b><?php echo _("Currency"); ?></b></td>
 	    		<td><?php echo $country["currencyCode"]; ?></td>
 	    	</tr>
+	    	<?php endif; ?>
+	    	
 	    	<tr>
 	    		<td colspan="2"><small>
 	    			<a target="_blank" href="http://hitchwiki.org/en/index.php?title=Special%3ASearch&search=<?php echo urlencode($country["name"]); ?>&go=Go">Hitchwiki</a>, 
@@ -152,7 +163,7 @@ elseif($format == 'html') {
 
 <div class="align_left" style="margin: 0 0 20px 0;">
 	
-	<h3><img class="flag" alt="<?php echo $country["iso"]; ?>" src="static/gfx/flags/png/<?php echo strtolower($country["iso"]); ?>.png" /> <?php echo $country["name"]; ?></h3>
+	<h3><img class="flag" alt="<?php echo $country["iso"]; ?>" src="static/gfx/flags/<?php echo strtolower($country["iso"]); ?>.png" /> <?php echo $country["name"]; ?></h3>
 
 	<!-- http://code.google.com/apis/visualization/documentation/gallery/geomap.html -->
 	<iframe src="ajax/map_statistics.php?map=<?php
@@ -172,12 +183,12 @@ elseif($format == 'html') {
 	}
 	?>&country=<?php echo $country["iso"]; ?>" name="countrymap" id="countrymap" width="560" height="350" border="0" style="border:0;"></iframe>
 	
-	<?php if($mapLimit): ?><small id="show_map_with_cities"><br /><a onclick="$('#show_map_with_cities').html('<br /><i>Map started to load. This might take some time.</i>').delay(10000).fadeOut(1000);" href="ajax/map_statistics.php?map=4&country=<?php echo $country["iso"]; ?>" target="countrymap"><?php echo _("Show cities on the map"); ?> (<?php echo _("Experimental, might be slow."); ?>)</a></small><?php endif; ?>
+	<?php if($mapLimit): ?><small id="show_map_with_cities"><br /><a onclick="$('#show_map_with_cities').html('<br /><i><?php echo _("Map started to load. This might take some time."); ?></i>').delay(10000).fadeOut(1000);" href="ajax/map_statistics.php?map=4&country=<?php echo $country["iso"]; ?>" target="countrymap"><?php echo _("Show cities on the map"); ?> (<?php echo _("Experimental, might be slow."); ?>)</a></small><?php endif; ?>
 
 </div>
 <div class="clear"></div>
 
-<h3><?php echo _("Public transport"); ?></h3>
+<h3 class="icon underground"><?php echo _("Public transport"); ?></h3>
 <?php pt_list($country["iso"]); ?>
 
 <?php

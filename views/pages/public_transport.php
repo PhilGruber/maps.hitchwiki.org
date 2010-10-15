@@ -59,8 +59,7 @@
 				// Hide infotable if visible
 				if( $("#public_t").is(":visible") ) { $("#public_t").slideUp("fast"); }
 				
-				// Get country info
-				
+				// Get public transport catalog				
 				$("#public_t").load('ajax/public_transportation.php?format=html&country=' + country, function(response, status, xhr) {
 				
 					// Hide "loading" and enable select
@@ -70,7 +69,7 @@
 					if (status == "error") {
 						maps_debug("Sorry but there was an error: " + xhr.status + " " + xhr.statusText);
 						if( $("#public_t").is(":visible") ) { $("#public_t").slideUp("fast"); }
-						$("#public_transport_error .error_text").text("Couldn't load catalog. Please try again.");
+						$("#public_transport_error .error_text").text("<?php echo _("Couldn't load info. Please try again."); ?>");
 						$("#public_transport_error").slideDown();
 					}
 					else {
@@ -81,7 +80,7 @@
 						
 						// Empty result? 
 						if($("#public_t").text() == "") {
-							$("#public_transport_error .error_text").text("Couldn't load catalog. Please try again.");
+							$("#public_transport_error .error_text").text("<?php echo _("Couldn't load info. Please try again."); ?>");
 							$("#public_transport_error").slideDown();
 						}
 					}

@@ -30,6 +30,6 @@ else {
  */
 ?>
 	
-	<h3><img class="flag" alt="<?php echo $country["iso"]; ?>" src="static/gfx/flags/png/<?php echo strtolower($country["iso"]); ?>.png" /> <?php echo $country["name"]; ?></h3>
+	<h3><img class="flag" alt="<?php echo $country["iso"]; ?>" src="static/gfx/flags/<?php echo strtolower($country["iso"]); ?>.png" /> <?php echo $country["name"]; ?></h3>
 	
 	<?php pt_list($country["iso"]); ?>
