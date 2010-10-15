@@ -405,7 +405,7 @@ if($place["error"] !== true):
 				    		$("#waitingtime_log").html('<br /><img src="static/gfx/loading.gif" alt="<?php echo _("Loading"); ?>" />');
 				    		
 				    		// Get waitingtime log for this place
-							$.ajax({ url: "lib/waitingtimes.php?id=<?php echo $place["id"]; ?>", success: function(data){
+							$.ajax({ url: "ajax/waitingtimes.php?id=<?php echo $place["id"]; ?>", success: function(data){
 								
 								$("#waitingtime_log").hide();
 								$("#waitingtime_log").html(data);

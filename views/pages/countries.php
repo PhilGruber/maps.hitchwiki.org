@@ -26,7 +26,7 @@
 				
 				// Get country info
 				$.ajax({
-				  url: 'lib/country.php?format=html&country=' + country,
+				  url: 'ajax/country.php?format=html&country=' + country,
 				  success: function(data) {
 				  
 					// Push info to the div
@@ -46,5 +46,5 @@
 
 <div id="countryinfo">
 	<p><em>"<?php echo _("I haven't been everywhere, but it's on my list."); ?>"</em></p>
-	<iframe src="lib/map_statistics.php?map=3" width="820" height="430" border="0" style="border:0;"></iframe>
+	<iframe src="ajax/map_statistics.php?map=3" width="820" height="430" border="0" style="border:0;"></iframe>
 </div>

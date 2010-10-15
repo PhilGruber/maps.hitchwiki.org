@@ -150,7 +150,7 @@ $title .= 'Hitchwiki '._("Maps");
 			var geolocation = "lib/ipinfodb/ip_proxy.php";
 			var cookie_prefix = "<?php echo $settings["cookie_prefix"]; ?>";
 			var geolocation_cookiename = "<?php echo $settings["cookie_prefix"]; ?>_geolocation";
-			var geolocation_cookieoptions = { path: '/', expires: 24 };
+			var geolocation_cookieoptions = { path: '/', expires: 6 }; // expires: hours
 			var locale = "<?php echo $settings["language"]; ?>";
 			
 			/*

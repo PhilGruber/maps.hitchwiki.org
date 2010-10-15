@@ -61,7 +61,7 @@
 				
 				// Get country info
 				
-				$("#public_t").load('lib/public_transportation.php?format=html&country=' + country, function(response, status, xhr) {
+				$("#public_t").load('ajax/public_transportation.php?format=html&country=' + country, function(response, status, xhr) {
 				
 					// Hide "loading" and enable select
 				  	hide_loading_bar();
@@ -87,28 +87,6 @@
 					}
 				});
 				
-				/*
-				$.ajax({
-				  url: 'lib/public_transportation.php?format=html&country=' + country,
-				  dataType: 'html',
-				  error: function(da
-				  success: function(data) {
-				  	maps_debug("Got catalog for "+country);
-				  
-				  	hide_loading_bar();
-				  
-					$(this).removeAttr("disabled");
-					
-					// Push info to the div
-					$("#public_t").html(data);
-				
-					// Show infotable if hidden
-					if( $("#public_t").is(":hidden") ) { $("#public_t").slideDown("fast"); }
-					
-					
-				  }
-				});
-				*/
 			}
 
 		});

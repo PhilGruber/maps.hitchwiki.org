@@ -31,20 +31,30 @@ function readURL($url) {
  * Start MySQL connection
  */
 function start_sql() {
-	global $mysql_conf,$link;
+	global $mysql_conf,$link,$settings;
 
 	if(isset($mysql_conf) && !empty($mysql_conf) && !isset($link)) {
 		if (!$link = mysql_connect($mysql_conf['host'], $mysql_conf['user'], $mysql_conf['password'])) {
-		    echo ' Could not connect to mysql. ';
-		    exit;
+		    $sql_error = " Could not connect to mysql. \n";
 		}
 		
 		if (!mysql_select_db($mysql_conf['database'], $link)) {
-		    echo ' Could not select database. ';
-		    exit;
+		    $sql_error .= " Could not select database. \n";
 		}
-	
-		return $link;
+		
+		// In case of error, email admins
+		if(isset($sql_error)) {
+		    $settings["maintenance_page"] = true;
+		    
+			$headers = 'From: ' . $settings["email"] . "\r\n" .
+			    'Reply-To: ' . $settings["email"] . "\r\n" .
+			    'X-Mailer: PHP/' . phpversion();
+
+			mail('mikael@ihminen.org', 'Hitchwiki Maps MySQL error!', $sql_error, $headers);
+			
+			return false;
+		}
+		else return $link;
 	}
 	else return false;
 } 

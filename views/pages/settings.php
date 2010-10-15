@@ -14,7 +14,7 @@ if($user["logged_in"]===true): ?>
 		<p><span class="icon tux"><?php echo _("You are an administrator."); ?></span></p>
 	<?php endif; ?>
 	
-	<?php include('profile_form.php'); ?>
+	<?php include('../lib/profile_form.php'); ?>
 
 <?php 
 // Not logged in?

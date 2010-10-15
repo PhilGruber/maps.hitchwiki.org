@@ -18,7 +18,7 @@
             }
 		}).click(function(e) {
 			e.preventDefault();
-			alert("Reset");
+			alert("Sorry, this function ain't ready yet.");
 		});
 		
 	});

@@ -166,7 +166,7 @@ $(document).ready(function() {
 		
 				// Send it as a post-requeset
    				maps_debug("Requesting to login: "+p_email);
-				$.post('lib/login.php', { email: p_email, password: p_password, remember: p_remember },   
+				$.post('ajax/login.php', { email: p_email, password: p_password, remember: p_remember },   
 				function(data) {
 				
    					maps_debug("Got login responce, login: "+data.login);
@@ -270,6 +270,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		$(this).blur();
 		$("div#toolsPanel").toggle();
+		close_page();
 	});
 	
 	// Tools Panel - make it draggable
@@ -882,7 +883,7 @@ function fetchlocationW3(position) {
 	maps_debug("Got location from browser. Sending it to the geocoder.");
 	
 	// Reverse Geocode latlon -> address
-	$.getJSON('lib/geocoder.php?service=nominatim_reverse&q=' + position.coords.latitude + ',' + position.coords.longitude, function(data) {			
+	$.getJSON('ajax/geocoder.php?service=nominatim_reverse&q=' + position.coords.latitude + ',' + position.coords.longitude, function(data) {			
 
 			if(data.error==true) {
 				maps_debug("Error when trying to get reverce geocode. Using our own IP-geolocation service");
@@ -1195,7 +1196,7 @@ function init_add_place() {
 	
 	// Get panel contents
 	$.ajax({
-		url: "lib/add_place.php",
+		url: "ajax/add_place.php",
 		async: false,
 		success: function(content){ 
 			$("#PlacePanel").html(content); 
@@ -1355,7 +1356,7 @@ function update_add_place(q_lon, q_lat) {
 	$("#add_new_place_form input#lon").val(g_lonLat.lon);
 
 	// Reverse Geocode latlon -> address
-	$.getJSON('lib/geocoder.php?service=nominatim_reverse&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {				
+	$.getJSON('ajax/geocoder.php?service=nominatim_reverse&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {				
 			
 			$("#add_new_place_form #loading_row").hide();
 	
@@ -1432,7 +1433,7 @@ function showPlacePanel(id, zoomin) {
 	close_add_place();
 
 	$.ajax({
-		url: "lib/place.php?id="+id+"&lang="+locale,
+		url: "ajax/place.php?id="+id+"&lang="+locale,
 		async: false,
 		success: function(content){
 		
@@ -1484,11 +1485,11 @@ function search(q) {
 	show_loading_bar("Searching...");
 
 	// Geocode
-	//$.getJSON('lib/geocoder.php?q=' + q, function(data) {
+	//$.getJSON('ajax/geocoder.php?q=' + q, function(data) {
 	$.ajax({
 		// Define AJAX properties.
 		method: "get",
-		url: 'lib/geocoder.php?q=' + q,
+		url: 'ajax/geocoder.php?q=' + q,
 		dataType: "json",
 		timeout: (2 * 1000),
 	 
@@ -1581,7 +1582,7 @@ function open_page(name) {
 	if($("#cards .card").is(':visible')) { close_cards(); }
 	
 	$.ajax({
-		url: "lib/views.php?type=page&lang="+locale+"&page=" + name,
+		url: "ajax/views.php?type=page&lang="+locale+"&page=" + name,
 		async: false,
 		success: function(content){
 			// If pages not opened yet
@@ -1636,7 +1637,7 @@ function open_card(name, title) { //, x_coord, y_coord, width
 	//$(".card").dialog("destroy");
 
 	$.ajax({
-	    url: "lib/views.php?type=card&lang="+locale+"&page=" + name,
+	    url: "ajax/views.php?type=card&lang="+locale+"&page=" + name,
 	    async: false,
 	    success: function(content){
 	    	

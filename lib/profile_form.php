@@ -243,7 +243,7 @@ $(function() {
 				var p_allow_gravatar = "false";
 			}
 			
-			$.post('lib/user_settings.php?<?php echo $profile_form; ?>', { 
+			$.post('ajax/user_settings.php?<?php echo $profile_form; ?>', { 
 																			email: p_email, 
 																			name: p_name,  
 																			password1: p_password1, 
