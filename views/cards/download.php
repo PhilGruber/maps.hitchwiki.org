@@ -46,7 +46,7 @@
 		
 		function fileloader(url,name) {
 			maps_debug("Downloading a KML file: "+name+".kml");
-			$("#fileloader").html('<iframe src="http://www.ihminen.org/maps.hitchwiki.org/api/?format=kml&amp;download='+name+'&amp;'+url+'" width="0" height="0" style="border:0; overflow: hidden; margin: 0;" scrolling="no" frameborder="0" allowtransparency="true"></iframe>');
+			$("#fileloader").html('<iframe src="api/?format=kml&amp;download='+name+'&amp;'+url+'" width="0" height="0" style="border:0; overflow: hidden; margin: 0;" scrolling="no" frameborder="0" allowtransparency="true"></iframe>');
 		
 		}
 		
