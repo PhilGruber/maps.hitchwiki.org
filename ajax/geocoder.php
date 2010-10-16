@@ -125,7 +125,7 @@ class maps_geocode
 	
 	
 	/**
-	 * Set service
+	 * Unset service
 	 */
 	public function unset_service($service) {
 		
@@ -181,39 +181,39 @@ class maps_geocode
 		// Let's roll...
 		switch($this->service) {
     	    
-    	    // Geocoders
-    		case "geonames_geocode":
+			// Geocoders
+			case "geonames_geocode":
 				$geocode = $this->geonames_geocode($q);
-    		    break;
+				break;
     	    
 			case "nominatim_geocode":
 				$geocode = $this->nominatim_geocode($q);
-    		    break;
+				break;
     	    
-    		case "tiny_geocode":
+			case "tiny_geocode":
 				$geocode = $this->tiny_geocode($q);
-    		    break;
+				break;
     	    
-    		case "hitchwiki_geocode":
+			case "hitchwiki_geocode":
 				$geocode = $this->hitchwiki_geocode($q);
-    		    break;
+				break;
     	    
-    		case "google_geocode":
+			case "google_geocode":
 				$geocode = $this->google($q);
-    		    break;
+				break;
     	    
-    	    // Reverse geocoders
-    		case "google_reverse":
+			// Reverse geocoders
+			case "google_reverse":
 				$geocode = $this->google($q);
-    		    break;
+				break;
     	    
 			case "nominatim_reverse":
 				$geocode = $this->nominatim_reverse($q);
-    		    break;
+				break;
     	    
-    	    // Nothing selected, continue
-    	    default:
-	    	    $geocode = false;
+			// Nothing selected, continue
+			default:
+				$geocode = false;
 	    	    
 	    	    
     	} // switch end
@@ -673,7 +673,7 @@ class maps_geocode
 	}
 
 
-} // CLASS end
+} // CLASS maps_geocode * end
 
 
 ?>

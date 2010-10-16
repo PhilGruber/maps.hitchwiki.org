@@ -152,6 +152,7 @@ $title .= 'Hitchwiki '._("Maps");
 			var geolocation_cookiename = "<?php echo $settings["cookie_prefix"]; ?>_geolocation";
 			var geolocation_cookieoptions = { path: '/', expires: 6 }; // expires: hours
 			var locale = "<?php echo $settings["language"]; ?>";
+			var google_analytics = <?php echo (!empty($settings["google_analytics_id"]) ? 'true' : 'false'); ?>;
 			
 			/*
 			 * Default map settings

@@ -150,7 +150,7 @@ $(document).ready(function() {
     	});
 		$("#login_form").submit(function(){ 
 			maps_debug("Login submitted.");
-		
+			stats("login/");
 		
   			$(this).hide();
   			$("#loginPanel .loading").show();
@@ -260,7 +260,7 @@ $(document).ready(function() {
 	// Add a place -panel
 	$("#Navigation #add_place").click(function(e){
 		e.preventDefault();
-		
+		stats("add_place/");
 		init_add_place();
 	});
 
@@ -268,6 +268,7 @@ $(document).ready(function() {
 	// Tools Panel - Add a close button to tools panel
 	$("#Navigation #tools, div#toolsPanel h4 .close").click(function(e){
 		e.preventDefault();
+		stats("toggle_tools/");
 		$(this).blur();
 		$("div#toolsPanel").toggle();
 		close_page();
@@ -1430,6 +1431,7 @@ function update_add_place(q_lon, q_lat) {
  */
 function showPlacePanel(id, zoomin) {
 	maps_debug("Show marker panel for place: "+id);
+	stats("show_place/?place="+id);
 
 	close_add_place();
 
@@ -1478,6 +1480,7 @@ function hidePlacePanel() {
  */
 function search(q) {
 	maps_debug("Search: "+q);
+	stats("search/?s="+q);
 	
 	// Close open stuff
 	close_cards();
@@ -1564,11 +1567,14 @@ function zoomMapIn(lat, lon, zoom) {
 
 /*
  * Show information about country
+ * TODO
  */
 function showCountry(country_iso) {
 	maps_debug("Information about country "+country_iso);
 /*
 	open_page("countries");
+	
+	// Show selected country after page has opened
 */
 }
 
@@ -1578,6 +1584,7 @@ function showCountry(country_iso) {
  */
 function open_page(name) {
 	maps_debug("Open a page: "+name);
+	stats("pages/"+page+"/");
 
 	// Close cards if open
 	if($("#cards .card").is(':visible')) { close_cards(); }
@@ -1620,6 +1627,7 @@ function close_page() {
  */
 function open_card(name, title) { //, x_coord, y_coord, width
 	maps_debug("Open a card: "+name);
+	stats("cards/"+name+"/");
 	
 	/*
 	if(x_coord = undefined) { var x_coord = '300'; } 
@@ -1695,6 +1703,7 @@ function close_cards() {
 // Produces an error popup if current logged in user doesn't have any permission
 function removeComment(remove_id) {
     maps_debug("Asked to remove a comment "+remove_id);
+	stats("comment/remove/");
 
 	var confirm_remove = confirm("Are you sure you want to remove this comment?")
 
@@ -1805,22 +1814,13 @@ function maps_debug(str) {
 
 
 /*
- * Login with Facebook
- * TODO
- * Maybe move into a another js-file?
+ * Analytics
+ * Gather statistics
  */
-function login_with_facebook() {
-
-	FB.login(function(response) {
-	  if (response.session) {
-	    if (response.perms) {
-	      maps_debug("user is logged in and granted some permissions. perms is a comma separated list of granted permissions");
-	    } else {
-	      maps_debug("user is logged in, but did not grant any permissions");
-	    }
-	  } else {
-	    maps_debug("user is not logged in");
-	  }
-	}, {perms:'read_stream,publish_stream,offline_access'});
-
+function stats(str) {
+	if(str != undefined && google_analytics == true) {
+		maps_debug("Stats: "+str);
+		pageTracker._trackPageview(str);
+	
+	} else { maps_debug("Error: empty stats() request!"); }
 }
