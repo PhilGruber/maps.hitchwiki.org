@@ -98,6 +98,12 @@ elseif($format == 'html') {
 	    		<td><b><?php echo _("Capital"); ?></b></td>
 	    		<td><a href="#" id="search_for_this"><?php echo $country["capital"]; ?></a></td>
 	    	</tr>
+			<script type="text/javascript">
+			    $("a#search_for_this").click(function(e){
+			    	e.preventDefault();
+			    	search($(this).text(),true);
+			    });
+			</script>
 	    	<?php endif; ?>
 	    	
 	    	<tr>

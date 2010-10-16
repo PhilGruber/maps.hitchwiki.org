@@ -884,7 +884,7 @@ function fetchlocationW3(position) {
 	maps_debug("Got location from browser. Sending it to the geocoder.");
 	
 	// Reverse Geocode latlon -> address
-	$.getJSON('ajax/geocoder.php?service=nominatim_reverse&q=' + position.coords.latitude + ',' + position.coords.longitude, function(data) {			
+	$.getJSON('ajax/geocoder.php?mode=reverse&q=' + position.coords.latitude + ',' + position.coords.longitude, function(data) {			
 
 			if(data.error==true) {
 				maps_debug("Error when trying to get reverce geocode. Using our own IP-geolocation service");
@@ -1357,7 +1357,7 @@ function update_add_place(q_lon, q_lat) {
 	$("#add_new_place_form input#lon").val(g_lonLat.lon);
 
 	// Reverse Geocode latlon -> address
-	$.getJSON('ajax/geocoder.php?service=nominatim_reverse&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {				
+	$.getJSON('ajax/geocoder.php?mode=reverse&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {				
 			
 			$("#add_new_place_form #loading_row").hide();
 	
@@ -1492,7 +1492,7 @@ function search(q) {
 		method: "get",
 		url: 'ajax/geocoder.php?q=' + q,
 		dataType: "json",
-		timeout: (2 * 1000),
+		timeout: 7000, // timeout in milliseconds; 1s = 1000ms
 	 
 		// Got a place
 		success: function(data){
@@ -1528,7 +1528,7 @@ function search(q) {
 			// We got a result, but nada...
 			else {
 				maps_debug("Search didn't find anything.");
-				info_dialog('<p>Your search did not match any places.</p><p>Try searching by english city names or/and add a country name with cities.', 'Not found', false);
+				info_dialog('<p>Your search did not match any places.</p><p>Try searching in English and add a country name in to your search.</p><p>Example: Vilnius, Lithuania.</p>', 'Not found', false);
 			}
 		},
 	 

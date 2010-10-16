@@ -25,18 +25,26 @@ if(!empty($profile)): ?>
     	<?php if(!empty($profile["location"])): ?>
     	<tr>
     		<td><b><?php echo _("Location"); ?></b></td>
-    		<td><?php echo $profile["location"]; ?></td>
+    		<td><a href="#" id="search_for_this"><?php echo $profile["location"]; ?></a></td>
     	</tr>
     	<?php endif; ?>
     	
     	
     	<?php if(!empty($profile["country"])): ?>
     	<tr>
-    		<td><b><?php echo _("Current country"); ?></b></td>
-    		<td><?php echo ISO_to_country($profile["country"]); ?> <img class="flag" alt="" src="static/gfx/flags/png/<?php echo strtolower($profile["country"]); ?>.png" /></td>
+    		<td><b><?php echo _("Country"); ?></b></td>
+    		<td><a href="#" id="search_for_this"><?php echo ISO_to_country($profile["country"]); ?></a> <img class="flag" alt="" src="static/gfx/flags/png/<?php echo strtolower($profile["country"]); ?>.png" /></td>
     	</tr>
     	<?php endif; ?>
     	
+    	<?php if(!empty($profile["location"]) OR !empty($profile["country"])): ?>
+		<script type="text/javascript">
+		    $("a#search_for_this").click(function(e){
+		    	e.preventDefault();
+		    	search($(this).text(),true);
+		    });
+		</script>
+    	<?php endif; ?>
     	
     	<?php if(!empty($profile["language"])): ?>
     	<tr>

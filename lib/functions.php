@@ -34,25 +34,26 @@ function start_sql() {
 	global $mysql_conf,$link,$settings;
 
 	if(isset($mysql_conf) && !empty($mysql_conf) && !isset($link)) {
-		if (!$link = mysql_connect($mysql_conf['host'], $mysql_conf['user'], $mysql_conf['password'])) {
+		if (!$link = @mysql_connect($mysql_conf['host'], $mysql_conf['user'], $mysql_conf['password'])) {
 		    $sql_error = " Could not connect to mysql. \n";
 		}
 		
-		if (!mysql_select_db($mysql_conf['database'], $link)) {
+		if (!@mysql_select_db($mysql_conf['database'], $link)) {
 		    $sql_error .= " Could not select database. \n";
 		}
 		
 		// In case of error, email admins
 		if(isset($sql_error)) {
-		    $settings["maintenance_page"] = true;
-		    
+		    /*
 			$headers = 'From: ' . $settings["email"] . "\r\n" .
 			    'Reply-To: ' . $settings["email"] . "\r\n" .
 			    'X-Mailer: PHP/' . phpversion();
 
 			mail('mikael@ihminen.org', 'Hitchwiki Maps MySQL error!', $sql_error, $headers);
-			
-			return false;
+			*/
+			// Show maintenance screen
+			require_once('maintenance_page.php');
+			exit;
 		}
 		else return $link;
 	}
@@ -418,18 +419,30 @@ function list_countries($type="array", $order="markers", $limit=false, $count=tr
 		
 		// print a list item
 		elseif($type=="li") {
-			echo '<li><img class="flag" alt="'.strtolower($country["iso"]).'" src="static/gfx/flags/'.strtolower($country["iso"]).'.png" /> <a href="#" onclick="alert();">'.$country["name"]."</a>";
+			echo '<li><img class="flag" alt="'.strtolower($country["iso"]).'" src="static/gfx/flags/'.strtolower($country["iso"]).'.png" /> <a href="#" id="search_for_this">'.$country["name"]."</a>";
 			if($count==true) echo ' <small class="grey">('.$country["places"].')</small>';
 			echo '</li>';
 		}
 		
 		// print a table row
 		elseif($type=="tr") {
-			echo '<tr><td><img class="flag" alt="'.strtolower($country["iso"]).'" src="static/gfx/flags/'.strtolower($country["iso"]).'.png" /> '.$country["name"].'</td>';
+			echo '<tr><td><img class="flag" alt="'.strtolower($country["iso"]).'" src="static/gfx/flags/'.strtolower($country["iso"]).'.png" /> <a href="#" id="search_for_this">'.$country["name"].'</a></td>';
 			if($count==true) echo '<td>'.$country["places"].'</td>';
 			echo '</tr>';
 		}
 		
+	}
+	
+	// Attach search function to cities for li/tr -lists
+	if($type=="li" OR $type=="tr") {
+	?>
+	<script type="text/javascript">
+	    $("a#search_for_this").click(function(e){
+	    	e.preventDefault();
+	    	search($(this).text(),true);
+	    });
+	</script>
+	<?php
 	}
 	
 	// Return gathered array if requested type = array 
@@ -528,20 +541,21 @@ function list_cities($type="array", $order="markers", $limit=false, $count=true,
 			$array[$i]["places"] = $r['cnt'];
 		}
 		
-		// Attach search function to cities for li/tr -lists
-		if($type=="li" OR $type=="tr") {
-		?>
-	    <script type="text/javascript">
-	    	$("a#search_for_this").click(function(e){
-	    		e.preventDefault();
-		    	search($(this).text());
-	    	});
-	    </script>
-		<?php
-		}
 		
 		if($limit!=false && $i==$limit) break;
 		$i++;
+	}
+	
+	// Attach search function to cities for li/tr -lists
+	if($type=="li" OR $type=="tr") {
+	?>
+	<script type="text/javascript">
+	    $("a#search_for_this").click(function(e){
+	    	e.preventDefault();
+	    	search($(this).text(),true);
+	    });
+	</script>
+	<?php
 	}
 
 	// Return gathered array if any
@@ -1138,12 +1152,14 @@ function check_login($email=false, $password=false, $get_password=false) {
 			$user["language"] = $r["language"];
 			$user["registered"] = $r["registered"];
 			$user["google_latitude"] = $r["google_latitude"];
+			$user["centered_glatitude"] = $r["centered_glatitude"];
 			$user["allow_gravatar"] = $r["allow_gravatar"];
 			
 			// Admin? 1:false
 			if($r["admin"]=="1") $user["admin"] = true;
 			else $user["admin"] = false;
 			
+			// Include password to the array
 			if($get_password===true) $user["password"] = $r["password"];
 			
 			return $user;

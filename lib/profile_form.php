@@ -56,9 +56,6 @@ else $profile_form = "register";
 		
 	<br /><br />
 	
-</div>
-<div style="float: left; width: 350px;">
-
 	
 	<label for="language"><?php echo _("Language"); ?></label><br />
 	<select name="language" id="language" title="<?php echo _("Choose language"); ?>">
@@ -76,6 +73,9 @@ else $profile_form = "register";
 	</select>
 	
 	<br /><br />
+</div>
+<div style="float: left; width: 360px;">
+
 	
 	<label for="location"><?php echo _("Location"); ?></label> <small>(<?php echo _("Can be anything, most likely a city."); ?>)</small><br />
 	<div class="ui-widget">
@@ -84,7 +84,7 @@ else $profile_form = "register";
 	
 	<br />
 	
-	<label for="country"><?php echo _("Current country"); ?></label> <small>(<?php echo _("Map will be centered to here"); ?>)</small><br />
+	<label for="country"><?php echo _("Country"); ?></label> <small>(<?php echo _("Map will be centered to here"); ?>)</small><br />
 	<select id="country" name="country">
 		<option value=""><?php echo _("I'd rather not tell"); ?></option>
 		<option value="">-------------</option>
@@ -101,10 +101,13 @@ else $profile_form = "register";
 	<label for="google_latitude"><?php echo _("Google Latitude user ID"); ?></label><br />
 	<input type="text" name="google_latitude" id="google_latitude" size="25" maxlength="80" value="<?php if(isset($user["google_latitude"])) echo htmlspecialchars($user["google_latitude"]); ?>" />
 	<br />
-	<img src="static/gfx/icons/latitude-icon-small.png" alt="Google Latitude" class="align_left" style="margin: 5px 5px 5px 0;" /><small><?php printf(_('<a href="%s" target="_blank">Enable Google Latitude</a> first and copy here your 20-digit user ID from the bottom of the page.'), 'http://www.google.com/latitude/apps/badge'); ?></small>
+	<img src="static/gfx/icons/latitude-icon-small.png" alt="Google Latitude" class="align_left" style="margin: 5px 5px 5px 0;" /><small><?php printf(_('<a href="%s" target="_blank">Enable Google Latitude</a> first and copy here your 20-digit user ID from the bottom of the page.'), 'http://www.google.com/latitude/apps/badge'); echo " "._("It will be published on your profile page."); ?></small>
 	
 	<br /><br />
 	
+	<input type="checkbox" name="centered_glatitude" id="centered_glatitude" value="true" <?php if(isset($user["centered_glatitude"]) && $user["centered_glatitude"] == "1") echo 'checked="checked" '; ?>/> <label for="centered_glatitude"><?php echo _("Center Maps always to your Google Latitude location"); ?></label><br />
+	
+	<br /><br />
 
 </div>
 
@@ -237,6 +240,12 @@ $(function() {
 			var p_country = $("#profile_form #country").val();
 			var p_google_latitude = $("#profile_form #google_latitude").val();
 			
+			if($("#profile_form #centered_glatitude").is(":checked")) {
+				var p_centered_glatitude = "true";
+			} else {
+				var p_centered_glatitude = "false";
+			}
+			
 			if($("#profile_form #allow_gravatar").is(":checked")) {
 				var p_allow_gravatar = "true";
 			} else {
@@ -252,6 +261,7 @@ $(function() {
 																			location: p_location, 
 																			google_latitude: p_google_latitude,
 																			allow_gravatar: p_allow_gravatar,
+																			centered_glatitude: p_centered_glatitude,
 																			country: p_country<?php
 																			
 																			// Send current logged in user ID if we're about to udpate settings...

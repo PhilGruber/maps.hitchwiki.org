@@ -97,9 +97,13 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 	if(!empty($_POST["google_latitude"])) $google_latitude = "'".mysql_real_escape_string($_POST["google_latitude"])."'";
 	else $google_latitude = 'NULL';
 	
+	// Centered to Google Latitude
+	if($_POST["centered_glatitude"] == "true") $centered_glatitude = '1';
+	else $centered_glatitude = 'NULL';
+	
 	
 	// Allow Gravatar
-	if(!empty($_POST["allow_gravatar"]) && $_POST["allow_gravatar"] == "true") $allow_gravatar = "1";
+	if($_POST["allow_gravatar"] == "true") $allow_gravatar = '1';
 	else $allow_gravatar = 'NULL';
 	
 	#echo json_encode( array("error"=>print_r($_POST,true)) ); exit;
@@ -122,6 +126,7 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 					`country`,
 					`language`,
 					`google_latitude`,
+					`centered_glatitude`,
 					`allow_gravatar`
 				) VALUES (
 					NULL, 
@@ -133,6 +138,7 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 					".$country.", 
 					".$language.",
 					".$google_latitude.",
+					".$centered_glatitude.",
 					".$allow_gravatar."
 				);";
 				
@@ -154,6 +160,7 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 					`country` = ".$country.",
 					`language` = ".$language.", 
 					`google_latitude` = ".$google_latitude.",
+					`centered_glatitude` = ".$centered_glatitude.",
 					`allow_gravatar` = ".$allow_gravatar."
 				WHERE `id` = ".mysql_real_escape_string($_POST["user_id"])." LIMIT 1;";
 	

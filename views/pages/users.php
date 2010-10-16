@@ -59,7 +59,7 @@
 	    			
 	    			echo '</a>';
 	    			
-	    			if(!empty($row["country"])) echo' <img class="flag" alt="" src="static/gfx/flags/png/'.strtolower($row["country"]).'.png" />';
+	    			if(!empty($row["country"])) echo' <img class="flag" alt="" src="static/gfx/flags/'.strtolower($row["country"]).'.png" />';
 	    			
 	    			echo '</td>';
 	    		}

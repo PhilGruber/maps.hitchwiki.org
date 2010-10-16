@@ -3,6 +3,7 @@
 
 <div class="align_left" style="width: 400px; margin: 0 40px 20px 0;">
 
+
 	<h3><?php echo _("What is this?"); ?></h3>
 	<p><?php echo _("This is supposed to be a worldmap for hitchhikers, showing good and bad hitching places. Feel free to add all your favourite hitching places (or even more) to the map."); ?></p>
 	
@@ -23,6 +24,8 @@
 
 <div class="align_left" style="width: 300px; margin: 0 0 20px 0;">
 
+	<img src="badge.png" alt="" class="align_right" style="margin: 0 0 20px 20px;" />
+	
 	<fb:like-box profile_id="133644853341506" width="300" connections="10" stream="false" header="true"></fb:like-box>
 
 	<fb:activity recommendations="true"></fb:activity>
@@ -57,17 +60,24 @@
 	<li><a href="http://jquery.com/">jQuery</a></li>
 	<li><a href="http://jqueryui.com/">jQuery UI</a></li>
 	<li><a href="http://plugins.jquery.com/project/cookie">jQuery Cookie Plugin</a></li>
+	<li><a href="http://plugins.jquery.com/project/pstrength">jQuery Password Strength Field Plugin</a></li>
 	<li><a href="http://code.google.com/p/jquery-json/">jQuery JSON</a></li>
 	<li><a href="http://www.famfamfam.com/lab/icons/">Fam Fam Fam icons</a></li>
+	<li><a href="http://www.aiga.org/content.cfm/symbol-signs">Aiga - Symbol Signs</a></li>
 </ul>
 
 <b><?php echo _("Services"); ?></b>
 <ul>
 	<li><a href="http://ipinfodb.com/">IPInfoDB API</a></li>
 	<li><a href="http://www.openstreetmap.org/">Open Street Map</a></li>
+	<!--
 	<li><a href="http://maps.google.com/">Google Maps</a></li>
 	<li><a href="http://maps.bing.com/">Bing Maps</a></li>
+	-->
 	<li><a href="http://www.geonames.org/">Geonames</a></li>
+	<li><a href="http://wiki.openstreetmap.org/wiki/Nominatim">Nominatim</a></li>
+	<li><a href="http://en.gravatar.com/">Gravatar</a></li>
+	<li><a href="http://latitude.google.com/">Google Latitude</a></li>
 </ul>
 
 
