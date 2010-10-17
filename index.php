@@ -4,7 +4,7 @@
  * 2010
  *
  */
-
+ 
 /*
  * Initialize Maps
  */
@@ -100,7 +100,7 @@ if(isset($show_place)) {
     $title .= $place["location"]["country"]["name"];
     $title .= ' - ';
 }
-$title .= 'Hitchwiki '._("Maps");
+$title .= 'Hitchwiki '.gettext("Maps");
     
     
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

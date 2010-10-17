@@ -33,7 +33,7 @@ $user = current_user();
 /*
  * Check if user IS an admin, if Not, redirect to the frontpage
  */
-if($user["logged_in"]!==true && $user["admin"]!==true):
+if($user["logged_in"]!==true OR $user["admin"]!==true):
 
 	header("Location: ../");
 	exit;

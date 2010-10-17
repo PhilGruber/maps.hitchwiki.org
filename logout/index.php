@@ -7,7 +7,7 @@
 
 $logout = true;
 $silent = true;
-require_once("../lib/login.php");
+require_once("../ajax/login.php");
 
 // Reload to the frontpage
 header("Location: ../");

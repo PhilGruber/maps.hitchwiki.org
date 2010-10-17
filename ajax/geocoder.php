@@ -80,12 +80,13 @@ class maps_geocode
 	    	//"google_geocode"
 	    ),
 	    "reverse_geocode" => array(
-	    	"nominatim_reverse"
+	    	"nominatim_reverse",
+	    	"geonames_reverse"
 	    	//"google_reverse"
 	    )
 	);
 	
-	public $service = false;
+	public $service;
 	
 
 	/*
@@ -178,6 +179,11 @@ class maps_geocode
 	 */
 	public function geocode($q) {
 	
+		// If reverse geocoding, validate querry
+		$latlon = explode(",", $q);
+		if(!validate_lat($latlon[0]) && !validate_lon($latlon[1])) return $this->geocoder_output(false);
+	
+	
 		// Let's roll...
 		switch($this->service) {
     	    
@@ -185,6 +191,10 @@ class maps_geocode
 			case "geonames_geocode":
 				$geocode = $this->geonames_geocode($q);
 				break;
+    	    
+    	    case "geonames_reverse":
+    	    	$geocode = $this->geonames_reverse($q);
+    	    	break;
     	    
 			case "nominatim_geocode":
 				$geocode = $this->nominatim_geocode($q);
@@ -264,7 +274,7 @@ class maps_geocode
 	
 			$output["lat"] = $latlon[0];
 			$output["lon"] = $latlon[1];
-			$output["service"] = "tiny geocoder";
+			$output["service"] = "tiny_geocoder";
 		}
 		
 		return $this->geocoder_output($output);
@@ -318,7 +328,7 @@ class maps_geocode
 				$output["error"] = true;
 			}
 			
-			$output["service"] = "nominatim geocoder";
+			$output["service"] = "nominatim";
 			
 			return $this->geocoder_output($output);
 	 	}
@@ -341,11 +351,13 @@ class maps_geocode
 	
 		$q = explode("%2C",$q); // divide from "," - $q is already urlencoded, that's why it's in this format
 	
-		$xml = readURL('http://nominatim.openstreetmap.org/reverse?format=xml&lat='.urlencode($q[0]).'&lon='.urlencode($q[1]).'&zoom=18&email='.urlencode($settings["email"]));
-		
+		//'.$settings["language"].'
+		// Get results in english
+		$xml = readURL('http://nominatim.openstreetmap.org/reverse?format=xml&lat='.urlencode($q[0]).'&lon='.urlencode($q[1]).'&zoom=18&addressdetails=1&accept-language=en_UK&email='.urlencode($settings["email"]));
+
 		if(!empty($xml)) {
 			$raw = new SimpleXMLElement($xml);
-			
+		
 			if(empty($raw) OR !empty($raw->error)) return false;
 			else {
 			
@@ -366,7 +378,7 @@ class maps_geocode
 				$output["lon"] = strip_tags($q[1]);
 			
 			}
-			$output["service"] = "nominatim reverse geocoder";
+			$output["service"] = "nominatim";
 			
 			return $this->geocoder_output($output);
 	 	}
@@ -482,6 +494,58 @@ class maps_geocode
 			$output["service"] = "geonames";
 			
 			return $this->geocoder_output($output);
+		}
+	}
+	
+	
+	
+	/* 
+	 * Geonames 
+	 * http://www.geonames.org/export/geonames-search.html
+	 * - Reverse Geocode
+	 *
+	 * Response example:
+	
+	 */
+	public function geonames_reverse($q) {
+	
+		$q = explode("%2C",$q); // divide from "," - $q is already urlencoded, that's why it's in this format
+	
+		$xml = readURL('http://ws.geonames.org/findNearbyPlaceName?style=SHORT&lat='.urlencode($q[0]).'&lng='.urlencode($q[1]));
+		#echo "<pre>--".$xml."--</pre>";
+		
+		if(empty($xml)) {
+		
+			return false;
+		
+		} else {
+			$raw = new SimpleXMLElement($xml);
+			
+			if(!empty($raw->status['value'])) {
+				// Errorcodes: http://www.geonames.org/export/webservice-exception.html
+				return false;
+			} else {
+			
+				// Define zoom level by object type
+				// http://www.geonames.org/export/codes.html
+				if($raw->geoname->fcl == "A") $zoom = $this->zoomlevels["country"];
+				elseif($raw->geoname->fcl == "P") $zoom = $this->zoomlevels["city"];
+				else $zoom = $this->zoomlevels["street"];
+						
+				$countryname = ISO_to_country((string)$raw->geoname->countryCode);
+						
+				$output["locality"] = (string)$raw->geoname->toponymName;
+				$output["address"] = (string)$raw->geoname->toponymName.", ".$countryname;
+				$output["country_code"] = (string)$raw->geoname->countryCode;
+				$output["country_name"] = $countryname;
+				$output["lat"] = (string)$raw->geoname->lat;
+				$output["lon"] = (string)$raw->geoname->lng;
+				$output["zoom"] = $zoom;
+				$output["service"] = "geonames";
+				
+				return $this->geocoder_output($output);
+				
+			}
 		}
 	}
 	

@@ -940,6 +940,27 @@ function country_iso_to_continent($code="") {
 }
 
 
+/*
+ * Validate Latitude
+ * Check that latitude is above -90 and below 90
+ * return true/false
+ */
+function validate_lat($lat) {
+	if($lat > -90 && $lat < 90) return true;
+	else return false;
+}
+
+
+/*
+ * Validate Longitude
+ * Check that longitude is above -180 and below 180
+ * return true/false
+ */
+function validate_lon($lon) {
+	if($lon > -180 && $lon < 180) return true;
+	else return false;
+}
+
 
 /* 
  * Return a user name by ID

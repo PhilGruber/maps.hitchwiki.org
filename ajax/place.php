@@ -315,9 +315,11 @@ if($place["error"] !== true):
 				if($place["waiting_stats"]["count"] > 0) {
 					
 					echo $place["waiting_stats"]["avg_textual"].' <small class="light">(<a href="#" id="show_waitingtime_log" title="'._("Show log").'">'; 
-						
+					/*
 					if($place["waiting_stats"]["count"] == 1) echo _("1 experience"); 
 					else printf(_("%s experiences"), $place["waiting_stats"]["count"]);
+					*/
+					printf(ngettext("%d experience", "%d experiences", $place["waiting_stats"]["count"]), $place["waiting_stats"]["count"]);
 					
 					echo '</a>)</small>';
 					
@@ -328,7 +330,13 @@ if($place["error"] !== true):
 				<a href="#" id="waitingtime_log" class="ui-icon ui-icon-clock align_right"><?php echo _("See log"); ?></a>-->
 				
 				<br />
-				<select name="waitingtime" id="waitingtime" class="smaller">
+				
+				<span class="waitingtime_free smaller hidden">
+					<input type="text" value="" name="waitingtime_hour" id="waitingtime_hour" size="2" maxlength="2" class="smaller" style="text-align:right;" /> <?php echo _("hours"); ?>&nbsp; 
+					<input type="text" value="" name="waitingtime_minutes" id="waitingtime_minutes" size="3" maxlength="3" class="smaller" style="text-align:right;" /> <?php echo _("minutes"); ?> 
+				</span>
+				
+				<select name="waitingtime" id="waitingtime" class="waitingtime_easy smaller">
 					<option value=""><?php echo _("Your experience..."); ?></option>
 					<option value="5"><?php echo nicetime(5); ?></option>
 					<option value="10"><?php echo nicetime(10); ?></option>
@@ -343,6 +351,7 @@ if($place["error"] !== true):
 					<option value="180"><?php echo nicetime(180); ?></option>
 					<option value="210"><?php echo nicetime(210); ?></option>
 					<option value="240"><?php echo nicetime(240); ?></option>
+					<option value="other"><?php echo _("Other..."); ?></option>
 				</select>&nbsp;
 				<a href="#" id="waitingtime_add" class="ui-button ui-corner-all ui-state-default ui-icon ui-icon-plus"><?php echo _("Add"); ?></a>
 				
@@ -352,8 +361,20 @@ if($place["error"] !== true):
 				<script type="text/javascript">
 					$(function() {
 					
-						// Rate a place
-				    	$("#waitingtime_add").click(function(e){ 
+						/* 
+						 * Save timing
+						 */
+						 
+						// Regognice selection of "other"
+				    	$("select#waitingtime").change( function () { 
+				    		if($(this).val()=="other") {
+				    			$(this).hide();
+				    			$(".waitingtime_free").show();
+				    		}				    		
+				    	});
+				    
+				    	// Add -button
+				    	$("a#waitingtime_add").click(function(e){ 
 				    		e.preventDefault();
 							
 				    		var waitingtime = $("#waitingtime").val();
@@ -398,7 +419,7 @@ if($place["error"] !== true):
 				    	
 				    	
 						// Show a waiting time log
-				    	$("#show_waitingtime_log").click(function(e){ 
+				    	$("a#show_waitingtime_log").click(function(e){ 
 				    		e.preventDefault();
 				    		$(this).blur();
 				    		
@@ -407,9 +428,10 @@ if($place["error"] !== true):
 				    		// Get waitingtime log for this place
 							$.ajax({ url: "ajax/waitingtimes.php?id=<?php echo $place["id"]; ?>", success: function(data){
 								
-								$("#waitingtime_log").hide();
-								$("#waitingtime_log").html(data);
-								$("#waitingtime_log").slideDown("fast");
+								$("#waitingtime_log")
+									.hide()
+									.html(data)
+									.slideDown("fast");
 								
 							}});
 				    		
@@ -724,7 +746,7 @@ if($place["error"] !== true):
 				<small class="light icon wrench" style="display: block;">
 				
 					&nbsp;
-					<a href="admin/?page=places&amp;remove=<?php echo $place["id"]; ?>" onclick="configrm('Are you sure?');"><?php echo _("Remove place"); ?></a> 
+					<a href="admin/?page=places&amp;remove=<?php echo $place["id"]; ?>" onclick="confirm('Are you sure?');"><?php echo _("Remove place"); ?></a> 
 					
 					&bull; 
 					<a href="admin/?page=places&amp;edit=<?php echo $place["id"]; ?>"><?php echo _("Edit place"); ?></a> 

@@ -2,7 +2,7 @@
 
 <?php if($user===false): ?>
 
-	<?php include('profile_form.php'); ?>
+	<?php include('../lib/profile_form.php'); ?>
 
 <?php else: ?>
 

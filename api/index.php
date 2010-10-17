@@ -233,6 +233,16 @@ if(isset($_GET["remove_comment"])) {
 
 
 /*
+ * Remove waitingtime
+ */
+if(isset($_GET["remove_waitingtime"])) {
+
+	echo $api->removeWaitingtime($_GET["remove_waitingtime"]);
+
+}
+
+
+/*
  * Add place
  */
 if(isset($_GET["add_place"])) {
@@ -308,8 +318,10 @@ if(isset($_GET["add_public_transport"])) {
 }
 
 
-
 // Return "pong"
+if(isset($_GET["ping"])) echo '{"ping":"pong"}';
+
+// forward to the infopage if nothing was requested
 if(empty($_GET) && empty($_POST)) header("Location: ../?page=api");
 
 

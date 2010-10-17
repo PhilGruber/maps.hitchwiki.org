@@ -25,6 +25,8 @@
 		
 			var country = $(this).val();
 
+			stats("country_info/"+country);
+			
 			// When selecting "select", show the world map
 			if(country=="") {
 
@@ -57,8 +59,8 @@
 					else {
 				  		maps_debug("Got countryinfo for "+country);
 				  		
-						// Show infotable if hidden
-						if( $("#countryinfo").is(":hidden") ) { $("#countryinfo").slideDown("fast"); }
+						// Show infotable
+						$("#countryinfo").slideDown("fast");
 						
 						// Empty result? 
 						if($("#countryinfo").text() == "") {

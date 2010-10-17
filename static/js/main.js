@@ -1584,7 +1584,7 @@ function showCountry(country_iso) {
  */
 function open_page(name) {
 	maps_debug("Open a page: "+name);
-	stats("pages/"+page+"/");
+	stats("pages/"+name+"/");
 
 	// Close cards if open
 	if($("#cards .card").is(':visible')) { close_cards(); }
@@ -1818,9 +1818,11 @@ function maps_debug(str) {
  * Gather statistics
  */
 function stats(str) {
-	if(str != undefined && google_analytics == true) {
-		maps_debug("Stats: "+str);
-		pageTracker._trackPageview(str);
+	if(str != undefined && str != "") {
+		if(google_analytics == true) {
+			maps_debug("Stats: "+str);
+			pageTracker._trackPageview(str);
+		}
 	
 	} else { maps_debug("Error: empty stats() request!"); }
 }

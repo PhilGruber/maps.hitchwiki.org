@@ -314,8 +314,51 @@ class maps_api
 		// ID
 		if($id===false OR empty($id) OR !is_numeric($id)) return $this->API_error("Invalid ID.");
 		
+		// Check if user has rights to remove comment
+	 	$user = current_user();
+		// Admins have rights to remove anything, others we need to check from the database
+		if($user["admin"] !== true) {
+		
+			$rescheck = mysql_query("SELECT `id`,`fk_user` FROM `t_comments` WHERE `fk_user` = ".$user["id"]." AND `id` = ".mysql_real_escape_string($id)." LIMIT 1");
+   			if(!$rescheck) return $this->API_error("Query failed!");
+			
+			// If we didn't find any rows matching comment-id AND user-id, user doesn't have permissions to remove this
+			if(mysql_num_rows($rescheck) <= 0) return $this->API_error("permission_denied");
+		}
+		
 		// Remove it
    		$res = mysql_query("DELETE FROM `t_comments` WHERE `id` = ".mysql_real_escape_string($id)." LIMIT 1");
+
+   		if(!$res) return $this->API_error("Query failed!");
+   		
+   		if(mysql_affected_rows() >= 1) return $this->output( array("success"=>true) );
+   		else return $this->API_error("Comment ID not found.");
+	
+	}
+	
+	
+	/* 
+	 * Remove waitingtime
+	 */
+	function removeWaitingtime($id=false) {
+	
+		// ID
+		if($id===false OR empty($id) OR !is_numeric($id)) return $this->API_error("Invalid ID.");
+		
+		// Check if user has rights to remove comment
+	 	$user = current_user();
+		// Admins have rights to remove anything, others we need to check from the database
+		if($user["admin"] !== true) {
+		
+			$rescheck = mysql_query("SELECT `id`,`fk_user` FROM `t_waitingtimes` WHERE `fk_user` = ".$user["id"]." AND `id` = ".mysql_real_escape_string($id)." LIMIT 1");
+   			if(!$rescheck) return $this->API_error("Query failed!");
+			
+			// If we didn't find any rows matching waitingtime-id AND user-id, user doesn't have permissions to remove this
+			if(mysql_num_rows($rescheck) <= 0) return $this->API_error("permission_denied");
+		}
+				
+		// Remove it
+   		$res = mysql_query("DELETE FROM `t_waitingtimes` WHERE `id` = ".mysql_real_escape_string($id)." LIMIT 1");
 
    		if(!$res) return $this->API_error("Query failed!");
    		

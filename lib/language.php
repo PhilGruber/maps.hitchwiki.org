@@ -40,19 +40,20 @@ elseif(!isset($_COOKIE[$settings["cookie_prefix"]."lang"]) || !array_key_exists(
 }
 
 
-// Gettext
+/*
+ * Gettext
+ * Gettext is looking translation from "./locale/LANGUAGE_CODE/LC_MESSAGES/maps.mo"
+ * http://www.php.net/manual/en/function.gettext.php
+ */
 putenv('LC_ALL='.$settings["language"]);
 setlocale(LC_ALL, $settings["language"]);
 
-// Specify location of translation tables 
-// Find absolute locale path by removing "lib/" from the end
-bindtextdomain("maps", substr(realpath(dirname(__FILE__)), 0, -4)."/locale"); 
+// Specify location of translation tables
+bindtextdomain("maps", substr(realpath(dirname(__FILE__)), 0, -4)."/locale");
 bind_textdomain_codeset("maps", 'UTF-8');
+
 // Choose domain
-textdomain("maps"); 
-
-// Gettext is looking translation from "./locale/LANGUAGE_CODE/LC_ALL/maps.mo" now
-
+textdomain("maps");
 
 /*
  * Fix en -> en_UK

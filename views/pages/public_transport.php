@@ -34,6 +34,7 @@
 
 		$("#show_country").change( function () { 
 		
+		
 			if( $("#public_transport_error").is(":visible") ) { $("#public_transport_error").slideUp(); }
 		
 			var country_select = $(this);
@@ -44,6 +45,8 @@
 		
 			var country = $(this).val();
 
+			stats("public_transport/"+country);
+			
 			// When selecting "select", show the world map
 			if(country=="") {
 
@@ -73,10 +76,10 @@
 						$("#public_transport_error").slideDown();
 					}
 					else {
-				  		maps_debug("Got catalog for "+country);
+				  		maps_debug("Got catalog for "+country+" ("+status+")");
 				  		
-						// Show infotable if hidden
-						if( $("#public_t").is(":hidden") ) { $("#public_t").slideDown("fast"); }
+						// Show infotable
+						$("#public_t").slideDown("fast");
 						
 						// Empty result? 
 						if($("#public_t").text() == "") {
