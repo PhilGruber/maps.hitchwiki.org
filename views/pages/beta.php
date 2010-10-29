@@ -15,7 +15,7 @@ You can do whatever you want to - try to crash it! The database will be reset af
 <br  /><br />
 It's not anymore just about you and your hitchhiking places, but everybody can comment, rate and contribute. Just like in our Wiki. Still it's not Facebook... it's not blue you know. We tried our best to make it as usable and good (and orange) as possible.
 <br /><br />
-We now also have a <a href="http://www.facebook.com/pages/Hitchwiki/133644853341506" title="Go to Facebook">Hitchwiki Facebook Page</a>, to where you can join in and get recent updates about Hitchwiki.
+We now also have a <a href="http://www.facebook.com/Hitchwiki" title="Go to Facebook">Hitchwiki Facebook Page</a>, to where you can join in and get recent updates about Hitchwiki.
 <br /><br />
 Ok. Ta. Be well.
 

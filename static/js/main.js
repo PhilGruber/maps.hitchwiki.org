@@ -1571,9 +1571,9 @@ function zoomMapIn(lat, lon, zoom) {
  */
 function showCountry(country_iso) {
 	maps_debug("Information about country "+country_iso);
-/*
+
 	open_page("countries");
-	
+/*	
 	// Show selected country after page has opened
 */
 }
@@ -1729,6 +1729,16 @@ function removeComment(remove_id) {
 		
 		});
 	}
+}
+
+
+/* 
+ * Validate numeric
+ * http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
+ */
+function is_numeric(input)
+{
+   return (input - 0) == input && input.length > 0;
 }
 
 

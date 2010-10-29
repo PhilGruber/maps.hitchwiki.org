@@ -132,4 +132,4 @@
 	<iframe src="lib/map_statistics.php?map=2" width="820" height="430" border="0" style="border:0;"></iframe>
 	-->
 	<!-- http://code.google.com/apis/visualization/documentation/gallery/geomap.html -->
-	<iframe src="lib/map_statistics.php?map=3" width="820" height="430" border="0" style="border:0;"></iframe>
+	<iframe src="ajax/map_statistics.php?map=3" width="820" height="430" border="0" style="border:0;"></iframe>

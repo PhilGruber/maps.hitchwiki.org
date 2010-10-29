@@ -409,11 +409,9 @@ $title .= 'Hitchwiki '.gettext("Maps");
 						"Jambo!" => "KE",
 						"Selam!" => "TR"
 					);
-					
 					$hello_greeting = array_rand($hello,1);
-					$hello_from = $hello[$hello_greeting];
 					
-					?><span title="<?php printf(_("Hello from %s"), ISO_to_country($hello_from)); ?>"><?php echo $hello_greeting; ?></span> <a href="./?page=profile" id="profile" class="pagelink"><?php echo $user["name"]; ?></a></span></span>
+					?><span title="<?php printf(_("Hello from %s"), ISO_to_country($hello[$hello_greeting])); ?>"><?php echo $hello_greeting; ?></span> <a href="./?page=profile" id="profile" class="pagelink"><?php echo $user["name"]; ?></a></span></span>
 
 				<?php 
 				// User is NOT logged in:

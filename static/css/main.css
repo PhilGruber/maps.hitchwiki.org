@@ -88,6 +88,9 @@ table.infotable {
 		background-color: #eddeb6;
 		text-align: left;
 	}
+	table.infotable#timing_list {
+		width: 100%;
+	}
 
 .grey {
 	color: #555;	

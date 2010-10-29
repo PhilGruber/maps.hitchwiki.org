@@ -332,8 +332,8 @@ if($place["error"] !== true):
 				<br />
 				
 				<span class="waitingtime_free smaller hidden">
-					<input type="text" value="" name="waitingtime_hour" id="waitingtime_hour" size="2" maxlength="2" class="smaller" style="text-align:right;" /> <?php echo _("hours"); ?>&nbsp; 
-					<input type="text" value="" name="waitingtime_minutes" id="waitingtime_minutes" size="3" maxlength="3" class="smaller" style="text-align:right;" /> <?php echo _("minutes"); ?> 
+					<input type="text" value="" name="waitingtime_hours" id="waitingtime_hours" size="2" maxlength="2" class="smaller" style="text-align:right;" /> <label for="waitingtime_hours"><?php echo _("hours"); ?></label>&nbsp; 
+					<input type="text" value="" name="waitingtime_minutes" id="waitingtime_minutes" size="3" maxlength="3" class="smaller" style="text-align:right;" /> <label for="waitingtime_minutes"><?php echo _("minutes"); ?></label> 
 				</span>
 				
 				<select name="waitingtime" id="waitingtime" class="waitingtime_easy smaller">
@@ -345,12 +345,6 @@ if($place["error"] !== true):
 					<option value="30"><?php echo nicetime(30); ?></option>
 					<option value="45"><?php echo nicetime(45); ?></option>
 					<option value="60"><?php echo nicetime(60); ?></option>
-					<option value="90"><?php echo nicetime(90); ?></option>
-					<option value="120"><?php echo nicetime(120); ?></option>
-					<option value="150"><?php echo nicetime(150); ?></option>
-					<option value="180"><?php echo nicetime(180); ?></option>
-					<option value="210"><?php echo nicetime(210); ?></option>
-					<option value="240"><?php echo nicetime(240); ?></option>
 					<option value="other"><?php echo _("Other..."); ?></option>
 				</select>&nbsp;
 				<a href="#" id="waitingtime_add" class="ui-button ui-corner-all ui-state-default ui-icon ui-icon-plus"><?php echo _("Add"); ?></a>
@@ -370,6 +364,7 @@ if($place["error"] !== true):
 				    		if($(this).val()=="other") {
 				    			$(this).hide();
 				    			$(".waitingtime_free").show();
+				    			maps_debug("Use free inputs for waitingtime instead.");
 				    		}				    		
 				    	});
 				    
@@ -377,7 +372,34 @@ if($place["error"] !== true):
 				    	$("a#waitingtime_add").click(function(e){ 
 				    		e.preventDefault();
 							
-				    		var waitingtime = $("#waitingtime").val();
+							// Are we getting timing from free-inputs or from the select-input?
+							if($(".waitingtime_free").is(":visible")) {
+								
+								maps_debug("Getting timing from free timing inputs.");
+							
+								var waitingtime_hours = $(".waitingtime_free input#waitingtime_hours").val();
+								var waitingtime_minutes = $(".waitingtime_free input#waitingtime_minutes").val();
+								
+								if(waitingtime_hours=="") { waitingtime_hours = '0'; }
+								if(waitingtime_minutes=="") { waitingtime_minutes = '0'; }
+								
+								maps_debug("Timing: "+waitingtime_hours+"h "+waitingtime_minutes+"m");
+								
+								// Validate inputs
+								if(waitingtime_hours >= 0 && waitingtime_minutes >= 0 && is_numeric(waitingtime_hours)==true && is_numeric(waitingtime_minutes)==true) {
+								
+									var waitingtime = parseFloat(waitingtime_minutes) + (parseFloat(waitingtime_hours)*60);						
+
+								}
+								else {
+									maps_debug("Free timing inputs didn't pass validation.");
+									var waitingtime = "";
+								}
+								
+							} else {
+					    		var waitingtime = $("#waitingtime").val();
+					    	}
+				    		
 				    		$(this).blur();
 				    		$("#waitingtime").val("");
 				    	
@@ -412,7 +434,7 @@ if($place["error"] !== true):
 								});
 								
 				    		} else {
-								info_dialog("<?php echo _("Please select time first."); ?>", "<?php echo _("Error"); ?>", true);
+								info_dialog("<?php echo _("Please give your timing first."); ?>", "<?php echo _("Error"); ?>", true);
 				    		}
 				    				    	
 				    	});
