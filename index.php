@@ -92,7 +92,7 @@ sm = new GeoExt.grid.FeatureSelectionModel({layers: layers});
  */
 // If place
 if(isset($show_place)) {
-    $title .= _("a Hitchhiking spot").' in '; 
+    $title .= _("a Hitchhiking spot in").' '; 
 
     // in city, country
     if(!empty($place["location"]["locality"])) $title .= $place["location"]["locality"].', ';
@@ -117,8 +117,8 @@ $title .= 'Hitchwiki '.gettext("Maps");
 		
 		<title><?php echo $title; ?> (BETA)</title>
 		
-		<link rel="stylesheet" type="text/css" href="static/css/ui-lightness/jquery-ui-1.8.5.custom.css" media="all" />
-		
+		<link href="ajax/js-translation.json.php?lang=<?php echo $settings["language"]; ?>" lang="<?php echo $settings["language"]; ?>" rel="gettext"/>
+		<link href="static/css/ui-lightness/jquery-ui-1.8.5.custom.css" media="all" rel="stylesheet" type="text/css" />
 		<?php
 		
 		/*
@@ -128,13 +128,28 @@ $title .= 'Hitchwiki '.gettext("Maps");
 		 */
 		 
 		 // Google maps
-		if(!empty($settings["google_maps_api_key"])) echo '<script src="http://maps.google.com/maps?file=api&l='.shortlang().'&v=2&key='.$settings["google_maps_api_key"].'"></script>';
+		if(!empty($settings["google_maps_api_key"])) {
+			if($user["logged_in"]===true && empty($user["map_google"])) $print_map_google = false;
+			else $print_map_google = true;
+			
+			if($print_map_google) echo '<script src="http://maps.google.com/maps?file=api&l='.shortlang().'&v=2&key='.$settings["google_maps_api_key"].'"></script>';
+		}
 
 		// Yahoo
-		if(!empty($settings["yahoo_maps_appid"])) echo '<script src="http://api.maps.yahoo.com/ajaxymap?v=3.0&appid='.$settings["yahoo_maps_appid"].'" type="text/javascript"></script>';
+		if(!empty($settings["yahoo_maps_appid"])) {
+			if($user["logged_in"]===true && empty($user["map_yahoo"])) $print_map_yahoo = false;
+			else $print_map_yahoo = true;
+			
+			if($print_map_yahoo) echo '<script src="http://api.maps.yahoo.com/ajaxymap?v=3.0&appid='.$settings["yahoo_maps_appid"].'" type="text/javascript"></script>';
+		}
 		
 		// MS VirtualEarth
-		if($settings["ms_virtualearth"]===true) echo '<script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt='.str_replace("_", "-", $settings["language"]).'" type="text/javascript"></script>';
+		if($settings["ms_virtualearth"]===true) {
+			if($user["logged_in"]===true && empty($user["map_vearth"])) $print_map_vearth = false;
+			else $print_map_vearth = true;
+			
+			if($print_map_vearth) echo '<script src="http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1&mkt='.str_replace("_", "-", $settings["language"]).'" type="text/javascript"></script>';
+		}
 		
 		?>
 		<script src="http://openlayers.org/api/OpenLayers.js" type="text/javascript"></script>
@@ -147,13 +162,21 @@ $title .= 'Hitchwiki '.gettext("Maps");
 			 * Misc settings
 			 */
 			var ip = "<?php echo $_SERVER['REMOTE_ADDR']; ?>";
-			var geolocation = "lib/ipinfodb/ip_proxy.php";
+			var geolocation = "ajax/geolocation_ip_proxy.php";
 			var cookie_prefix = "<?php echo $settings["cookie_prefix"]; ?>";
 			var geolocation_cookiename = "<?php echo $settings["cookie_prefix"]; ?>_geolocation";
 			var geolocation_cookieoptions = { path: '/', expires: 6 }; // expires: hours
 			var locale = "<?php echo $settings["language"]; ?>";
 			var google_analytics = <?php echo (!empty($settings["google_analytics_id"]) ? 'true' : 'false'); ?>;
-			
+
+			/*
+			 * Loaded Map layers
+			 */
+			var layer_google = <?php echo (!empty($settings["google_maps_api_key"])) ? "true": "false"; ?>;
+			var layer_yahoo  = <?php echo (!empty($settings["yahoo_maps_appid"])) ? "true": "false"; ?>;
+			var layer_vearth = <?php echo ($settings["ms_virtualearth"]===true) ? "true": "false"; ?>;
+			var layer_default = "<?php echo (isset($user["map_default_layer"]) && !empty($user["map_default_layer"])) ? htmlspecialchars($user["map_default_layer"]): 'mapnik'; ?>";
+
 			/*
 			 * Default map settings
 			 */
@@ -170,7 +193,7 @@ $title .= 'Hitchwiki '.gettext("Maps");
 		<script src="http://maps.google.com/maps?file=api&v=2&key=<?php echo $settings["google_maps_api_key"]; ?>&sensor=false" type="text/javascript"></script>
 		<?php endif; */ ?>
 		
-		<script src="static/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+		<script src="static/js/jquery-1.4.3.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery-ui-1.8.5.custom.min.js" type="text/javascript"></script>
 		<script src="static/js/jquery.cookie.js" type="text/javascript"></script>
 		<script src="static/js/jquery.json-2.2.min.js" type="text/javascript"></script>
@@ -335,22 +358,6 @@ $title .= 'Hitchwiki '.gettext("Maps");
 			<!-- /Logo -->
 			</div>
 			
-<?php /*
-			<div id="map_selector">
-				<button id="selected_map"><?php echo _("Map"); ?>: Open Street Map</button>
-
-				<div id="maplist" class="ui-corner-bottom ui-corner-tr">
-				<ul>
-				    <li><input type="radio" id="map_osm" name="maplist" class="ui-corner-top" checked="checked" /><label for="map_osm">Open Street map</label></li>
-				    <li><input type="radio" id="map_goostr" name="maplist" /><label for="map_goostr">Google Maps - <?php echo _("Street"); ?></label></li>
-				    <li><input type="radio" id="map_goosat" name="maplist" /><label for="map_goosat">Google Maps - <?php echo _("Satellite"); ?></label></li>
-				    <li><input type="radio" id="map_goosatl" name="maplist" /><label for="map_goosatl">Google Maps - <?php echo _("Satellite with labels"); ?></label></li>
-				    <li><input type="radio" id="map_yahoo" name="maplist" class="ui-corner-top" /><label for="map_yahoo">Yahoo Maps</label></li>
-				    <li><input type="radio" id="map_bing" name="maplist" class="ui-corner-bottom" /><label for="map_bing">Bing Maps</label></li>
-				</ul>
-				</div>
-			</div>
-*/ ?>
 			<div id="LoginNavi" class="<?php
 				if($user["logged_in"]===true) echo 'logged_in';
 				else echo 'logged_out';
@@ -451,15 +458,6 @@ $title .= 'Hitchwiki '.gettext("Maps");
 							<div id="rememberMeRow" class="align_left"><input type="checkbox" value="1" name="remember_me" id="remember_me" tabindex="4" /> <label for="remember_me"><?php echo _("Remember me"); ?></label></div>
 							<br />
 							<small id="login_meta">
-								<?php /*if(isset($settings["fb"]["app"]["id"]) && !empty($settings["fb"]["app"]["id"])): ?>
-									<div class="align_right">
-										<?php 
-										#<fb:login-button width="50" max-rows="1"></fb:login-button>
-										 ?>
-										
-										<a href="#" onclick="login_with_facebook();" class="icon facebook" style="margin: 2px 0 0 3px; padding-top: 3px; display: block; float: right;">Login with Facebook</a>
-									</div>
-								<?php endif; */ ?>
 								
 								<a href="./?page=lost_password" id="lost_password" class="pagelink"><?php echo _("Lost password?"); ?></a>
 								
@@ -522,6 +520,10 @@ $title .= 'Hitchwiki '.gettext("Maps");
 							<?php endif; ?>
 							<li><a href="./?page=help" id="help" class="icon help pagelink"><?php echo htmlspecialchars(_("Help & About")); ?></a></li>
 							<li><a href="./?page=statistics" id="statistics" class="icon chart_bar pagelink"><?php echo _("Statistics"); ?></a></li>
+			    			<?php
+			    				// Visible only for admins
+			    				if($user["admin"]===true) echo '<li><a href="./admin/" class="icon tux">'._("Admins").'</a></li>';
+			    			?>
 						</ul>
 					</li>
 					
@@ -558,7 +560,7 @@ $title .= 'Hitchwiki '.gettext("Maps");
 			    	<li>
 			    		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" title="<?php echo _("Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License"); ?>"><img alt="Creative Commons License" src="static/gfx/cc-by-sa.png"/></a>
 			    		&nbsp;
-			    		<a href="http://www.facebook.com/pages/Hitchwiki/133644853341506" class="icon facebook" style="margin: 2px 0 0 3px; padding-top: 3px; display: block; float: right;">Facebook</a>
+			    		<a href="http://www.facebook.com/Hitchwiki" class="icon facebook" style="margin: 2px 0 0 3px; padding-top: 3px; display: block; float: right;">Facebook</a>
 			    	</li>
 
 			    	<li>
@@ -566,7 +568,7 @@ $title .= 'Hitchwiki '.gettext("Maps");
 			    	</li>
 			    	
 			    	<li id="developers">
-			    		<a href="http://github.com/MrTweek/maps.hitchwiki.org/"><?php echo _("Developers"); ?></a>
+			    		<a href="http://github.com/Hitchwiki"><?php echo _("Developers"); ?></a>
 			    		
 			    		&bull;
 			    		
@@ -575,11 +577,6 @@ $title .= 'Hitchwiki '.gettext("Maps");
 			    		<?php /* toggle log link will be added here from main.js for devs */ ?>
 			    		
 			    	</li>
-			    	
-			    	<?php
-			    		// Visible only for admins
-			    		if($user["admin"]===true) echo '<li><a href="./admin/">'._("Admins").'</a></li>';
-			    	?>
 			    </ul>
 			    
 
@@ -689,6 +686,48 @@ $title .= 'Hitchwiki '.gettext("Maps");
 	       <!-- Loading -bar -->
 	       <div id="loading-bar"><small class="title"></small></div>
 	       
+
+			<div id="map_selector">
+				<button id="selected_map" class="ui-corner-bottom"><?php echo _("Map"); ?>: <span class="map_name">Open Street Map</span></button>
+
+				<div id="maplist" class="ui-corner-bottom">
+				<ul>
+					<li class="first"><a href="#" name="mapnik" class="icon icon-osm<?php if($user["map_default_layer"]=='mapnik' OR empty($user["map_default_layer"]) OR !isset($user["map_default_layer"])) { echo ' selected'; } ?>"><?php echo $map_layers["osm"]["mapnik"]; ?></a></li>
+					<li><a href="#" name="osmarender" class="icon icon-osm<?php if($user["map_default_layer"]=='osmarender') { echo ' selected'; } ?>"><?php echo $map_layers["osm"]["osmarender"]; ?></a></li>
+					<?php
+					
+					// Google
+					if(!empty($settings["google_maps_api_key"])) {
+						foreach($map_layers["google"] as $map => $name) {
+				    		echo '<li><a href="#" name="'.$map.'" class="icon icon-google';
+				    		if($user["map_default_layer"]==$map) echo ' selected';
+				    		echo '">'.$name.'</a></li>';
+						}
+					}
+					
+					// Yahoo
+					if(!empty($settings["yahoo_maps_appid"])) {
+						foreach($map_layers["yahoo"] as $map => $name) {
+				    		echo '<li><a href="#" name="'.$map.'" class="icon icon-yahoo';
+				    		if($user["map_default_layer"]==$map) echo ' selected';
+				    		echo '">'.$name.'</a></li>';
+						}
+					}
+					
+					// Virtual Earth
+					if($settings["ms_virtualearth"]===true) {
+						foreach($map_layers["vearth"] as $map => $name) {
+				    		echo '<li><a href="#" name="'.$map.'" class="icon icon-bing';
+				    		if($user["map_default_layer"]==$map) echo ' selected';
+				    		echo '">'.$name.'</a></li>';
+						}
+					}
+					
+				    ?>
+				</ul>
+				</div>
+			</div>
+
 	       
 		<!-- /Content -->
 		</div>

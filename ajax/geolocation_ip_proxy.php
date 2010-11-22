@@ -11,6 +11,7 @@
 *
 * You must change the $allowed_hosts array to include your own domain
 */
+#include "/home/sg076/public_html/maps.hitchwiki.org/lib/Snoopy/Snoopy.class.php";
 include "../Snoopy/Snoopy.class.php";
 
 

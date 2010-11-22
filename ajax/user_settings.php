@@ -106,7 +106,22 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 	if($_POST["allow_gravatar"] == "true") $allow_gravatar = '1';
 	else $allow_gravatar = 'NULL';
 	
-	#echo json_encode( array("error"=>print_r($_POST,true)) ); exit;
+	
+	// Map layer: google
+	if($_POST["map_google"] == "true") $map_google = '1';
+	else $map_google = 'NULL';
+	
+	// Map layer: yahoo
+	if($_POST["map_yahoo"] == "true") $map_yahoo = '1';
+	else $map_yahoo = 'NULL';
+	
+	// Map layer: virtual earth
+	if($_POST["map_vearth"] == "true") $map_vearth = '1';
+	else $map_vearth = 'NULL';
+	
+	// Default map layer
+	if(!empty($_POST["map_default_layer"])) $map_default_layer = "'".mysql_real_escape_string($_POST["map_default_layer"])."'";
+	else $map_default_layer = 'NULL';
 
 
 /*
@@ -127,7 +142,11 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 					`language`,
 					`google_latitude`,
 					`centered_glatitude`,
-					`allow_gravatar`
+					`allow_gravatar`,
+					`map_google`,
+					`map_yahoo`,
+					`map_vearth`,
+					`map_default_layer`
 				) VALUES (
 					NULL, 
 					'".mysql_real_escape_string(htmlspecialchars($_POST["name"]))."', 
@@ -139,7 +158,11 @@ if(!isset($_GET["settings"]) && !isset($_GET["register"])) { echo json_encode( a
 					".$language.",
 					".$google_latitude.",
 					".$centered_glatitude.",
-					".$allow_gravatar."
+					".$allow_gravatar.",
+					".$map_google.",
+					".$map_yahoo.",
+					".$map_vearth.",
+					".$map_default_layer."
 				);";
 				
 		$res = mysql_query($query);   

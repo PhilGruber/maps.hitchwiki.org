@@ -63,6 +63,7 @@ class maps_geocode
 	/*
 	 * Default settings
 	 */ 
+	public $history = 	false; // true|false - keep search history?
 	public $mode = 		"geocode"; // default mode (geocode | reverse_geocode)
 	public $zoomlevels = array(
 							"country" 	=> '6',
@@ -158,6 +159,27 @@ class maps_geocode
 	}
 	
 	
+	/*
+	 * Log search history
+	 */
+	public function log($q="", $r=false) {
+		// Keep history log?
+		if($this->history == true) {
+		
+	    	start_sql();
+	    	
+			// Clean q
+			$q = (!empty($q)) ? "'".mysql_real_escape_string(strtolower($q))."'": "NULL";
+		
+			// Flag 1 if had a result
+			$r = ($r) ? "1": "NULL";
+		
+			// To the DB
+	    	mysql_query("INSERT INTO `t_search_history` (`timestamp`,`q`,`result`) VALUES (CURRENT_TIMESTAMP,".$q.",".$r.")");
+		}
+	}
+	
+	
 	/* 
 	 * Output
 	 */
@@ -230,10 +252,16 @@ class maps_geocode
 		
 		
 		// Return successfull results
-		if($geocode !== false) return $geocode;
+		if($geocode !== false) {
+			$this->log($q, true);
+			return $geocode;
+		}
 		
 		// If we didn't get any results, remove service from our list and try again with next one
 		elseif($geocode === false && !empty($this->services[$this->mode])) {
+		
+			// Log event
+			$this->log($q, false);
 		
 			// Remove used
 			$this->unset_service($this->service);
@@ -246,8 +274,10 @@ class maps_geocode
 		}
 		
 		// If we ran out of services, just return error
-		else return $this->geocoder_output(false);
-		
+		else {
+			$this->log($q, false);
+			return $this->geocoder_output(false);
+		}
 	}
 	
 	

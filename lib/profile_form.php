@@ -55,8 +55,66 @@ else $profile_form = "register";
 	<input type="password" name="password2" id="password2" size="25" maxlength="80" />
 		
 	<br /><br />
+
+	<label><?php echo _("Used map services"); ?></label><br />
 	
+	<input type="checkbox" name="map_osm" id="map_osm" disabled="disabled" checked="checked" value="true" /><label for="map_osm" class="icon icon-osm">Open Street Maps</label><br />
+	<input type="checkbox" name="map_ww" id="map_ww" disabled="disabled" checked="checked" value="true" /><label for="map_ww" class="icon icon-ww">NASA World Wind</label><br />
+	<input type="checkbox" name="map_google" id="map_google" value="true" <?php if($user["map_google"]=='1') echo 'checked="checked" '; ?>/><label for="map_google" class="icon icon-google">Google Maps</label><br />
+	<input type="checkbox" name="map_yahoo" id="map_yahoo" value="true" <?php if($user["map_yahoo"]=='1') echo 'checked="checked" '; ?>/><label for="map_yahoo" class="icon icon-yahoo">Yahoo Maps</label><br />
+	<input type="checkbox" name="map_vearth" id="map_vearth" value="true" <?php if($user["map_vearth"]=='1') echo 'checked="checked" '; ?>/><label for="map_vearth" class="icon icon-bing">Microsoft Virtual Earth</label>
+
+	<br /><br />
 	
+	<label for="map_default_layer"><?php echo _("Default map layer"); ?></label><br />
+	<select id="map_default_layer" name="country">
+
+		<optgroup label="Open Street map">
+			<option value="" <?php if(empty($user["map_default_layer"])) echo ' selected="selected"'; ?>><?php echo $map_layers["osm"]["mapnik"]; ?> (<?php echo _("Default"); ?>)</option>
+			<option value="osmarender" <?php if($user["map_default_layer"]=="osmarender") echo ' selected="selected"'; ?>><?php echo $map_layers["osm"]["osmarender"]; ?></option>
+		</optgroup>
+		<?php
+
+		// Google
+		if(!empty($settings["google_maps_api_key"])) {
+			echo '<optgroup label="Google">';
+		    foreach($map_layers["google"] as $map => $name) {
+		    	echo '<option class="map_google" value="'.$map.'"';
+		    	if($user["map_default_layer"]==$map) echo ' selected="selected"';
+		    	echo '>'.$name.'</option>';
+		    }
+			echo '</optgroup>';
+		}
+
+		// Yahoo
+		if(!empty($settings["yahoo_maps_appid"])) {
+			echo '<optgroup label="Yahoo">';
+		    foreach($map_layers["yahoo"] as $map => $name) {
+		    	echo '<option class="map_yahoo" value="'.$map.'"';
+		    	if($user["map_default_layer"]==$map) echo ' selected="selected"';
+		    	echo '>'.$name.'</option>';
+		    }
+			echo '</optgroup>';
+		}
+
+		// Virtual Earth
+		if($settings["ms_virtualearth"]===true) {
+			echo '<optgroup label="Virtual Earth">';
+		    foreach($map_layers["vearth"] as $map => $name) {
+		    	echo '<option class="map_vearth" value="'.$map.'"';
+		    	if($user["map_default_layer"]==$map) echo ' selected="selected"';
+		    	echo '>'.$name.'</option>';
+		    }
+			echo '</optgroup>';
+		}
+
+		?>
+	</select>
+
+	<br /><br />
+</div>
+<div style="float: left; width: 360px;">
+
 	<label for="language"><?php echo _("Language"); ?></label><br />
 	<select name="language" id="language" title="<?php echo _("Choose language"); ?>">
 	    <?php
@@ -73,9 +131,6 @@ else $profile_form = "register";
 	</select>
 	
 	<br /><br />
-</div>
-<div style="float: left; width: 360px;">
-
 	
 	<label for="location"><?php echo _("Location"); ?></label> <small>(<?php echo _("Can be anything, most likely a city."); ?>)</small><br />
 	<div class="ui-widget">
@@ -101,7 +156,7 @@ else $profile_form = "register";
 	<label for="google_latitude"><?php echo _("Google Latitude user ID"); ?></label><br />
 	<input type="text" name="google_latitude" id="google_latitude" size="25" maxlength="80" value="<?php if(isset($user["google_latitude"])) echo htmlspecialchars($user["google_latitude"]); ?>" />
 	<br />
-	<img src="static/gfx/icons/latitude-icon-small.png" alt="Google Latitude" class="align_left" style="margin: 5px 5px 5px 0;" /><small><?php printf(_('<a href="%s" target="_blank">Enable Google Latitude</a> first and copy here your 20-digit user ID from the bottom of the page.'), 'http://www.google.com/latitude/apps/badge'); echo " "._("It will be published on your profile page."); ?></small>
+	<img src="static/gfx/icons/latitude-icon-small.png" alt="Google Latitude" class="align_left" style="margin: 5px 5px 5px 0;" /><small><?php printf(_('<a href="%s" target="_blank">Enable Google Latitude</a> first and copy here your 20-digit user ID from the bottom of the page, visible in a textbox.'), 'https://www.google.com/latitude/b/0/apps'); echo " "._("It will be published on your profile page."); ?></small>
 	
 	<br /><br />
 	
@@ -152,6 +207,20 @@ $(function() {
 		}
 	
 	});
+	
+	// Selecting map layer
+	$("#profile_form #map_default_layer").change( function () { 
+		
+		var selected_ = $(this).val();
+		if(selected_country != "") {
+			$("#profile_form .flag").attr("src","static/gfx/flags/"+selected_country.toLowerCase()+".png");
+			$("#profile_form .flag").show();
+		} else {
+			$("#profile_form .flag").hide();
+		}
+	
+	});
+	
 	
 
 	// Autosuggest in Location

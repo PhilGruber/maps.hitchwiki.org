@@ -122,6 +122,15 @@ table.infotable {
 	.hitchability_color_3 { color: #ffff00; }
 	.hitchability_color_4 { color: #ff8d00; }
 	.hitchability_color_5 { color: #ff0000; }
+	
+	.hitchability_color_0,
+	.hitchability_color_1,
+	.hitchability_color_2,
+	.hitchability_color_3,
+	.hitchability_color_4,
+	.hitchability_color_5 {
+		text-shadow: 0px 0px 2px #bdb7a4;
+	}
 
 
 hr {
@@ -166,38 +175,85 @@ input, textarea, button, .button {
 	padding-top: 2px;
 	padding-bottom: 2px;
 }
-
 textarea { width: 100%; }
 input, textarea {
  	background-color: #fff;
 }
 
+textarea[disabled='disabled'],
+input[disabled='disabled'] {
+	border: 1px solid #d4c690;
+ 	background-color: #f2f1eb;
+ 	color: #877e5a;
+}
+
+
 #map_selector {
+	z-index: 999 !important;
 	font-size: 9px;
 	line-height: 9px;
 	font-weight: normal;
 	float: left;
-	/* TODO: position absolute -over the map */
+	width: 220px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 80px;
+	right: 10px;
+	text-align: left;
 }
-	#maplist {
-		background: #fff;
+	#map_selector #selected_map {
+		width: 100%;
+		background: #e1ae32 url(../gfx/map_controller_bg.gif) left top repeat-x;
+		font-weight: bold;
+		color: #964602;
+		border: 1px solid #c99416;
+		border-top: 0;
+		font-size: 9px;
+		line-height: 9px;
+		padding: 5px 0;
+		overflow: hidden;
+		text-shadow: 0px 1px 1px #e8c161;
+		
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		-moz-border-radius-topleft: 0;
+		-moz-border-radius-topright: 0;
+		-webkit-border-top-left-radius: 0;
+		-webkit-border-top-right-radius: 0;
+	}
+	#map_selector #maplist {
+		margin: 0 4px;
+		display: block;
 		padding: 5px;
 		display: none;
 		z-index: 99997;
+		background: #faf9f3;
+		border: 1px solid #ccc4a0;
+		border-top: 0;
 	}
-		#maplist ul {
-		display: block;
+		#map_selector #maplist ul {
+			display: block;
 			list-style: none;
 			margin: 0;
 			padding: 0;
 		}
-		#maplist ul li {
-			padding: 0;
+		#map_selector #maplist ul li {
+			padding: 3px 5px;
 			margin: 0;
+			display: block;
+			border-top: 1px solid #ccc4a0;
 		}
-		#maplist ul li * {
-			width: 100%;
-			text-align: left;
+		#map_selector #maplist ul li.first {
+			border: 0;
+		}
+		#map_selector #maplist ul li a.selected {
+			font-weight: bold;
+			color: #46350b;
+		}
+		#map_selector #maplist ul li a {
+			display: block;
+			margin: 0;
 		}
 
 textarea.copypaste, 
@@ -247,8 +303,9 @@ textarea.icon {
 
 .icon-osm 		{ background-image: url('../gfx/icons/osm.png') !important; }
 .icon-google 	{ background-image: url('../gfx/icons/google.gif') !important; }
-.icon-yahoo 	{ background-image: url('../gfx/icons/yahoo.gif') !important; }
+.icon-yahoo 	{ background-image: url('../gfx/icons/yahoo.png') !important; }
 .icon-bing 		{ background-image: url('../gfx/icons/bing.gif') !important; }
+.icon-ww 		{ background-image: url('../gfx/icons/nasa.png') !important; }
 
 .icon.hitchability_0 	{ background-image: url(../gfx/icons/hitchability_0.png); }
 .icon.hitchability_1 	{ background-image: url(../gfx/icons/hitchability_1.png); }
@@ -340,7 +397,7 @@ html, body {
 	overflow: hidden;
 	min-width: 990px;
 	background: #edca50 url(../gfx/bg.png) repeat-x left bottom;
-	
+	text-shadow: 0px 1px 1px #ffe998;
 }
 	#Header #Logo {
 		float: left;

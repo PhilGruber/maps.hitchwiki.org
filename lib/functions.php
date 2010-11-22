@@ -1175,6 +1175,10 @@ function check_login($email=false, $password=false, $get_password=false) {
 			$user["google_latitude"] = $r["google_latitude"];
 			$user["centered_glatitude"] = $r["centered_glatitude"];
 			$user["allow_gravatar"] = $r["allow_gravatar"];
+			$user["map_google"] = $r["map_google"];
+			$user["map_yahoo"] = $r["map_yahoo"];
+			$user["map_vearth"] = $r["map_vearth"];
+			$user["map_default_layer"] = $r["map_default_layer"];
 			
 			// Admin? 1:false
 			if($r["admin"]=="1") $user["admin"] = true;
