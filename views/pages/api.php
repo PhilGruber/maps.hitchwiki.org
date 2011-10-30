@@ -129,7 +129,7 @@ See an example from "List places from area"-section.
 <ul>
 	<?php
 	$continents = list_continents();
-	
+
 	foreach($continents as $continent) {
 		echo '<li><span class="highlight">'.$continent["code"].'</span>: '.$continent["name"].'</li>';
 	}
@@ -148,7 +148,7 @@ See an example from "List places from area"-section.
 			foreach($continents as $continent) {
 				echo '<li>'.$continent["code"].': '.$continent["name"].'</li>';
 			}
-			
+
 			?>
 		</ul>
 	</li>
@@ -245,11 +245,11 @@ Variables you can use with all API calls:
 		<ul>
 		<?php
 			foreach($settings["valid_languages"] as $code => $lang) {
-			
+
 				echo '<li title="'.$lang.'"><span class="highlight">'.$code.'</span>: <img class="flag" alt="" src="static/gfx/flags/png/'.strtolower(substr($code, -2)).'.png" /> ' . $settings["languages_in_english"][$code];
-				
+
 				if($code == $settings["default_language"]) echo ' ('._("default").')';
-				
+
 				echo '</li>';
 			}
 		?>

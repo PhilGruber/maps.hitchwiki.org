@@ -25,7 +25,7 @@ if(isset($_POST["iso"]) && !empty($_POST["iso"])) $locale_short = htmlspecialcha
 else $locale_short = false;
 
 if($locale_short != false && $locale != false) {
-	
+
 	// Get data
 	$i=0;
 	$data = readURL("http://ws.geonames.org/countryInfoCSV?lang=".strtolower($locale_short));
@@ -34,13 +34,13 @@ if($locale_short != false && $locale != false) {
 	foreach($lines as $num => $line) {
 		if($num != 0 && !empty($line)) {
 			$line = explode("\t",$line);
-			
+
 			if(!empty($line[4])) {
 				$query .= "UPDATE `t_countries` SET `".$locale."` = '".mysql_real_escape_string( $line[4] )."' WHERE `iso` = '".$line[0]."';\n";
 			}
 		}
 	}
-	
+
 	// To the DB?
 	if(isset($_POST["sql_update"]) && $_POST["sql_update"] == "1") {
 
@@ -48,28 +48,28 @@ if($locale_short != false && $locale != false) {
 		$result = mysql_query($query);
 		if (!$result) {
 			?>
-			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em; margin: 20px 0;"> 
-			    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em; margin: 20px 0;">
+			    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
 			    <strong><?php echo _("Alert"); ?>:</strong> MySQL query failed!</p>
 			</div>
 			<?php
 		} else {
 			?>
-			<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em; margin: 20px 0;"> 
-			    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span> 
+			<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em; margin: 20px 0;">
+			    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 			    	<?php echo mysql_num_rows($result); ?> languages updated to the database.
 			    </p>
 			</div>
 			<?php
 		}
 	}
-	
-	
+
+
 	// Echo out
 	echo '<hr /><pre>'. $query .'</pre><hr />';
 
 	echo '<h2>Re-translate</h2>';
-} 
+}
 
 ?>
 
@@ -80,7 +80,7 @@ if($locale_short != false && $locale != false) {
 	<small>In <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> language code format. Lowercase. eg. "de" for German</small>
 	<br /><br />
 	<label for="locale">Language locale:</label> <select name="locale" id="locale"><option value="">Select</option>
-		<?php 
+		<?php
 			// List languages from config.php
 			foreach($settings["valid_languages"] as $code => $language) {
 				echo '<option value="'.$code.'"';
@@ -89,18 +89,18 @@ if($locale_short != false && $locale != false) {
 			}
 		?>
 	</select>
-	 
+
 	<i>or</i>
-	 
+
 	<input type="text" size="5" value="<?php if(!empty($locale)) echo htmlspecialchars($locale); ?>" name="locale_txt" id="locale_txt" /><br />
 	<small><a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> and <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">Alpha-2</a> seperated with underscore (_). eg. "de_DE" for German</small>
 	<br /><br />
-	
+
 	<input type="checkbox" value="1" name="sql_update" id="sql_update" /> <label for="sql_update">Update results to the SQL database?</label><br />
 	<small>Remember to first <a href="./?page=new_language">add new language</a> to the DB!</small>
-	
+
 	<br /><br />
-	
+
 	<input type="submit" value="Translate" class="button" />
 
 </form>

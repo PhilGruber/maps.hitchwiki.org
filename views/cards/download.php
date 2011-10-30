@@ -19,37 +19,37 @@
 
 <script type="text/javascript">
 	$(function() {
-	
-		// Download:	
-	
+
+		// Download:
+
 		// Continent
-		$("#download_continent").change( function () { 
+		$("#download_continent").change( function () {
 			var download_value = $(this).val();
 			fileloader('continent='+download_value, 'continent-'+download_value);
 		});
-		
+
 		// Country
-		$("#download_country").change( function () { 
+		$("#download_country").change( function () {
 			var download_value = $(this).val();
 			fileloader('country='+download_value, 'country-'+download_value);
 		});
-		
+
 		// World
-		$("#download_world").click( function () { 
+		$("#download_world").click( function () {
 			fileloader('all', 'world');
 		});
-		
+
 		// Visible area on the map
-		$("#download_visible").click( function () { 
+		$("#download_visible").click( function () {
 			alert("Not in use yet.");
 		});
-		
+
 		function fileloader(url,name) {
 			maps_debug("Downloading a KML file: "+name+".kml");
 			$("#fileloader").html('<iframe src="api/?format=kml&amp;download='+name+'&amp;'+url+'" width="0" height="0" style="border:0; overflow: hidden; margin: 0;" scrolling="no" frameborder="0" allowtransparency="true"></iframe>');
-		
+
 		}
-		
+
 	});
 </script>
 <input type="checkbox" name="gmz" value="true" id="gmz" /> <label for="gmz"><?php echo _("Zipped"); ?> (GMZ)</label><br />

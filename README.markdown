@@ -21,7 +21,7 @@ Current: [maps.hitchwiki.org](http://maps.hitchwiki.org/)
 
 ### Client side:
 * [Open Layers](http://openlayers.org/)
-* [jQuery](http://jquery.com/) 
+* [jQuery](http://jquery.com/)
 * [jQuery UI](http://jqueryui.com/)
 * [jQuery Cookie Plugin](http://plugins.jquery.com/project/cookie)
 * [jQuery JSON](http://code.google.com/p/jquery-json/)

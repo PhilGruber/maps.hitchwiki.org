@@ -5,7 +5,7 @@
 * craig@there4development.com
 *
 * This is a proxy script for the geo location services from
-* http://ipinfodb.com 
+* http://ipinfodb.com
 *
 * This script requires Snoopy from http://sourceforge.net/projects/snoopy/
 *

@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Hitchwiki - mediawiki_login.php
  *
  * MediaWiki Login trough API
@@ -54,7 +54,7 @@ function getCookieHeaders($headers){
 		if(preg_match("/Set-Cookie: ([^=]*)=([^;]*)/", $header, $matches))
 			$cookies[$matches[1]] = $matches[2];
 	return $cookies;
-} 
+}
 
 
 ?>

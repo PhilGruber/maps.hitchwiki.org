@@ -17,7 +17,7 @@
 			<?php list_countries("tr", "markers", 20); ?>
 		</tbody>
 	</table>
-	
+
 </div>
 
 
@@ -36,7 +36,7 @@
 			<?php list_cities("tr", "markers", 20); ?>
 		</tbody>
 	</table>
-	
+
 </div>
 
 
@@ -54,14 +54,14 @@
 			<?php list_continents("tr", true); ?>
 		</tbody>
 	</table>
-	
-	
+
+
 <p>
 	<h3><?php echo _("Hitchability"); ?> - <?php echo _("Vote distribution"); ?></h3>
 	<img src="<?php echo rating_chart(rating_stats(), 200); ?>" alt="<?php echo _("Vote distribution"); ?>" />
 </p>
 
-	
+
 <!--
 	<h3><?php printf( _( 'Top %s users' ), "20" ); ?></h3>
 	<table class="infotable" cellspacing="0" cellpadding="0">
@@ -120,11 +120,11 @@
 	<img src="http://chart.apis.google.com/chart?cht=t&chs=440x220&chd=s:_&chtm=world&chf=bg,s,faf9f3" alt="<?php echo _("Hitchability"); ?>" />
 
 	<br /><br />-->
-	
+
 	<!-- http://code.google.com/apis/visualization/documentation/gallery/intensitymap.html -->
 	<!--
 	<iframe src="lib/map_statistics.php?map=1" width="460" height="250" border="0" style="border:0;"></iframe>
-	
+
 	<br /><br />
 	-->
 	<!-- http://code.google.com/apis/visualization/documentation/gallery/geomap.html -->

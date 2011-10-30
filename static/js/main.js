@@ -30,35 +30,35 @@ $(document).ready(function() {
 
 	// Debug log-box
 	if(debug==true) {
-	
+
 		// Some positioning...
 		var log = $("#log").attr("style","position:absolute; top: 100px; left: 100px;");
-	
+
 		log.draggable({handle: '#log .handle'});
 		$("#log ul").resizable({alsoResize: '#log'});
-		
+
 		// Create a toggle button for log
 		$("#developers").append(' &bull; <a href="#" id="toggle_log">Toggle log</a>');
 		$("#toggle_log").click(function(e){
 			e.preventDefault();
 			log.toggle();
 		});
-		
-		
+
+
 		// Show or hide log at the start?
 		if(show_log==true) {
 			log.show();
-		} else { 
+		} else {
 			log.hide();
 		}
-		
+
 	}
 
 	// getUserLocation:
 	fetchlocation();
 
 
-	// Remove JS-required alert	
+	// Remove JS-required alert
 	$("div#map").text('');
 
 
@@ -84,9 +84,9 @@ $(document).ready(function() {
 
 
 	// Search form
-	$("#search_form").submit(function(){ 
+	$("#search_form").submit(function(){
   		search($("#search_form input#q").val());
-        return false; 
+        return false;
     });
 
 	// Autosuggest in search
@@ -123,20 +123,20 @@ $(document).ready(function() {
 	    	$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
 	    }
 	});
-	
-	
+
+
 	// Language selection
 	$("form#language_selection input#submit").hide();
 	$("form#language_selection select").change(function() {
 		$("form#language_selection input#submit").click();
 		//$(this).parent("form").submit(); //<- Ain't working for some reason?
 	});
-    
-    
+
+
     // Login panel
     if($("#LoginNavi").hasClass("logged_out")) {
 		maps_debug("Initialize the login form");
-		
+
     	$("#loginPanel").hide();
     	$("#loginOpener").click(function(e){
     		e.preventDefault();
@@ -152,33 +152,33 @@ $(document).ready(function() {
     			$("input#email").focus();
     		}
     	});
-		$("#login_form").submit(function(){ 
+		$("#login_form").submit(function(){
 			maps_debug("Login submitted.");
 			stats("login/");
-		
+
   			$(this).hide();
   			$("#loginPanel .loading").show();
-		
+
 			// Grab login info from the form
 			var p_email = $("#Login #email").val();
 			var p_password = $("#Login #password").val();
 			var p_remember = $("#Login #remember_me").val();
-		
+
 			if(p_email == "" || p_password == "") {
 				info_dialog("Please type in your email and password", "Login failed",true);
 			} else {
-		
+
 				// Send it as a post-requeset
    				maps_debug("Requesting to login: "+p_email);
-				$.post('ajax/login.php', { email: p_email, password: p_password, remember: p_remember },   
+				$.post('ajax/login.php', { email: p_email, password: p_password, remember: p_remember },
 				function(data) {
-				
+
    					maps_debug("Got login responce, login: "+data.login);
-   					
+
    					// Empty these just in case
    					p_email = false;
    					p_password = false;
-				
+
 					if(data.login == true) {
    						$("#reloadPage input").click();
     	 			}
@@ -192,18 +192,18 @@ $(document).ready(function() {
    						$("#login_form").show();
     	 				info_dialog("Mystical error with login, please try again.", "Login failed",true);
     	 			}
-    	 			
-    	 			
+
+
 				}, "json"
 				); // post end
-   			
+
    			} // if empty-else end
-   			
-    	    return false; 
+
+    	    return false;
     	});
     }// logged_out?
-    
-    
+
+
     // Initialize page content area
 	$("#pages .close").click(function(e){
 		e.preventDefault();
@@ -214,7 +214,7 @@ $(document).ready(function() {
 
 	// Map selector
 	$("#map_selector").show();
-	
+
 	$("#map_selector #selected_map").click(function(e){
 		e.preventDefault();
 		$("#map_selector #maplist").slideToggle('fast');
@@ -228,9 +228,9 @@ $(document).ready(function() {
 		thisLink.addClass("selected");
 		change_map_layer(thisLink.attr('name'));
 	});
-	
-		
-	
+
+
+
 	// Add a place -panel
 	$("#Navigation #add_place").click(function(e){
 		e.preventDefault();
@@ -248,7 +248,7 @@ $(document).ready(function() {
 		$("div#toolsPanel").toggle();
 		close_page();
 	});
-	
+
 	// Tools Panel - make it draggable
 	$("div#toolsPanel")
 		.draggable({ handle: 'h4' })
@@ -261,11 +261,11 @@ $(document).ready(function() {
 	    max: 18,
 	    value: markersZoomLimit,
 	    slide: function(event, ui) {
-	    
+
 	    		$("div#toolsPanel #zoom_slider_amount").text(ui.value);
-	    		
+
 	    		markersZoomLimit = ui.value;
-	    		
+
 	    		if(ui.value <= 6) {
 	    			$("div#toolsPanel #zoomlevel *").hide();
 	    			$("div#toolsPanel #zoomlevel .z_continent").show();
@@ -282,18 +282,18 @@ $(document).ready(function() {
 	    			$("div#toolsPanel #zoomlevel *").hide();
 	    			$("div#toolsPanel #zoomlevel .z_streets").show();
 	    		}
-	    		
+
 	    		$.cookie(cookie_prefix+'markersZoomLimit', ui.value, { path: '/', expires: 666 });
 
 	    		refreshMapMarkers();
 	    }
 	});
-	
+
 	$("div#toolsPanel #zoom_slider_amount").text($("#toolsPanel #zoom_slider").slider("value"));
-	
+
 	// Tools Panel and loading animation - hide at the beginning
 	$("div#toolsPanel, #loading-bar").hide();
-	
+
 	var sidebar_height = $("#Sidebar").height();
 	$("div#map").attr("style","min-height: "+sidebar_height+"px");
 
@@ -313,8 +313,8 @@ function init_map() {
 
 	// Custom images from our own server
 	OpenLayers.ImgPath = "static/gfx/openlayers/";
-	
-	// Create map with controls	
+
+	// Create map with controls
 	map = new OpenLayers.Map('map', {
 	/* OLD:
 		projection: proj4326,
@@ -328,14 +328,14 @@ function init_map() {
 		},
 	    numZoomLevels: 19,
 	NEW: */
-		
+
 		projection: proj4326,
 		displayProjection: projmerc,
 		units: "m",
 		numZoomLevels: 18,
 		maxResolution: 156543.0339,
 		maxExtent: new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508.34),
-		
+
 		eventListeners: {
 			"move": mapEventMoveStarted,
 		    "moveend": mapEventMove,
@@ -343,7 +343,7 @@ function init_map() {
 		    "changelayer": mapLayerChanged,
 		    "changebaselayer": mapBaseLayerChanged
 		},
-		
+
 	    controls: [
 	        new OpenLayers.Control.Navigation(),
 	        new OpenLayers.Control.PanZoomBar(),
@@ -354,16 +354,16 @@ function init_map() {
 	        //new OpenLayers.Control.KeyboardDefaults(),
 	        //new OpenLayers.Control.MousePosition(),
 	        new OpenLayers.Control.OverviewMap()
-	        
-	        
+
+
 	    ]
-	    
+
 	});
-	
- 	
+
+
 	// Measure controls
 	// http://openlayers.org/dev/examples/measure.html
-	
+
 	// style the sketch fancy
 	var sketchSymbolizers = {
 	    "Point": {
@@ -394,7 +394,7 @@ function init_map() {
 	    new OpenLayers.Rule({symbolizer: sketchSymbolizers})
 	]);
 	var styleMap = new OpenLayers.StyleMap({"default": style});
-	
+
 	measureControls = {
 	    line: new OpenLayers.Control.Measure(
 	        OpenLayers.Handler.Path, {
@@ -423,12 +423,12 @@ function init_map() {
 	    });
 	    map.addControl(control);
 	}
-	
+
 	document.getElementById('noneToggle').checked = true;
 
 
  	// Different colors for markers depending on their rating
-	var colors = [	
+	var colors = [
 					"#ffffff", // rate 0 (white)
 					"#00ad00", // rate 1 (green)
 					"#96ad00", // rate 2
@@ -436,17 +436,17 @@ function init_map() {
 					"#ff8d00", // rate 4
 					"#ff0000"  // rate 5 (red)
 				];
-	
+
 	// Get rating from marker
 	var markerContext = {
 	    getColor: function(feature) {
 	        return colors[feature.attributes["rating"]];
 	    }/*,
-	    radius: function(feature) { 
+	    radius: function(feature) {
 	    	return Math.min(feature.attributes.count, 7) + 3;
 	    }*/
 	};
-	
+
 	// Initialize a layer for the places
 	// You can fill it with refreshMapMarkers() using listener events
 	places = new OpenLayers.Layer.Vector(
@@ -457,27 +457,27 @@ function init_map() {
 				],*/
 				styleMap: new OpenLayers.StyleMap({
                 	"default": new OpenLayers.Style({
-                	
+
     				    graphicZIndex: 1,
 					    pointRadius: 5,//"${radius}",
     				    strokeWidth: 2,
 						cursor: "pointer",
                 	    fillColor: "#000000",//#ffcc66
 					    strokeColor: "${getColor}" // using context.getColor(feature)
-					    
+
 					}, {context: markerContext}),
                 	"select": new OpenLayers.Style({
-                	
+
                 	    graphicZIndex: 2,
                 	    fillColor: "#66ccff",
                 	    strokeColor: "#3399ff"
-                	    
+
                 	}),
                 	"hover": new OpenLayers.Style({
-                	
+
                 	    graphicZIndex: 2,
                 	    fillColor: "#3399ff"
-                	    
+
                 	})
                 }), //stylemap end
 
@@ -485,15 +485,15 @@ function init_map() {
 			rendererOptions: {yOrdering: true}
         }
 	);//places end
-	
-  
+
+
 	// Event listeners for places layer
 	places.events.on({
 		'featureselected': function(event) {
 			feature = event.feature;
 			maps_debug("Selected marker "+feature.attributes.id);
 			showPlacePanel(feature.attributes.id);
-                
+
 		},
 		'featureunselected': function(feature) {
 			maps_debug("Unselected marker.");
@@ -508,13 +508,13 @@ function init_map() {
 		{
 			styleMap: new OpenLayers.StyleMap({
 
-				fillOpacity: 1, 
-				fillColor: "#fde669", 
-				strokeColor: "#c38b06", 
+				fillOpacity: 1,
+				fillColor: "#fde669",
+				strokeColor: "#c38b06",
     			strokeWidth: 1,
 				pointRadius: "${radius}",
 				cursor: "pointer",
-								
+
 				label: "${places}",
 				fontColor: "#824300",
 				fontSize: "10px",
@@ -527,7 +527,7 @@ function init_map() {
 		}
 	);
 
-  
+
 
 	/*
 	 * Create base layer for new place
@@ -542,16 +542,16 @@ function init_map() {
 	    	    	pointRadius: 7,
         	    	strokeWidth: 5,
 	    	    	strokeColor: "#f57900",
-        	    	fillColor: "#f57900", 
+        	    	fillColor: "#f57900",
         	    	fillOpacity: 0
         	    	//stroke: false
-				    
+
 				}),
 				"hover": new OpenLayers.Style({
 	    	    	strokeColor: "#ff9834"
 				})
 			}), //stylemap end
-			
+
 			isBaseLayer: false
 		}
 	);
@@ -562,18 +562,18 @@ function init_map() {
 	});
 	map.addControl(hover_new_place);
 	hover_new_place.activate();
-	
+
 
 	/*
 	 * Map layers
 	 * Control loading of these from config.php
 	 * OSM will be always loaded and used as a default
 	 */
-	 
-	
+
+
 	// OSM layer
 	var mapnik = new OpenLayers.Layer.OSM();
-	
+
 	// OSM layer 2
 	var osmarender = new OpenLayers.Layer.OSM(
 	    "OpenStreetMap (Tiles@Home)",
@@ -582,38 +582,38 @@ function init_map() {
 
 	// Google layers
 	if(layer_google == true) {
-	
+
 		var gphy = new OpenLayers.Layer.Google(
 		    "Google Physical",
 		    {
-		    	visibility: false, 
-		    	sphericalMercator: true, 
+		    	visibility: false,
+		    	sphericalMercator: true,
 		    	type: G_PHYSICAL_MAP
 		    }
 		);
 		var gmap = new OpenLayers.Layer.Google(
 		    "Google Streets",
 		    {
-		    	visibility: false, 
-		    	sphericalMercator: true, 
+		    	visibility: false,
+		    	sphericalMercator: true,
 		    	numZoomLevels: 20
 		    }
 		);
 		var ghyb = new OpenLayers.Layer.Google(
 		    "Google Hybrid",
 		    {
-		    	visibility: false, 
-		    	sphericalMercator: true, 
-		    	type: G_HYBRID_MAP, 
+		    	visibility: false,
+		    	sphericalMercator: true,
+		    	type: G_HYBRID_MAP,
 		    	numZoomLevels: 20
 		    }
 		);
 		var gsat = new OpenLayers.Layer.Google(
 		    "Google Satellite",
 		    {
-		    	visibility: false, 
-		    	sphericalMercator: true, 
-		    	type: G_SATELLITE_MAP, 
+		    	visibility: false,
+		    	sphericalMercator: true,
+		    	type: G_SATELLITE_MAP,
 		    	numZoomLevels: 22
 		    }
 		);
@@ -621,111 +621,111 @@ function init_map() {
 
 	// create Yahoo layer
 	if(layer_yahoo == true) {
-	
+
 		var yahoo = new OpenLayers.Layer.Yahoo(
 		    "Yahoo Street",
 		    {
-		    	visibility: false, 
+		    	visibility: false,
 		    	sphericalMercator: true
 		    }
 		);
 		var yahoosat = new OpenLayers.Layer.Yahoo(
 		    "Yahoo Satellite",
 		    {
-		    	visibility: false, 
-		    	type: YAHOO_MAP_SAT, 
+		    	visibility: false,
+		    	type: YAHOO_MAP_SAT,
 		    	sphericalMercator: true
 		    }
 		);
 		var yahoohyb = new OpenLayers.Layer.Yahoo(
 		    "Yahoo Hybrid",
 		    {
-		    	visibility: false, 
-		    	type: YAHOO_MAP_HYB, 
+		    	visibility: false,
+		    	type: YAHOO_MAP_HYB,
 		    	sphericalMercator: true
 		    }
 		);
-		
+
 	}
-	
+
 	// create Virtual Earth layers
 	if(layer_vearth == true) {
-	
+
 		var veroad = new OpenLayers.Layer.VirtualEarth(
 		    "Virtual Earth Roads",
 		    {
-		    	visibility: false, 
-		    	type: VEMapStyle.Road, 
+		    	visibility: false,
+		    	type: VEMapStyle.Road,
 		    	sphericalMercator: true
 		    }
 		);
 		var veaer = new OpenLayers.Layer.VirtualEarth(
 		    "Virtual Earth Aerial",
 		    {
-		    	visibility: false, 
-		    	type: VEMapStyle.Aerial, 
+		    	visibility: false,
+		    	type: VEMapStyle.Aerial,
 		    	sphericalMercator: true
 		    }
 		);
 		var vehyb = new OpenLayers.Layer.VirtualEarth(
 		    "Virtual Earth Hybrid",
 		    {
-		    	visibility: false, 
-		    	type: VEMapStyle.Hybrid, 
+		    	visibility: false,
+		    	type: VEMapStyle.Hybrid,
 		    	sphericalMercator: true
 		    }
 		);
-		
+
 	}
-	 
-                
+
+
 	/*
 	 * Add produced layers to the map
 	 */
     if(layer_google == true) {map.addLayers([gphy, gmap, ghyb, gsat]); }
     if(layer_yahoo == true) {map.addLayers([yahoo, yahoosat, yahoohyb]); }
     if(layer_vearth == true) {map.addLayers([veroad, veaer, vehyb]); }
-    
+
 	map.addLayers([
         mapnik, osmarender,
-        
+
 		places,
 		places_count,
 		add_place_target
 	]);
-		
+
 	add_place_target.setVisibility(false);
-		
+
 	/*
 	 * Set requested layer active
 	 */
 	if(layer_default == "mapnik") { map.setBaseLayer(mapnik); }
 	else if(layer_default == "osmarender") { map.setBaseLayer(osmarender); }
-	
+
 	// Google
 	else if(layer_default == "gphy" && layer_google == true) { map.setBaseLayer(gphy); }
 	else if(layer_default == "gmap" && layer_google == true) { map.setBaseLayer(gmap); }
 	else if(layer_default == "ghyb" && layer_google == true) { map.setBaseLayer(ghyb); }
 	else if(layer_default == "gsat" && layer_google == true) { map.setBaseLayer(gsat); }
-	
+
 	// Yahoo
 	else if(layer_default == "yahoo" && layer_yahoo == true) { map.setBaseLayer(yahoo); }
 	else if(layer_default == "yahoosat" && layer_yahoo == true) { map.setBaseLayer(yahoosat); }
 	else if(layer_default == "yahoohyb" && layer_yahoo == true) { map.setBaseLayer(yahoohyb); }
-	
+
 	// Virtual Earth
 	else if(layer_default == "veroad" && layer_vearth == true) { map.setBaseLayer(veroad); }
 	else if(layer_default == "veaer" && layer_vearth == true) { map.setBaseLayer(veaer); }
 	else if(layer_default == "vehyb" && layer_vearth == true) { map.setBaseLayer(vehyb); }
-	
-	
+
+
 	/*
 	 * Map selecting from the map selector
 	 */
 	// osm
 	$("#map_selector #maplist li a[name='mapnik']").click(function(e){ e.preventDefault(); map.setBaseLayer(mapnik); });
 	$("#map_selector #maplist li a[name='osmarender']").click(function(e){ e.preventDefault(); map.setBaseLayer(osmarender); });
-	
+
 	// google
 	if(layer_google == true) {
 		$("#map_selector #maplist li a[name='gphy']").click(function(e){ e.preventDefault(); map.setBaseLayer(gphy); });
@@ -733,22 +733,22 @@ function init_map() {
 		$("#map_selector #maplist li a[name='ghyb']").click(function(e){ e.preventDefault(); map.setBaseLayer(ghyb); });
 		$("#map_selector #maplist li a[name='gsat']").click(function(e){ e.preventDefault(); map.setBaseLayer(gsat); });
 	}
-	
+
 	// yahoo
 	if(layer_yahoo == true) {
 		$("#map_selector #maplist li a[name='yahoo']").click(function(e){ e.preventDefault(); map.setBaseLayer(yahoo); });
 		$("#map_selector #maplist li a[name='yahoosat']").click(function(e){ e.preventDefault(); map.setBaseLayer(yahoosat); });
 		$("#map_selector #maplist li a[name='yahoohyb']").click(function(e){ e.preventDefault(); map.setBaseLayer(yahoohyb); });
 	}
-	
+
 	// virtual earth
 	if(layer_vearth == true) {
 		$("#map_selector #maplist li a[name='veroad']").click(function(e){ e.preventDefault(); map.setBaseLayer(veroad); });
 		$("#map_selector #maplist li a[name='veaer']").click(function(e){ e.preventDefault(); map.setBaseLayer(veaer); });
 		$("#map_selector #maplist li a[name='vehyb']").click(function(e){ e.preventDefault(); map.setBaseLayer(vehyb); });
 	}
-	
-	
+
+
 	/*
 	 * Hovering place markers
 	 */
@@ -761,11 +761,11 @@ function init_map() {
 	hover_marker.activate();
 
 
-	
+
 	/*
 	 * Selecting markers
 	 */
-	var select_marker = new OpenLayers.Control.SelectFeature(places, 
+	var select_marker = new OpenLayers.Control.SelectFeature(places,
 							{
 								hover: false,
 								highlightOnly: true,
@@ -784,9 +784,9 @@ function init_map() {
 	markerCountLabels();
 
 	// Selecting labels
-	var select_countrydot = new OpenLayers.Control.SelectFeature(places_count, 
+	var select_countrydot = new OpenLayers.Control.SelectFeature(places_count,
 							{
-								onSelect: onCountrydotSelect, 
+								onSelect: onCountrydotSelect,
 								onUnselect: onCountrydotUnselect,
 								hover: true,
 								clickout: true,
@@ -810,18 +810,18 @@ function init_map() {
 	 */
 	$("#PlacePanel").hide();
 
-	
+
 	/*
 	 * Set map
 	 * You can set these by $_GET[lat/lon/zoom] - see index.php for more
 	 */
 	// Map position
     map.setCenter(new OpenLayers.LonLat(lon, lat).transform(proj4326, projmerc));
-    
+
     // Zoom
     if(zoom==false) { map.zoomToMaxExtent(); }
     else { map.zoomTo(zoom); }
-   
+
    	// Let eventlisteners be free! :-)
 	// Meaning, they can be called from now on that page has stopped loading
 	mapEventlisteners = true;
@@ -842,23 +842,23 @@ function change_map_layer(layer_name) {
 	//if(layer_name == "mapnik") { map.setBaseLayer(mapnik); }
 	/*
 	else if(layer_name == "osmarender") { map.setBaseLayer(osmarender); }
-	
+
 	// Google
 	else if(layer_name == "gphy" && layer_google == true) { map.setBaseLayer(gphy); }
 	else if(layer_name == "gmap" && layer_google == true) { map.setBaseLayer(gmap); }
 	else if(layer_name == "ghyb" && layer_google == true) { map.setBaseLayer(ghyb); }
 	else if(layer_name == "gsat" && layer_google == true) { map.setBaseLayer(gsat); }
-	
+
 	// Yahoo
 	else if(layer_name == "yahoo" && layer_yahoo == true) { map.setBaseLayer(yahoo); }
 	else if(layer_name == "yahoosat" && layer_yahoo == true) { map.setBaseLayer(yahoosat); }
 	else if(layer_name == "yahoohyb" && layer_yahoo == true) { map.setBaseLayer(yahoohyb); }
-	
+
 	// Virtual Earth
 	else if(layer_name == "veroad" && layer_vearth == true) { map.setBaseLayer(veroad); }
 	else if(layer_name == "veaer" && layer_vearth == true) { map.setBaseLayer(veaer); }
 	else if(layer_name == "vehyb" && layer_vearth == true) { map.setBaseLayer(vehyb); }
-	
+
 	// Default
 	else { map.setBaseLayer(mapnik); }
 	*/
@@ -887,18 +887,18 @@ function onCountrydotSelect(feature) {
     } else {
     	var lon_offset = 5;
     }
-    
-    
-    popup = new OpenLayers.Popup.FramedCloud("Country", 
+
+
+    popup = new OpenLayers.Popup.FramedCloud("Country",
 		point,
 		null,
 		'<div style="color: #111;"><h4 style="margin:0; padding: 0 0 3px 21px; background: url(static/gfx/flags/'+feature.attributes.iso.toLowerCase()+'.png) no-repeat 0 3px;">' + feature.attributes.name +'</h4><small class="grey">' + feature.attributes.places +' places.<br /><i>Zoom closer to see them.</i></small></div>',
 		{
-			'size': new OpenLayers.Size(15,15), 
+			'size': new OpenLayers.Size(15,15),
 			'offset': new OpenLayers.Pixel(lon_offset,lat_offset)
-		}, 
+		},
 		false);//, onCountrydotPopupClose);
-		
+
 	feature.popup = popup;
 	map.addPopup(popup);
 }
@@ -906,7 +906,7 @@ function onCountrydotUnselect(feature) {
     map.removePopup(feature.popup);
     feature.popup.destroy();
     feature.popup = null;
-} 
+}
 
 
 /*
@@ -959,7 +959,7 @@ function fetchlocation() {
 	if (navigator.geolocation)
 	{
 	   maps_debug("Browser supports Geolocation. Asking to use it...");
-	   
+
 	   // Callback fetchlocationW3() if success, on failure go for fetchlocationByIP()
 	   navigator.geolocation.getCurrentPosition( fetchlocationW3, fetchlocationByIP );
 	}
@@ -992,19 +992,19 @@ function fetchlocation() {
 function displaylocation(location) {
 	if (location.Status == 'OK') {
 		maps_debug("Showing location under search bar.");
-  		
+
   		// Tool is hidden as a default, and stays hidden if no location is found
 		var show_nearby = false;
-		
+
 		// City
-		if(location.City != '' || location.City != undefined) { 
+		if(location.City != '' || location.City != undefined) {
 			$('#nearby .locality a')
 				.text(location.City)
 				.click(function(){ search(location.City + ', ' + location.CountryName); });
 			$('#nearby .locality').show('fast');
 			show_nearby = true;
 		}
-		
+
 		// State / Region
 		if(location.State != '--') {
 			$('#nearby .state a')
@@ -1023,20 +1023,20 @@ function displaylocation(location) {
 		else {
 			$('#nearby .state a').text('blaa');
 		}
-		
+
 		// Country
-		if(location.CountryName != '' || location.CountryName != undefined) { 
+		if(location.CountryName != '' || location.CountryName != undefined) {
 			$('#nearby .country a')
 				.text(location.CountryName)
 				.click(function(){ search(location.CountryName); });
 			$('#nearby .country').show('fast');
 			show_nearby = true;
 		}
-		
+
 		// Show tool if content is filled
 		if(show_nearby == true) { $('#nearby').slideDown('fast'); }
 		else { $('#nearby').hide(); }
-		
+
 		// Move map to the location
 		/*
 		if(location.Latitude != '' && location.Longitude != '') {
@@ -1044,7 +1044,7 @@ function displaylocation(location) {
 			zoomMapIn(location.Latitude, location.Longitude, 5);
 		}
 		*/
-    
+
 	}
 }
 
@@ -1056,11 +1056,11 @@ function displaylocation(location) {
  * http://dev.w3.org/geo/api/spec-source.html
  */
 function fetchlocationW3(position) {
-	
+
 	maps_debug("Got location from browser. Sending it to the geocoder.");
-	
+
 	// Reverse Geocode latlon -> address
-	$.getJSON('ajax/geocoder.php?mode=reverse&q=' + position.coords.latitude + ',' + position.coords.longitude, function(data) {			
+	$.getJSON('ajax/geocoder.php?mode=reverse&q=' + position.coords.latitude + ',' + position.coords.longitude, function(data) {
 
 			if(data.error==true) {
 				maps_debug("Error when trying to get reverce geocode. Using our own IP-geolocation service");
@@ -1068,7 +1068,7 @@ function fetchlocationW3(position) {
 			}
 			else {
 				maps_debug("Geocoded address succesfully.");
-				
+
 				var location = {
 					"Status" : "OK",
 					"Latitude" : position.coords.longitude,
@@ -1080,9 +1080,9 @@ function fetchlocationW3(position) {
 					"City" : data.locality,
 					"ZipPostalCode" : data.postcode
 				};
-				
+
 				displaylocation(location);
-			
+
 			}
 	});
 }
@@ -1099,7 +1099,7 @@ function fetchlocationW3(position) {
  */
 fetchlocationByIP = function() {
    maps_debug("Using IP-based geolocation service.");
-   
+
   // look in the cookie for the location data
   cookiedata = $.cookie(geolocation_cookiename);
   if ('' != cookiedata) {
@@ -1135,10 +1135,10 @@ fetchlocationByIP = function() {
 function mapEventMove() {
 	if(mapEventlisteners==true) {
 		//maps_debug("map movement ended");
-		
+
 		// Refresh markers in viewport
 		refreshMapMarkers();
-		
+
 	}
 }
 
@@ -1157,7 +1157,7 @@ function mapEventMoveStarted() {
 	else {
 		places.display(true);
 	}
-	
+
 }
 
 
@@ -1167,7 +1167,7 @@ function mapEventMoveStarted() {
 function mapEventZoom() {
 	if(mapEventlisteners==true) {
 		maps_debug("Map Zoom: "+map.getZoom());
-		
+
 		// This gets called anyway, because when zooming, then also moving
 		//refreshMapMarkers();
 	}
@@ -1181,7 +1181,7 @@ function mapLayerChanged() {
 	if(mapEventlisteners==true) {
 		maps_debug("map layer changed");
 		//alert("event listener: mapLayerChanged");
-	
+
 	}
 }
 
@@ -1205,32 +1205,32 @@ function mapBaseLayerChanged() {
 
 function markerCountLabels() {
 	maps_debug("Gathering marker count labels from the API...");
-	
+
 	// Get labels from the database
 	// Gets only countries with 1+ places
-	
-	var apiCall = 'api/?countries&coordinates';	
+
+	var apiCall = 'api/?countries&coordinates';
 	maps_debug("Calling API: "+apiCall);
-		
+
 	$.getJSON(apiCall, function(data) {
-		
+
 		maps_debug("Got labels by JSON. Starting to loop 'em.");
-	
+
 		// Got labels, build up markers
 	    var labelStock = [];
 
 	    $.each(data, function(key, value) {
-			
+
 			//maps_debug("Label: "+value.name+" | "+value.lon+", "+value.lat);
 
 			if(value.lon != "" || value.lat != "" || value.lon != undefined || value.lat != undefined) {
-			
+
 				// This value is used to make bigger background dot for bigger values, so all the numbers can fit in
 	    		if(value.places >= 1000) var pointRadius = 14;
 	    		else if(value.places >= 100) var pointRadius = 12;
 	    		else if(value.places >= 10) var pointRadius = 9;
 	    		else var pointRadius = 7;
-				
+
 	    		var coords = new OpenLayers.LonLat(value.lon, value.lat).transform(proj4326, map.getProjectionObject());
 				labelStock.push(
 					new OpenLayers.Feature.Vector(
@@ -1243,7 +1243,7 @@ function markerCountLabels() {
 						}
 					)
 				);
-				
+
 			} else {
 				maps_debug("Lat/Lon missing for the label: "+value.name+" ("+value.lat+", "+value.lon+")");
 			}
@@ -1266,7 +1266,7 @@ function markerCountLabels() {
  */
 var markers = new Array();
 function refreshMapMarkers() {
-	
+
 	var currentZoom = map.getZoom();
 	map_center = map.getCenter();
 
@@ -1279,8 +1279,8 @@ function refreshMapMarkers() {
 		places.setVisibility(true);
 		places_count.setVisibility(false);
 	}
-	
-	
+
+
 	// Start loading markers only after certain zoom level
 	if(currentZoom >= markersZoomLimit) {
 
@@ -1289,34 +1289,34 @@ function refreshMapMarkers() {
 		var corner1 = new OpenLayers.LonLat(extent.left, extent.top).transform(projmerc, proj4326);
 		var corner2 = new OpenLayers.LonLat(extent.right, extent.bottom).transform(projmerc, proj4326);
 
-		var apiCall = 'api/?bounds='+corner2.lat+','+corner1.lat+','+corner1.lon+','+corner2.lon;	
+		var apiCall = 'api/?bounds='+corner2.lat+','+corner1.lat+','+corner1.lon+','+corner2.lon;
 		maps_debug("Calling API: "+apiCall);
-	
+
 		// Get markers from the API for this area
 		$.getJSON(apiCall, function(data) {
 			// Go trough all markers
-			
+
 			maps_debug("Starting markers each-loop...");
-			
-			// Loop markers we got trough 
+
+			// Loop markers we got trough
 	        var markerStock = [];
 			$.each(data, function(key, value) {
 			/* Value includes:
-			    value.id; 
+			    value.id;
 			    value.lat;
 			    value.lon;
 			    value.rating;
 			*/
-			
+
 				// Check if marker isn't already on the map
 				// and add it to the map
 				if(markers[value.id] != true) {
 					markers[value.id] = true;
-					
+
 					//maps_debug("Adding marker #"+value.id +"<br />("+value.lon+", "+value.lat+")...");
-					
+
 	                var coords = new OpenLayers.LonLat(value.lon, value.lat).transform(proj4326,projmerc);
-	                
+
 	                markerStock.push(
 	                    new OpenLayers.Feature.Vector(
 	                        new OpenLayers.Geometry.Point(coords.lon, coords.lat),
@@ -1326,29 +1326,29 @@ function refreshMapMarkers() {
 							}
 	                    )
 	                );
-	                
-	                
+
+
 	                //maps_debug("...done.");
-	
-				} 
+
+				}
 				else {
 					//maps_debug("marker #"+value.id +" already on the map.");
 				}
-				
+
 			// each * end
 			});
-			
+
 			if(markerStock.length > 0) {
 				maps_debug("Loop ended. Adding "+markerStock.length+" new markers to the map.");
 		        places.addFeatures(markerStock);
 			} else {
 				maps_debug("Loop ended. No new markers found from this area.");
-			}	
+			}
 		// getjson * end
 		});
-	
-	
-		
+
+
+
 	// end zoom limit
 	}
 }
@@ -1361,56 +1361,56 @@ var add_place_initialized_once = false;
 var add_place_open = false;
 function init_add_place() {
 	maps_debug("Initialize adding a new place");
-	
+
 	// Hides possibly open pages
 	close_page();
-	
+
 	// Hides possibly open place panel
 	$("#map").click();
 
 	// Inform that we are open now
 	add_place_open = true;
-	
+
 	// Get panel contents
 	$.ajax({
 		url: "ajax/add_place.php",
 		async: false,
-		success: function(content){ 
+		success: function(content){
 
 			$("#PlacePanel").html(content).show();
 
 			// Shring map a bit and make some space for the panel
 			$("#map").attr("style","right:250px;");
 			$("#map_selector").attr("style","right:265px;");
-			
-			
+
+
 			// Start listening single clicks
 			handle_add_place_click = true;
-			
+
 			// Add target to the center of the map
-			
+
 			add_place_target.setVisibility(true);
-			    
+
 			if(add_place_initialized_once==false) {
 			    maps_debug("Adding layers for new place.");
-			    
-			    
+
+
 			    // Create a dot for new place
 			    var new_place = new OpenLayers.Feature.Vector( new OpenLayers.Geometry.Point(map.getCenter().lon, map.getCenter().lat) );
 			    add_place_target.addFeatures(new_place);
-			    
-			    var new_place_lon = new_place.geometry.x; 
+
+			    var new_place_lon = new_place.geometry.x;
 			    var new_place_lat = new_place.geometry.y;
 			    update_add_place(new_place_lon, new_place_lat, true);
-			    
-			
+
+
 			    // Add dot dragging
 			    var add_place_drag = new OpenLayers.Control.DragFeature(add_place_target, {
-			        onComplete: function(feature) { 
-			        
+			        onComplete: function(feature) {
+
 			            	var lat = feature.geometry.y;
 			        		var lon = feature.geometry.x;
-			        		
+
 			        		new_place.move(new OpenLayers.LonLat(lon, lat));
 			        		update_add_place(lon, lat, true);
 			        		maps_debug("Add marker moved (move): "+lat+", "+lon);
@@ -1418,10 +1418,10 @@ function init_add_place() {
 			    });
 			    map.addControl(add_place_drag);
 			    add_place_drag.activate();
-			    
-			
+
+
 			    // Click Handler
-			    OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+			    OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
 			           defaultHandlerOptions: {
 			               'single': true,
 			               'double': false,
@@ -1429,21 +1429,21 @@ function init_add_place() {
 			               'stopSingle': false,
 			               'stopDouble': false
 			           },
-			    
+
 			           initialize: function(options) {
 			               this.handlerOptions = OpenLayers.Util.extend(
 			                   {}, this.defaultHandlerOptions
 			               );
 			               OpenLayers.Control.prototype.initialize.apply(
 			                   this, arguments
-			               ); 
+			               );
 			               this.handler = new OpenLayers.Handler.Click(
 			                   this, {
 			                       'click': this.trigger
 			                   }, this.handlerOptions
 			               );
-			           }, 
-			    
+			           },
+
 			           trigger: function(e) {
 			           		if(handle_add_place_click != false && add_place_open == true) {
 			    				var new_place_lonlat = map.getLonLatFromViewPortPx(e.xy);
@@ -1453,19 +1453,19 @@ function init_add_place() {
 			        		}
 			           }
 			     });
-			    
+
 			    // Add click-handler to the map
 			    var new_place_click = new OpenLayers.Control.Click();
 			    map.addControl(new_place_click);
 			    new_place_click.activate();
-			
+
 			    add_place_initialized_once = true;
-			    
+
 			}
 			else { maps_debug("Showing old layers for adding a new place."); }
-			
-	
-	
+
+
+
 		}// json got data?
 	});//json call end
 
@@ -1479,17 +1479,17 @@ function close_add_place() {
 		new_place.destroy();
 		new_place = null;
 		*/
-			
+
 		/*
 		add_place_drag.deactivate();
 		new_place_click.deactivate();
 		*/
 		//add_place_target.destroyFeatures(0);
-		
+
 		//new_place.destroy();
 
 		//add_place_target.destroy();
-		
+
 		hidePlacePanel();
 		maps_debug("Closing add Place panel.");
 		add_place_target.setVisibility(false);
@@ -1511,76 +1511,76 @@ function update_add_place(q_lon, q_lat, needsConverting) {
 	$("#add_new_place_form input#lon").val(g_lonLat.lon);
 
 	// Reverse Geocode latlon -> address
-	$.getJSON('ajax/geocoder.php?mode=reverse&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {				
-			
+	$.getJSON('ajax/geocoder.php?mode=reverse&q=' + g_lonLat.lat + ',' + g_lonLat.lon, function(data) {
+
 			$("#add_new_place_form #loading_row").hide();
-	
+
 			if(data.error==true) {
 				maps_debug("Error when trying to get reverce geocode. Show manual country selector.");
 				$("#add_new_place_form input#country_iso").val("");
 				$("#add_new_place_form #manual_country_selection").show();
 				$("#add_new_place_form #address_row").hide();
 				$("#add_new_place_form input#locality").val("");
-				
+
 			} else {
 				maps_debug("Got reverce geocode response.");
-			
+
 				$("#add_new_place_form #manual_country_selection").hide();
 				$("#add_new_place_form #address_row").show();
-			
-			
+
+
 				// Full address
 				if(data.address != "") {
 					$("#add_new_place_form #address_row #address").html(data.address);
 				} else {
 					$("#add_new_place_form #address_row #address").text("");
 				}
-				
+
 				if(data.address != "" && data.country_name != "") {
 					$("#add_new_place_form #address_row #address").append("<br />");
 				}
-				
-				
+
+
 				// City
 				if(data.locality != undefined) {
 					$("#add_new_place_form input#locality").val(data.locality);
 					$("#add_new_place_form #locality_name").text(data.locality);
-					
+
 					if(data.country_name != undefined && data.country_code != undefined) {
 						$("#add_new_place_form #locality_name").append("<br />");
 					}
-					
+
 					$("#add_new_place_form #locality_name").show();
-					
+
 				}
 				else {
 					$("#add_new_place_form input#locality").val("");
 					$("#add_new_place_form #locality_name").hide().text("");
 				}
-				
-				
+
+
 				// Country name + flag
 				if(data.country_name != undefined && data.country_code != undefined) {
 					$("#add_new_place_form #address_row #country_name").text(data.country_name);
 					$("#add_new_place_form #address_row .flag").hide().attr("src","static/gfx/flags/"+data.country_code.toLowerCase()+".png").fadeIn('slow');
 					$("#add_new_place_form input#country_iso").val(data.country_code);
-				} else { 
-					$("#add_new_place_form #address_row #country_name").text(""); 
+				} else {
+					$("#add_new_place_form #address_row #country_name").text("");
 					$("#add_new_place_form #address_row .flag").hide();
 					$("#add_new_place_form input#country_iso").val("");
 					$("#add_new_place_form #manual_country_selection").show();
 				}
-				
-				
+
+
 				$("#add_new_place_form #address_row").show();
-				
+
 			}
 	});
-	
+
 }
 
 
-/* 
+/*
  * Show marker panel
  */
 function showPlacePanel(id, zoomin) {
@@ -1593,32 +1593,32 @@ function showPlacePanel(id, zoomin) {
 		url: "ajax/place.php?id="+id+"&lang="+locale,
 		async: false,
 		success: function(content){
-		
+
 			maps_debug("Loaded marker data OK. Show panel.");
 			$("#PlacePanel").html(content).show();
-			
+
 			// Shrink map a bit and make some space for the panel
 			$("#map").attr("style","right:250px;");
 			$("#map_selector").attr("style","right:265px;");
-			
+
 			// Zoom in into a marker if requested so
 			if(zoomin == true) {
 			    zoomMapIn($("#PlacePanel #coordinates .lat").text(), $("#PlacePanel #coordinates .lon").text(), 16);
 			}
-			
+
       	}
 	});
-	
-	
+
+
 }
 
 
-/* 
+/*
  * Hide marker panel
  */
 function hidePlacePanel() {
 	maps_debug("Hiding Place Panel.");
-	
+
 	// Map to full width again
 	$("#map").css("right","0");
 	$("#map_selector").attr("style","right:15px;");
@@ -1626,13 +1626,13 @@ function hidePlacePanel() {
 }
 
 
-/* 
+/*
  * Search
  */
 function search(q) {
 	maps_debug("Search: "+q);
 	stats("search/?s="+q);
-	
+
 	// Close open stuff
 	close_cards();
 	close_page();
@@ -1647,36 +1647,36 @@ function search(q) {
 		url: 'ajax/geocoder.php?q=' + q,
 		dataType: "json",
 		timeout: 7000, // timeout in milliseconds; 1s = 1000ms
-	 
+
 		// Got a place
 		success: function(data){
-		
+
 			// Hide "searching"
 			hide_loading_bar();
-			
+
 			maps_debug("Search results came from: "+data.service+"<br /> - Locality: "+data.locality+"<br /> - Country: "+data.country_code);
-			
+
 			// If we got a bounding box as an answr, use it:
 			if(data.boundingbox != undefined) {
-		
+
 				//maps_debug("Search found: lat: "+data.lat+", lon: "+data.lon);
 				maps_debug("Moving to the bounding box: "+data.boundingbox);
-				
+
 				// build a bounding box coordinates and zoom in
 				var boundingbox = data.boundingbox.split(',');
-				
+
 				bounds = new OpenLayers.Bounds();
 				bounds.extend( new OpenLayers.LonLat(boundingbox[2],boundingbox[0]) );
 				bounds.extend( new OpenLayers.LonLat(boundingbox[3],boundingbox[1]) );
-				
+
 				map.zoomToExtent( bounds );
 			}
 			else if(data.lat != undefined && data.lon != undefined) {
 				maps_debug("Moving to lat+lon.");
-				
+
 				if(data.zoom == undefined) searchZoom = 5;
 				else searchZoom = data.zoom;
-				
+
 				zoomMapIn(data.lat, data.lon, searchZoom);
 			}
 			// We got a result, but nada...
@@ -1685,28 +1685,28 @@ function search(q) {
 				info_dialog('<p>Your search did not match any places.</p><p>Try searching in English and add a country name in to your search.</p><p>Example: Vilnius, Lithuania.</p>', 'Not found', false);
 			}
 		},
-	 
-	 
+
+
 		// Didn't find anything...
 		error: function( objAJAXRequest, strError ){
 			maps_debug("Search didn't find anything. Error type: "+strError);
-			
+
 			// Hide "searching"
 			hide_loading_bar();
-			
+
 			info_dialog('<p>Your search did not match any places.</p><p>Try searching by english city names or/and add a country name with cities.', 'Not found', false);
 		}
 	});
-	
-	
-			
+
+
+
 	//});
-	
+
     return false;
 }
 
 
-/* 
+/*
  * Zoom map in to a point
  */
 function zoomMapIn(lat, lon, zoom) {
@@ -1724,13 +1724,13 @@ function showCountry(country_iso) {
 	maps_debug("Information about country "+country_iso);
 
 	open_page("countries");
-/*	
+/*
 	// Show selected country after page has opened
 */
 }
 
 
-/* 
+/*
  * Open page
  */
 function open_page(name) {
@@ -1739,7 +1739,7 @@ function open_page(name) {
 
 	// Close cards if open
 	if($("#cards .card").is(':visible')) { close_cards(); }
-	
+
 	$.ajax({
 		url: "ajax/views.php?type=page&lang="+locale+"&page=" + name,
 		async: false,
@@ -1759,12 +1759,12 @@ function open_page(name) {
 }
 
 
-/* 
+/*
  * Close page
  */
 function close_page() {
 	maps_debug("Closing a page");
-	
+
 	if($("#pages .page").is(':visible')) {
 			$("#pages .page .content").hide('fast').text('');
 			$("#pages .page").slideUp('fast');
@@ -1773,15 +1773,15 @@ function close_page() {
 }
 
 
-/* 
+/*
  * Open card
  */
 function open_card(name, title) { //, x_coord, y_coord, width
 	maps_debug("Open a card: "+name);
 	stats("cards/"+name+"/");
-	
+
 	/*
-	if(x_coord = undefined) { var x_coord = '300'; } 
+	if(x_coord = undefined) { var x_coord = '300'; }
 	if(y_coord = undefined) { var y_coord = '300'; }
 	if(width = undefined) { var width = '200'; }
 	*/
@@ -1793,14 +1793,14 @@ function open_card(name, title) { //, x_coord, y_coord, width
 	if($("#card_"+name).size()) {
 		$("#card_"+name).dialog("close");
 	}
-	
+
 	//$(".card").dialog("destroy");
 
 	$.ajax({
 	    url: "ajax/views.php?type=card&lang="+locale+"&page=" + name,
 	    async: false,
 	    success: function(content){
-	    	
+
 	    	$("#cards").html('<div class="card" id="card_'+name+'" title="'+title+'">'+content+'</div>');
 	    	$("#cards .card").dialog({
 						position: [280,100],
@@ -1817,7 +1817,7 @@ function open_card(name, title) { //, x_coord, y_coord, width
 						}
 						*/
 	    			});
-	    	
+
 	    	// If pages not opened yet
 	    	/*
 	    	if($("#cards .card").is(':hidden')) {
@@ -1834,11 +1834,11 @@ function open_card(name, title) { //, x_coord, y_coord, width
 			*/
       	}
 	});
-	
+
 }
 
 
-/* 
+/*
  * Close all cards
  * TODO: Not quite working yet... :-)
  * Maybe some foreach loop inside #cards ?
@@ -1861,29 +1861,29 @@ function removeComment(remove_id) {
 	if(confirm_remove) {
 		// Call API
 		$.getJSON('api/?remove_comment='+remove_id, function(data) {
-		
+
 			if(data.success == true) {
-		
+
     			maps_debug("Comment "+remove_id+" removed.");
-			
+
 				// Fade comment away
     			$("#comment_list #comment-"+remove_id).fadeOut("slow");
-    	
+
     			// Minus one from comment counter
     			var current_comment_count = $("#comments #comment_counter").text();
     			$("#comments #comment_counter").text(parseInt(current_comment_count)-1);
-    			
+
 			} else {
 				info_dialog("Could not remove comment due error. Please try again!", "Error", true);
     			maps_debug("Could note remove comment. Error: "+data.error);
 			}
-		
+
 		});
 	}
 }
 
 
-/* 
+/*
  * Validate numeric
  * http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric
  */
@@ -1893,20 +1893,20 @@ function is_numeric(input)
 }
 
 
-/* 
+/*
  * Show simple info/error dialog for user
  */
 function info_dialog(dialog_info, dialog_title, dialog_alert, reload_page) {
-	
+
 	if(dialog_alert) { var dialog_type = "alert"; }
 	else { var dialog_type = "info"; }
-	
+
 	if(dialog_title == undefined) { dialog_title = dialog_type; }
-	
+
 	maps_debug("Calling "+dialog_type+"-dialog box; "+dialog_title);
-	
-	
-	
+
+
+
 	$("#dialog-message")
 		.attr("title",dialog_title)
 		.html('<p><span class="ui-icon ui-icon-'+dialog_type+'" style="float:left; margin:0 7px 50px 0;"></span>'+dialog_info+'</p>')
@@ -1915,7 +1915,7 @@ function info_dialog(dialog_info, dialog_title, dialog_alert, reload_page) {
 		resizable: false,
 		buttons: {
 			Ok: function() {
-				if(reload_page) { 
+				if(reload_page) {
 					maps_debug("Reloading the page...");
 					$("#reloadPage").submit();
 					$(this).dialog('close');
@@ -1926,34 +1926,34 @@ function info_dialog(dialog_info, dialog_title, dialog_alert, reload_page) {
 			}
 		}
 	});
-	
+
 	dialog_info = null;
 	dialog_title = null;
 	dialog_alert = false;
 }
 
 
-/* 
+/*
  * Show simple loading animation
  */
 function show_loading_bar(title) {
 	maps_debug("Show loading bar: "+title);
-	
+
 	if(title != undefined) { $("#loading-bar .title").text(title); }
 	else { $("#loading-bar .title").text(""); }
-	
+
 	if($("#loading-bar").is(":hidden") == true) {
 		$("#loading-bar").show();
 	}
 }
 
 
-/* 
+/*
  * Show simple loading animation
  */
 function hide_loading_bar() {
 	maps_debug("Hide loading bar.");
-	
+
 	if($("#loading-bar").is(":visible") == true) {
 		$("#loading-bar").fadeOut('slow');
 	}
@@ -1961,7 +1961,7 @@ function hide_loading_bar() {
 }
 
 
-/* 
+/*
  * Log debug events if debugging is on
  */
 function maps_debug(str) {
@@ -1984,6 +1984,6 @@ function stats(str) {
 			maps_debug("Stats: "+str);
 			pageTracker._trackPageview(str);
 		}
-	
+
 	} else { maps_debug("Error: empty stats() request!"); }
 }

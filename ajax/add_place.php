@@ -12,7 +12,7 @@ require_once "../config.php";
 start_sql();
 
 /*
- * Returns an info-array about logged in user (or false if not logged in) 
+ * Returns an info-array about logged in user (or false if not logged in)
  */
 $user = current_user();
 
@@ -22,7 +22,7 @@ $user = current_user();
 <input type="hidden" id="lat" name="lat" value="" />
 <input type="hidden" id="lon" name="lon" value="" />
 <input type="hidden" id="locality" name="locality" value="" />
-				
+
 <ul id="Navigation">
 
     <li style="background: #fff;">
@@ -49,18 +49,18 @@ $user = current_user();
 		<ul>
 			<li>
 				<input type="hidden" id="country_iso" name="country_iso" value="" />
-			    
+
 			    <small id="address"></small>
-			    
+
 			    <span id="locality_name" class="icon building"></span>
-			    
+
 			    <img class="flag" alt="" src="" class="hidden" /> <span id="country_name"></span>
 			    &nbsp;
 
 			</li>
 		</ul>
 	</li>
-	
+
 	<!-- manual country selection as a backup method: -->
 	<li id="manual_country_selection">
 		<ul>
@@ -77,40 +77,40 @@ $user = current_user();
 	<li>
 		<ul>
 			<li>
-			
-			    <label for="marker_type"><?php echo _("Type"); ?></label> 
+
+			    <label for="marker_type"><?php echo _("Type"); ?></label>
 			    <select name="type" id="marker_type">
 			    	<option value="1" selected="selected"><?php echo _("Hitchhiking spot"); ?></option>
 			    	<option value="2"><?php echo _("Event / Meeting / Gathering"); ?></option>
 			    </select>
 			    <script type="text/javascript">
 			    $(function() {
-			    	$("#marker_type").change( function () { 
-			    	
+			    	$("#marker_type").change( function () {
+
 			  			if($(this).val() == 1) {
-			  			
+
 			  				// Toggle parts for a hitchhiking spot
-			  				$("#hitchability_question").show(); 
+			  				$("#hitchability_question").show();
 			  				$("#waitingtime_question").show();
-			  				
+
 			  				// Toggle Event stuff
-			  				$("#event_info").hide();  
-			  			
+			  				$("#event_info").hide();
+
 			  			} else if($(this).val() == 2) {
-			  			
+
 			  				// Toggle parts for a hitchhiking spot
-			  				$("#hitchability_question").hide(); 
+			  				$("#hitchability_question").hide();
 			  				$("#waitingtime_question").hide();
-			  				
+
 			  				// Toggle Event stuff
 			  				$("#event_info").show();
 			  			}
 			    	});
-			    
+
 			    });
-			    
+
 			    </script>
-			    
+
 			</li>
 		</ul>
 	</li>
@@ -118,12 +118,12 @@ $user = current_user();
 	<li>
 		<ul>
 			<li>
-				
+
 				<!-- description in different languages -->
 				<label for="select_description"><?php echo _("Description"); ?></label> <select name="select_description" id="select_description">
 				    <?php
 				    // Print out lang options
-				    
+
 				    $selected_tab = $settings["default_language"];
 				    foreach($settings["valid_languages"] as $code => $name) {
 
@@ -147,32 +147,32 @@ $user = current_user();
 				    ?>
 				</div>
 				<small class="light"><?php echo _("Please fill as many different language descriptions as you can."); ?></small>
-				
+
 				<script type="text/javascript">
 				$(function() {
-				
+
 					// Descreption language selection
 				    $("#descriptions .description").hide();
 				    $("#descriptions #tab-<?php echo $selected_tab; ?>").show();
-				    
+
 				    //var textarea_width = $("#descriptions #tab-<?php echo $selected_tab; ?>").width();
-					
-				    $("#select_description").change( function () { 
+
+				    $("#select_description").change( function () {
 				    	var selected_language = $(this).val();
 				    	$(this).blur();
 				    	$("#descriptions .description").hide();
 				    	$("#descriptions #tab-"+selected_language).show();
 				    	/*
 						$("#descriptions  #tab-"+selected_language+" .resizable").resizable({
-							maxHeight: 150, 
-							minHeight: 50, 
+							maxHeight: 150,
+							minHeight: 50,
 							minWidth: textarea_width,
 							maxwidth: textarea_width+1,
 							handles: "se"
 						});
 						*/
 				    });
-				    
+
 				});
 				</script>
 			</li>
@@ -195,7 +195,7 @@ $user = current_user();
 		    $("#add_new_place_form .datepicker").datepicker({
 		    	showButtonPanel: true
 		    });
-		    
+
 		    // Clear btns
 		    $("#add_new_place_form #clear_start_date").click(function(e){
 		    	e.preventDefault();
@@ -208,7 +208,7 @@ $user = current_user();
 		});
 		</script>
 	</li>
-	
+
 	<li id="hitchability_question">
 		<ul>
 			<li>
@@ -225,7 +225,7 @@ $user = current_user();
 
 		</ul>
 	</li>
-	
+
 	<li id="waitingtime_question">
 		<ul>
 			<li>
@@ -255,23 +255,23 @@ $user = current_user();
 	<li>
 		<ul>
 			<li>
-			    
+
 			    <button id="btn_add_place" class="smaller"><?php echo _("Add place"); ?></button>
 			    <button id="btn_cancel" class="smaller"><?php echo _("Cancel"); ?></button>
-			    
-			    
-			    <?php 
-			    if($user["logged_in"]===true) { 
+
+
+			    <?php
+			    if($user["logged_in"]===true) {
 			    	echo '</li><li>';
 			    	echo '<small class="light">';
 			    	printf(_('Your name <i>"%s"</i> will be visible with this place.'), htmlspecialchars($user["name"]));
-			    	echo '</small>'; 
-			    } 
+			    	echo '</small>';
+			    }
 			    ?>
-			    
+
 			    <script type="text/javascript">
 			    $(function() {
-			    	
+
 			    	// add place
 			    	$("#btn_add_place").button({
 			            icons: {
@@ -279,14 +279,14 @@ $user = current_user();
 			            }
 			    	}).click(function(e) {
 						e.preventDefault();
-						
+
 						maps_debug("Ask to add a place.");
-												
+
 						show_loading_bar("Adding...");
-						
+
 						// Disable all form elements from editing
 						$("#add_new_place_form input, #add_new_place_form textarea").attr('disabled', true);
-						
+
 						// Gather data
 						var post_lat = $("#add_new_place_form input#lat").val();
 						var post_lon = $("#add_new_place_form input#lon").val();
@@ -304,12 +304,12 @@ $user = current_user();
 						<?php
 						}
 						?>
-						
+
 						maps_debug("Sending a request to the API.");
 						// Call API
-						$.post('api/?add_place', { 
-							lat: post_lat, 
-							lon: post_lon, 
+						$.post('api/?add_place', {
+							lat: post_lat,
+							lon: post_lon,
 							type: post_type,
 							waitingtime: post_waitingtime,
 							<?php
@@ -318,15 +318,15 @@ $user = current_user();
 							}
 							?>
 							locality: post_locality,
-							country: post_country, 
-							manual_country: post_manual_country, 
-							rating: post_hitchability<?php 
-								if($user["logged_in"]===true) { echo ', user_id: "'.$user["id"].'"'; } 
-						?> }, 
+							country: post_country,
+							manual_country: post_manual_country,
+							rating: post_hitchability<?php
+								if($user["logged_in"]===true) { echo ', user_id: "'.$user["id"].'"'; }
+						?> },
 						function(data) {
-						
+
 							hide_loading_bar();
-								
+
 							if(data.success == true) {
 								maps_debug("Place added successfully.");
 			    				close_add_place();
@@ -334,20 +334,20 @@ $user = current_user();
 			    				showPlacePanel(data.id, true);
 							} else {
 								maps_debug("Could not add place. Error: "+data.error);
-								
+
 								// Enable form elements again
 								$("#add_new_place_form input, #add_new_place_form textarea").removeAttr('disabled');
-								
+
 								// Show error
 								info_dialog("<?php echo _("Could not add place due error."); ?><br /><br /><?php _("Please try again!"); ?>", "<?php echo _("Error"); ?>", true);
 							}
 
 						}, "json"
 						); // post end
-						
-			    	
+
+
 			    	});
-			    	
+
 			    	// cancel
 			    	$("#btn_cancel").button({
 			            icons: {

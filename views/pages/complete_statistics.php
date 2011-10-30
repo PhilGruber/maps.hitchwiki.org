@@ -16,7 +16,7 @@
 			<?php list_countries("tr", "markers"); ?>
 		</tbody>
 	</table>
-	
+
 </div>
 
 
@@ -35,7 +35,7 @@
 			<?php list_cities("tr", "markers"); ?>
 		</tbody>
 	</table>
-	
+
 </div>
 
 

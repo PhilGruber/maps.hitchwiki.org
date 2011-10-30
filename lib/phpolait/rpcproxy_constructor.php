@@ -27,4 +27,4 @@
 		$this->jsonlib = JSON_PHP_FILE;
 		if ($jsonlib!=null)
 			$this->jsonlib = $jsonlib;
-?>	
+?>
