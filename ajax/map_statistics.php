@@ -3,7 +3,7 @@
  * Hitchwiki Maps: map_statistics.php
  *
  */
- 
+
 /*
  * Load config to set language and stuff
  */
@@ -13,7 +13,7 @@ require_once "../config.php";
 ?><html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php echo substr($settings["language"], 0, 2); /* ISO_639-1 ('en_UK' => 'en') */ ?>">
     <head profile="http://gmpg.org/xfn/11">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    
+
     <title>Hitchwiki - <?php echo _("Maps"); ?> - Statistics in maps</title>
 
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -33,7 +33,7 @@ require_once "../config.php";
  */
 if(isset($_GET["map"]) && $_GET["map"] == "1"): ?>
 
-<?php 
+<?php
 	// Gather data
 	$data = list_countries();
 ?>
@@ -57,15 +57,15 @@ if(isset($_GET["map"]) && $_GET["map"] == "1"): ?>
 		$i++;
       }
       ?>
-		
+
         var chart = new google.visualization.IntensityMap(document.getElementById('map_canvas'));
-        
+
 		var color_arr = new Array('#eb7f00','#eb7f00');
         chart.draw(data, {width: 440, height: 220, colors: color_arr});
       }
     </script>
 
-<?php 
+<?php
 
 
 /*
@@ -74,7 +74,7 @@ if(isset($_GET["map"]) && $_GET["map"] == "1"): ?>
  */
 elseif(isset($_GET["map"]) && $_GET["map"] == "2"): ?>
 
-<?php 
+<?php
 	// Gather data
 	$data = list_countries();
 	$codes = countrycodes("code", "en_UK");
@@ -111,7 +111,7 @@ elseif(isset($_GET["map"]) && $_GET["map"] == "2"): ?>
   };
   </script>
 
-<?php 
+<?php
 
 
 /*
@@ -120,7 +120,7 @@ elseif(isset($_GET["map"]) && $_GET["map"] == "2"): ?>
  */
 elseif(isset($_GET["map"]) && $_GET["map"] == "3"): ?>
 
-<?php 
+<?php
 	// Gather data
 	$data = list_countries();
 	$codes = countrycodes("code", "en_UK");
@@ -159,7 +159,7 @@ elseif(isset($_GET["map"]) && $_GET["map"] == "3"): ?>
   </script>
 
 
-<?php 
+<?php
 
 
 /*
@@ -182,11 +182,11 @@ elseif(isset($_GET["map"]) && $_GET["map"] == "4" && isset($_GET["country"]) && 
       data.addColumn('number', '<?php echo _("Places"); ?>');
 
       <?php
-      
+
       $country = ISO_to_country(strtoupper($_GET["country"]));
       /*
       TODO: we need something like this (lat/lon):
-      
+
 dataTable = new google.visualization.DataTable();
 dataTable.addRows(1);
 dataTable.addColumn('number', 'LATITUDE', 'Latitude');
@@ -208,7 +208,7 @@ dataTable.setValue(0,3,"Hello World!");
 
 		$i++;
       }
-      
+
       ?>
 
       var options = {};
@@ -220,10 +220,10 @@ dataTable.setValue(0,3,"Hello World!");
       var geomap = new google.visualization.GeoMap(container);
       geomap.draw(data, options);
     };
-  
+
   </script>
 
-<?php 
+<?php
 
 
 /*
@@ -245,12 +245,12 @@ elseif(isset($_GET["map"]) && $_GET["map"] == "5" && isset($_GET["country"])): /
       options['colors'] = [0xFF8747, 0xFFB581, 0xc06000]; //orange colors
       options['dataMode'] = 'markers';
 	  options['showLegend'] = false;
-	  
+
       var container = document.getElementById('map_canvas');
       var geomap = new google.visualization.GeoMap(container);
       geomap.draw(data, options);
     };
-  
+
   </script>
 <?php endif; ?>
 

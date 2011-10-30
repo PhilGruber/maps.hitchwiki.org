@@ -2,7 +2,7 @@
 <h3><?php printf(_("Hitchwiki Maps is currently available in %s languages"), count($settings["valid_languages"])); ?>:</h3>
 
 <ul class="clean" style="width: 300px;">
-<?php 
+<?php
 // Print out a list of current languages
 foreach($settings["valid_languages"] as $code => $lang) {
 

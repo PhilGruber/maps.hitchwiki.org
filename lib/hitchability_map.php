@@ -10,7 +10,7 @@ require_once "../config.php";
 
 <?php if(isset($_GET["map"]) && $_GET["map"] == "1"): ?>
 
-<?php 
+<?php
 	// Gather data
 	$data = list_countries();
 ?>
@@ -32,19 +32,19 @@ require_once "../config.php";
       		echo "\t data.setValue(".$i.", 2, ".$country[1].");\n\n";
       }
       ?>
-		
+
         var chart = new google.visualization.IntensityMap(document.getElementById('map_canvas'));
-        
+
 		var color_arr = new Array('#eb7f00','#eb7f00');
         chart.draw(data, {width: 440, height: 220, colors: color_arr});
       }
     </script>
- 
+
  <pre><?php print_r($countrylist2); ?></pre>
 
 <?php elseif(isset($_GET["map"]) && $_GET["map"] == "2"): ?>
 
-<?php 
+<?php
 	// Gather data
 	$data = list_countries();
 	$codes = countrycodes();
@@ -82,7 +82,7 @@ require_once "../config.php";
 
 <?php elseif(isset($_GET["map"]) && $_GET["map"] == "3"): ?>
 
-<?php 
+<?php
 	// Gather data
 	$data = list_countries();
 	$codes = countrycodes();

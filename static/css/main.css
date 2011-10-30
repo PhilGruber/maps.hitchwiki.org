@@ -16,7 +16,7 @@
 
 
 
-/* 
+/*
  * 1) Misc
  */
 a img { border: 0; }
@@ -24,7 +24,7 @@ a img { border: 0; }
 .align_left { float: left; }
 
 
-/* 
+/*
  * 2) Typography
  */
 
@@ -47,7 +47,7 @@ a:hover {
 	color: #d7861d;
 }
 
-h1, h2, h3, h4 {	
+h1, h2, h3, h4 {
 	font-family: "Trebuchet MS", "Lucida Grande", "Bitstream Vera Sans", Helvetica, Arial, sans-serif;
 }
 
@@ -93,7 +93,7 @@ table.infotable {
 	}
 
 .grey {
-	color: #555;	
+	color: #555;
 }
 .tip, .light, .meta {
 	color: #ad8c55;
@@ -122,7 +122,7 @@ table.infotable {
 	.hitchability_color_3 { color: #ffff00; }
 	.hitchability_color_4 { color: #ff8d00; }
 	.hitchability_color_5 { color: #ff0000; }
-	
+
 	.hitchability_color_0,
 	.hitchability_color_1,
 	.hitchability_color_2,
@@ -157,7 +157,7 @@ hr {
 /*
  * 3) Buttons
  */
- 
+
 .button,
 button {
  	background-color: #eae3c1;
@@ -214,7 +214,7 @@ input[disabled='disabled'] {
 		padding: 5px 0;
 		overflow: hidden;
 		text-shadow: 0px 1px 1px #e8c161;
-		
+
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 		-moz-border-radius-topleft: 0;
@@ -256,7 +256,7 @@ input[disabled='disabled'] {
 			margin: 0;
 		}
 
-textarea.copypaste, 
+textarea.copypaste,
 input.copypaste {
 	width: 100%;
 	padding: 6px;
@@ -281,7 +281,7 @@ input.copypaste {
 
 /*
  * 4) Icons
- */  
+ */
 .icon {
 	padding-left: 20px;
 	padding-top: 3px;
@@ -377,7 +377,7 @@ textarea.icon {
 
 
 
-/* 
+/*
  * 5) Layout
  */
 
@@ -393,7 +393,7 @@ html, body {
 #Header {
 	margin: 0;
 	padding: 5px 10px 5px 10px;
-	height: 70px; 
+	height: 70px;
 	overflow: hidden;
 	min-width: 990px;
 	background: #edca50 url(../gfx/bg.png) repeat-x left bottom;
@@ -475,7 +475,7 @@ html, body {
 			right: 141px;
 			background-position: 8px 6px;
 			z-index: 99999;
-			
+
 			-webkit-border-top-left-radius: 5px;
 			-webkit-border-top-right-radius: 5px;
 			-moz-border-radius-topleft: 5px;
@@ -489,7 +489,7 @@ html, body {
 			color: #000;
 			border-bottom: 0;
 		}
-		
+
 		#loginPanel {
 			position: absolute;
 			background: #f2d871 url(../gfx/login_bg.gif) repeat-x;
@@ -501,7 +501,7 @@ html, body {
 			z-index: 99998;
 			font-size: 12px;
 			line-height: 15px;
-			
+
 			-webkit-border-radius: 5px;
 			-webkit-border-top-right-radius: 0;
 			-moz-border-radius: 5px;
@@ -577,12 +577,12 @@ ul#Navigation {
 	ul#Navigation li ul li ul li:before {
 		content: "› "; /* &rsaquo; */
 	}
-	
+
 	ul#Navigation #search_form {
 		display: block;
 		padding: 0 0 5px 0;
 	}
-	
+
 	ul#Navigation #search #q {
 		display: block;
 		float: left;
@@ -616,18 +616,18 @@ ul#Navigation {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
 	}
-	
+
 	#Sidebar h3 {
 		padding: 0;
 		margin: 0;
 	}
-	
+
 	/*
 	ul#Navigation li ul li { border-bottom: 1px solid #c0b78b; }
 	ul#Navigation li ul li { border-top: 1px solid #fff; }
 	*/
-	
-	
+
+
 #Footer {
 	font-size: 11px;
 	line-height: 15px;
@@ -682,11 +682,11 @@ ul#Navigation {
 	font-size: 11px;
 	border: 1px solid #c9ab22;
 	border-bottom: transparent;
-	
+
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-	
+
   	box-shadow: 0px 0px 5px #ccc;
   	-moz-box-shadow: 0px 0px 5px #ccc;
   	-webkit-box-shadow: 0px 0px 5px #ccc;
@@ -746,7 +746,7 @@ code.example {
 	#PlacePanel #write_comment { width: 185px; }
 	#PlacePanel .copypaste { width: 200px; background: transparent; color: #413914; }
 	#PlacePanel .copypaste:hover { border-color: #81722f; }
-	
+
 
 #loading-bar {
 	display: block;
@@ -767,7 +767,7 @@ code.example {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-	
+
   	box-shadow: 0px 0px 5px #ccc;
   	-moz-box-shadow: 0px 0px 5px #ccc;
   	-webkit-box-shadow: 0px 0px 5px #ccc;
@@ -800,7 +800,7 @@ ul li ul li #comments ol li.own_comment {
 
 /*
  * 6) Map
- */ 
+ */
 
 #map {
 	border-left: 1px solid #c0b78b;
@@ -808,17 +808,17 @@ ul li ul li #comments ol li.own_comment {
 	color: #e5f0f9;
 	text-align: center;
 
-	position: absolute; 
-	top: 80px; 
-	left: 170px; 
-	right: 0; 
+	position: absolute;
+	top: 80px;
+	left: 170px;
+	right: 0;
 	bottom: 0;
 
 	min-width: 630px;
 	min-width: 630px;
 	/*
-	width: auto; 
-	height: auto; 
+	width: auto;
+	height: auto;
 	height: 500px;
 	width: 500px;
 	*/
@@ -829,7 +829,7 @@ ul li ul li #comments ol li.own_comment {
 	background-color: #e7e2c9 !important;
 	border-top: 1px solid #c0b78b !important;
 	border-left: 1px solid #c0b78b !important;
-	
+
 	-webkit-border-radius: 5px 0 0 0 !important;
 	-moz-border-radius: 5px 0 0 0 !important;
 	border-radius: 5px 0 0 0 !important;
@@ -844,7 +844,7 @@ ul li ul li #comments ol li.own_comment {
 
 /*
  * 7) Cards and Pages
- */ 
+ */
 
 #cards {
 	/* Area size should be same as #map */
@@ -868,11 +868,11 @@ ul li ul li #comments ol li.own_comment {
 	z-index: 9998;
 	border: 1px solid #c0b78b;
 	background-color: #faf9f3;
-	
+
   	box-shadow: 0px 0px 5px #ccc;
   	-moz-box-shadow: 0px 0px 5px #ccc;
   	-webkit-box-shadow: 0px 0px 5px #ccc;
-	
+
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -960,7 +960,7 @@ ul.ui-tabs-nav { padding:0 0 0 8px; }
  * 9) Dev-tools
  */
 
-#log { 
+#log {
 	display: block;
 	background: #000;
 	color: #fff;
@@ -981,7 +981,7 @@ ul.ui-tabs-nav { padding:0 0 0 8px; }
 		background: #003460;
 		color: #fff;
 		cursor: move;
-	} 
+	}
 	#log ul {
 		padding: 10px;
 		margin: 0;
@@ -992,13 +992,13 @@ ul.ui-tabs-nav { padding:0 0 0 8px; }
 		max-width: 680px;
 		overflow-y: auto;
 		overflow-x: hidden;
-		
+
 	}
 	#log li {
 		list-style: square;
 		padding: 2px 0;
 		margin: 0 0 0 10px;
-	} 
+	}
 
 
 

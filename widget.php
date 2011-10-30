@@ -21,7 +21,7 @@ if($settings["maintenance_page"]===true && !in_array($_SERVER['REMOTE_ADDR'], $s
 /*
  * Map settings
  */
- 
+
 // Show a country
 if(isset($_GET["country"]) && !empty($_GET["country"]) && strlen($_GET["country"]) == 2) {
 	$zoom = '9';
@@ -29,10 +29,10 @@ if(isset($_GET["country"]) && !empty($_GET["country"]) && strlen($_GET["country"
 	$lon = '9';
 }
 // Show free spot
-else { 
+else {
 	// Zoom, lat, lon, layers
 	$zoom = (isset($_GET["zoom"]) && ctype_digit($_GET["zoom"])) ? $_GET["zoom"] : '9';
-	
+
 	// Centered to Germany (51,9). Projection center would be '49','8.3'
 	$lat = (isset($_GET["lat"]) && is_numeric($_GET["lat"])) ? $_GET["lat"] : '51';
 	$lon = (isset($_GET["lon"]) && is_numeric($_GET["lon"])) ? $_GET["lon"] : '9';
@@ -42,7 +42,7 @@ else {
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="<?php echo shortlang(); ?>">
 	<head profile="http://gmpg.org/xfn/11">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    
+
 		<title>Hitchwiki - <?php echo _("Maps"); ?></title>
 
         <link rel="stylesheet" type="text/css" href="static/css/widget.css<?php if($settings["debug"]==true) echo '?cache='.date("jnYHis"); ?>" media="all" />

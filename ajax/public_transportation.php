@@ -10,7 +10,7 @@
 require_once "../config.php";
 
 
-/* 
+/*
  * Gather data
  */
 if(isset($_GET["country"]) && strlen($_GET["country"]) == 2) {
@@ -25,11 +25,11 @@ else {
 }
 
 
-/* 
+/*
  * Print it out:
  */
 ?>
-	
+
 	<h3><img class="flag" alt="<?php echo $country["iso"]; ?>" src="static/gfx/flags/<?php echo strtolower($country["iso"]); ?>.png" /> <?php echo $country["name"]; ?></h3>
-	
+
 	<?php pt_list($country["iso"]); ?>

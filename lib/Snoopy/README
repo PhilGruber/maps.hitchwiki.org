@@ -1,33 +1,33 @@
 NAME:
 
 	Snoopy - the PHP net client v1.2.4
-	
+
 SYNOPSIS:
 
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
-	
+
 	$snoopy->fetchtext("http://www.php.net/");
 	print $snoopy->results;
-	
+
 	$snoopy->fetchlinks("http://www.phpbuilder.com/");
 	print $snoopy->results;
-	
+
 	$submit_url = "http://lnk.ispi.net/texis/scripts/msearch/netsearch.html";
-	
+
 	$submit_vars["q"] = "amiga";
 	$submit_vars["submit"] = "Search!";
 	$submit_vars["searchhost"] = "Altavista";
-		
+
 	$snoopy->submit($submit_url,$submit_vars);
 	print $snoopy->results;
-	
+
 	$snoopy->maxframes=5;
 	$snoopy->fetch("http://www.ispi.net/");
 	echo "<PRE>\n";
-	echo htmlentities($snoopy->results[0]); 
-	echo htmlentities($snoopy->results[1]); 
-	echo htmlentities($snoopy->results[2]); 
+	echo htmlentities($snoopy->results[0]);
+	echo htmlentities($snoopy->results[1]);
+	echo htmlentities($snoopy->results[2]);
 	echo "</PRE>\n";
 
 	$snoopy->fetchform("http://www.altavista.com");
@@ -36,12 +36,12 @@ SYNOPSIS:
 DESCRIPTION:
 
 	What is Snoopy?
-	
+
 	Snoopy is a PHP class that simulates a web browser. It automates the
 	task of retrieving web page content and posting forms, for example.
 
 	Some of Snoopy's features:
-	
+
 	* easily fetch the contents of a web page
 	* easily fetch the text from a web page (strip html tags)
 	* easily fetch the the links from a web page
@@ -53,8 +53,8 @@ DESCRIPTION:
 	* easily submit form data and retrieve the results
 	* supports following html frames (added v0.92)
 	* supports passing cookies on redirects (added v0.92)
-	
-	
+
+
 REQUIREMENTS:
 
 	Snoopy requires PHP with PCRE (Perl Compatible Regular Expressions),
@@ -65,26 +65,26 @@ CLASS METHODS:
 
 	fetch($URI)
 	-----------
-	
+
 	This is the method used for fetching the contents of a web page.
 	$URI is the fully qualified URL of the page to fetch.
 	The results of the fetch are stored in $this->results.
 	If you are fetching frames, then $this->results
 	contains each frame fetched in an array.
-		
+
 	fetchtext($URI)
-	---------------	
-	
+	---------------
+
 	This behaves exactly like fetch() except that it only returns
 	the text from the page, stripping out html tags and other
-	irrelevant data.		
+	irrelevant data.
 
 	fetchform($URI)
-	---------------	
-	
+	---------------
+
 	This behaves exactly like fetch() except that it only returns
 	the form elements from the page, stripping out html tags and other
-	irrelevant data.		
+	irrelevant data.
 
 	fetchlinks($URI)
 	----------------
@@ -95,17 +95,17 @@ CLASS METHODS:
 
 	submit($URI,$formvars)
 	----------------------
-	
+
 	This submits a form to the specified $URI. $formvars is an
 	array of the form variables to pass.
-		
-		
+
+
 	submittext($URI,$formvars)
 	--------------------------
 
 	This behaves exactly like submit() except that it only returns
 	the text from the page, stripping out html tags and other
-	irrelevant data.		
+	irrelevant data.
 
 	submitlinks($URI)
 	----------------
@@ -142,26 +142,26 @@ CLASS VARIABLES:	(default value in parenthesis)
 	$status			http status of fetch
 	$temp_dir		temp directory that the webserver can write to. (/tmp)
 	$curl_path		system path to cURL binary, set to false if none
-	
+
 
 EXAMPLES:
 
 	Example: 	fetch a web page and display the return headers and
 				the contents of the page (html-escaped):
-	
+
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
-	
+
 	$snoopy->user = "joe";
 	$snoopy->pass = "bloe";
-	
+
 	if($snoopy->fetch("http://www.slashdot.org/"))
 	{
 		echo "response code: ".$snoopy->response_code."<br>\n";
 		while(list($key,$val) = each($snoopy->headers))
 			echo $key.": ".$val."<br>\n";
 		echo "<p>\n";
-		
+
 		echo "<PRE>".htmlspecialchars($snoopy->results)."</PRE>\n";
 	}
 	else
@@ -174,20 +174,20 @@ EXAMPLES:
 
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
-	
+
 	$submit_url = "http://lnk.ispi.net/texis/scripts/msearch/netsearch.html";
-	
+
 	$submit_vars["q"] = "amiga";
 	$submit_vars["submit"] = "Search!";
 	$submit_vars["searchhost"] = "Altavista";
 
-		
+
 	if($snoopy->submit($submit_url,$submit_vars))
 	{
 		while(list($key,$val) = each($snoopy->headers))
 			echo $key.": ".$val."<br>\n";
 		echo "<p>\n";
-		
+
 		echo "<PRE>".htmlspecialchars($snoopy->results)."</PRE>\n";
 	}
 	else
@@ -196,35 +196,35 @@ EXAMPLES:
 
 
 	Example:	showing functionality of all the variables:
-	
+
 
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 
 	$snoopy->proxy_host = "my.proxy.host";
 	$snoopy->proxy_port = "8080";
-	
+
 	$snoopy->agent = "(compatible; MSIE 4.01; MSN 2.5; AOL 4.0; Windows 98)";
 	$snoopy->referer = "http://www.microsnot.com/";
-	
+
 	$snoopy->cookies["SessionID"] = 238472834723489l;
 	$snoopy->cookies["favoriteColor"] = "RED";
-	
+
 	$snoopy->rawheaders["Pragma"] = "no-cache";
-	
+
 	$snoopy->maxredirs = 2;
 	$snoopy->offsiteok = false;
 	$snoopy->expandlinks = false;
-	
+
 	$snoopy->user = "joe";
 	$snoopy->pass = "bloe";
-	
+
 	if($snoopy->fetchtext("http://www.phpbuilder.com"))
 	{
 		while(list($key,$val) = each($snoopy->headers))
 			echo $key.": ".$val."<br>\n";
 		echo "<p>\n";
-		
+
 		echo "<PRE>".htmlspecialchars($snoopy->results)."</PRE>\n";
 	}
 	else
@@ -232,12 +232,12 @@ EXAMPLES:
 
 
 	Example: 	fetched framed content and display the results
-	
+
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
-	
+
 	$snoopy->maxframes = 5;
-	
+
 	if($snoopy->fetch("http://www.ispi.net/"))
 	{
 		echo "<PRE>".htmlspecialchars($snoopy->results[0])."</PRE>\n";

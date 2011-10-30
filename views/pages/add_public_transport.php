@@ -2,8 +2,8 @@
 
 <?php if($user["logged_in"]===true): ?>
 
-<div class="ui-state-error ui-corner-all hidden" style="padding: 0 .7em; margin: 20px 0;" id="pt_alert"> 
-    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+<div class="ui-state-error ui-corner-all hidden" style="padding: 0 .7em; margin: 20px 0;" id="pt_alert">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
     <strong><?php echo _("Alert"); ?>:</strong> <span class="alert_text"></span></p>
 </div>
 
@@ -52,7 +52,7 @@ foreach(pt_types() as $type => $type_name) {
 <div style="float: left; width: 600px; padding: 20px 0;" class="clear">
 
 	<button id="btn_add_public_transport"><?php echo _("Add page"); ?></button>
-	
+
 	<button id="btn_cancel_public_transport"><?php echo _("Cancel"); ?></button>
 </div>
 
@@ -62,8 +62,8 @@ foreach(pt_types() as $type => $type_name) {
 $(function() {
 
 	// Country flag
-	$("#add_pt_form #country").change( function () { 
-		
+	$("#add_pt_form #country").change( function () {
+
 		var selected_country = $(this).val();
 		if(selected_country != "") {
 			$("#profile_form .flag").attr("src","static/gfx/flags/png/"+selected_country.toLowerCase()+".png");
@@ -71,7 +71,7 @@ $(function() {
 		} else {
 			$("#profile_form .flag").hide();
 		}
-	
+
 	});
 
 	// Autosuggest in Location
@@ -136,35 +136,35 @@ $(function() {
         }
     }).click(function(e) {
     	e.preventDefault();
-		
+
 		maps_debug("Adding page to the catalog. Requesting API.");
-    	
+
     	$("#pt_alert").hide();
-    	
-    	
+
+
     	if($("#add_pt_form #url").val() == "" || $(" #add_pt_form #country").val() == "") {
 			maps_debug("Some required fields missing...");
 			$("#pt_alert .alert_text").text("<?php echo _("Please fill all required fields!"); ?>");
 			$("#pt_alert").show();
     	} else {
-    	
+
     		show_loading_bar("<?php echo _("Adding..."); ?>");
     		$("#add_pt_form").hide();
 
 			// Call API
-			
+
 			//"#add_pt_form input[name~='type_']"
-			
+
 			var p_country = $("#add_pt_form #country").val();
 			var p_city = $("#add_pt_form #city").val();
 			var p_title = $("#add_pt_form #title").val();
 			var p_url = $("#add_pt_form #url").val();
-			
+
 			// Seperate multiple types by ;
 			var p_type = '';
 			$("#add_pt_form input.type:checked").each(function(){
 				var this_type = $(this).val();
-				
+
 				if(p_type=="") {
 					p_type = this_type;
 				}
@@ -172,50 +172,50 @@ $(function() {
 					p_type = p_type+';'+this_type;
 				}
 			});
-			
-			$.post('api/?add_public_transport', { 
-			    country: p_country, 
-			    city: p_city,  
-			    title: p_title, 
-			    url: p_url, 
-			    user_id: <?php echo $user["id"]; ?>, 
+
+			$.post('api/?add_public_transport', {
+			    country: p_country,
+			    city: p_city,
+			    title: p_title,
+			    url: p_url,
+			    user_id: <?php echo $user["id"]; ?>,
 			    type: p_type
-			}, 
+			},
 			    function(data) {
 			    	hide_loading_bar();
-			
+
 					if(data.success==true) {
-					
+
 						maps_debug("Page added.");
 						info_dialog("<?php echo _("Page added to the catalog."); ?>","<?php echo _("Thank you!"); ?>");
 						close_page();
-							
+
 					} else {
-					
+
 						maps_debug("Adding page failed. Error: "+data.error);
 						$("#add_pt_form").show();
-						
-						$("#pt_alert .alert_text").text("<?php echo _("Error adding page to the catalog. Check required fields and try again."); ?> "+data.error);				
+
+						$("#pt_alert .alert_text").text("<?php echo _("Error adding page to the catalog. Check required fields and try again."); ?> "+data.error);
 						$("#pt_alert").show();
-						
+
 					}
-			    	
+
 			    }
 			,"json"); // post end
 		} // else end
 
-    	
+
     });
-    
-    
+
+
 });
 </script>
 
 <?php else: ?>
 
-	<div class="ui-state-error ui-corner-all" style="padding: 0 .7em; margin: 20px 0;"> 
-	    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+	<div class="ui-state-error ui-corner-all" style="padding: 0 .7em; margin: 20px 0;">
+	    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
 	    <?php echo _("You must be logged in to add pages."); ?></p>
 	</div>
-	
+
 <?php endif; ?>

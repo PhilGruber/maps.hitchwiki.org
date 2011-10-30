@@ -6,7 +6,7 @@
  * lib/functions.php
  *
  */
- 
+
 
 /*
  * Init
@@ -33,17 +33,17 @@ $api = new maps_api("json");
 if(isset($_GET["format"])) $api->set_format($_GET["format"]);
 
 
- 
+
 /*
  * Set some headers
  */
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
-#header('Content-Encoding: gzip'); 
+#header('Content-Encoding: gzip');
 
 // Force to download as a file
 if(isset($_GET["download"])) {
-	
+
 	// Set header depending on format
 	if($api->format == "json") {
 		header('Content-type: application/json; charset=utf8');
@@ -57,11 +57,11 @@ if(isset($_GET["download"])) {
 		header('Content-type: text/plain; charset=utf8');
 		$file_format = "txt";
 	}
-	
+
 	// Set a filename
 	if($_GET["download"] != "" && strlen($_GET["download"]) <= 255 && preg_match ("/^([a-zA-Z0-9._-]+)$/", $_GET["download"])) $filename = $_GET["download"];
 	else $filename = "places";
-	
+
 	// Send it to the browser
 	header('Content-Disposition: attachment; filename="'.$filename.'.'.$file_format.'"');
 }
@@ -78,17 +78,17 @@ if(isset($_GET["bounds"]) && !empty($_GET["bounds"])) {
 
 	// Get bounds from query
 	$bounds = explode(",", $_GET["bounds"]);
-	
+
 	// Get description with markers?
 	if(isset($_GET["description"]) && isset($settings["valid_languages"][$_GET["description"]])) $description = $_GET["description"];
 	else $description = false;
-	
+
 	// Validate query
 	if(count($bounds) != 4 OR !is_numeric($bounds[0]) OR !is_numeric($bounds[1]) OR !is_numeric($bounds[2]) OR !is_numeric($bounds[3])) $api->API_error("Invalid query!");
 
 	// Square corners, eg. 60.0066276,60.3266276,24.783508,25.103508 (Helsinki, Finland)
 	echo $api->getMarkersByBound($bounds[0],$bounds[1],$bounds[2],$bounds[3],$description);
-	
+
 }
 
 
@@ -142,7 +142,7 @@ if(isset($_GET["continent"]) && !empty($_GET["continent"])) {
 	EU = Europe
 	OC = Australia and Oceania
 	*/
-	
+
 	echo $api->getMarkersByContinent($_GET["continent"]);
 
 }
@@ -163,10 +163,10 @@ if(isset($_GET["continents"])) {
  */
 if(isset($_GET["countries"])) {
 
-	// List with coordinates?	
+	// List with coordinates?
 	$coordinates = (isset($_GET["coordinates"])) ? true: false;
-	
-	
+
+
 	// List stuff out
 	if($_GET["countries"]=="all") echo $api->getCountries(true, $coordinates); // List all countries
 	else echo $api->getCountries(false, $coordinates); // List only countries with places
@@ -308,7 +308,7 @@ if(isset($_GET["languages"])) {
 }
 
 
-/* 
+/*
  * Add public transport page to the catalog
  */
 if(isset($_GET["add_public_transport"])) {

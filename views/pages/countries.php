@@ -3,53 +3,53 @@
 	<?php list_countries("option", "name", false, true, true); ?>
 </select></h2>
 
-<div class="ui-state-error ui-corner-all hidden" style="padding: 0 .7em; margin: 20px 0;" id="countries_error"> 
-    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+<div class="ui-state-error ui-corner-all hidden" style="padding: 0 .7em; margin: 20px 0;" id="countries_error">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
     <strong><?php echo _("Error"); ?>:</strong> <span class="error_text"></span></p>
 </div>
 
 
 <script type="text/javascript">
 	$(function() {
-	
+
 		// Copy contents of the div to use when selecting "select"
 		var startingData = $("#countryinfo").html();
 
-		$("#show_country").change( function () { 
-		
+		$("#show_country").change( function () {
+
 			var country_select = $(this);
-			
+
 			// Show "loading" and disable select
 			show_loading_bar("<?php echo _("Loading..."); ?>");
 			country_select.attr("disabled", true);
-		
+
 			var country = $(this).val();
 
 			stats("country_info/"+country);
-			
+
 			// When selecting "select", show the world map
 			if(country=="") {
 
 				maps_debug("Countries: back to start");
 				$("#countryinfo").html(startingData);
-	
+
 				// Hide "loading" and enable select
 				hide_loading_bar();
 				country_select.removeAttr("disabled");
 
 			} else {
-		
+
 				// Hide infotable if visible
 				if( $("#countryinfo").is(":visible") ) { $("#countryinfo").slideUp("fast"); }
-				
-				
+
+
 				// Get country info
 				$("#countryinfo").load('ajax/country.php?format=html&country=' + country, function(response, status, xhr) {
-				
+
 					// Hide "loading" and enable select
 				  	hide_loading_bar();
 					country_select.removeAttr("disabled");
-					
+
 					if (status == "error") {
 						maps_debug("Sorry but there was an error: " + xhr.status + " " + xhr.statusText);
 						if( $("#countryinfo").is(":visible") ) { $("#countryinfo").slideUp("fast"); }
@@ -58,19 +58,19 @@
 					}
 					else {
 				  		maps_debug("Got countryinfo for "+country);
-				  		
+
 						// Show infotable
 						$("#countryinfo").slideDown("fast");
-						
-						// Empty result? 
+
+						// Empty result?
 						if($("#countryinfo").text() == "") {
 							$("#countries_error .error_text").text("<?php echo _("Couldn't load info. Please try again."); ?>");
 							$("#countries_error").slideDown();
 						}
 					}
 				});
-				
-				
+
+
 			}
 
 		});

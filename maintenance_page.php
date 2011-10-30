@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Hitchwiki - Maps</title>
     <style type="text/css">
-    
+
     body, html {
     	padding: 0;
     	margin: 0;
@@ -23,14 +23,14 @@
     	background: url(static/gfx/maintenance.png) no-repeat center center;
     	/* Owl by mestillw - http://www.sxc.hu/photo/1266434 */
     }
-    
+
 	body {
 		font-size: 13px;
 		line-height: 18px;
 		color: #111;
 		font-family: arial, helvetica, sans-serif;
 	}
-	
+
 	a:link,
 	a:visited,
 	a:active,
@@ -51,12 +51,12 @@
 
 <div id="maintenance">
 	<div style="display:none;">
-	
+
 		<h1>Hitchwiki</h1>
 		<h2>Maps</h2>
 		<h3>Maintenance break!</h3>
 		<p><strong><em>Hey folks!<br />We try to make our best to get Maps up and running again!</em></strong></p>
-	
+
 	</div>
 </div>
 
